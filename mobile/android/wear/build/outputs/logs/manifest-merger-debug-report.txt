@@ -1,0 +1,407 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:1:1-36:12
+INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:1:1-36:12
+INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:1:1-36:12
+INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:1:1-36:12
+MERGED from [androidx.wear.compose:compose-material-core:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b4a25e98324089a1670c9fba0e599526/transformed/jetified-compose-material-core-1.4.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:17:1-28:12
+MERGED from [androidx.wear.compose:compose-material:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/311722a10d31f367be10c80d5b71b69e/transformed/jetified-compose-material-1.4.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.wear.compose:compose-navigation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/5fdee2e75cf42268808c711a1becf2ff/transformed/jetified-compose-navigation-1.4.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.navigation:navigation-common-ktx:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/2897443d294026fa105f0bf680ae36e9/transformed/navigation-common-ktx-2.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/16a2d9262c5df5ec419583f87c7702f9/transformed/navigation-runtime-ktx-2.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-compose:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/5ab31118c13487991e036feccc715665/transformed/jetified-navigation-compose-2.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-common:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9ea82ec0ea5f9e96c9c59c42d6c37aaf/transformed/navigation-common-2.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.navigation:navigation-runtime:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/4b1cf40749b37e773ea2088349734982/transformed/navigation-runtime-2.6.0/AndroidManifest.xml:17:1-22:12
+MERGED from [com.google.android.gms:play-services-wearable:18.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/bf73a1e06da7de359885c0f9093d8f20/transformed/jetified-play-services-wearable-18.2.0/AndroidManifest.xml:2:1-8:12
+MERGED from [com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:2:1-7:12
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9b151807b0dd9157352470625814fa78/transformed/jetified-play-services-tasks-18.2.0/AndroidManifest.xml:2:1-5:12
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:2:1-9:12
+MERGED from [androidx.fragment:fragment:1.1.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/d3cd0587a14f9ec85e66ea40c5e4d36b/transformed/fragment-1.1.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.activity:activity:1.9.2] /Users/ElRouby/.gradle/caches/8.10.2/transforms/98f86d75f25485eb695a3db2bedb9147/transformed/jetified-activity-1.9.2/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.compose.material:material-ripple-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/3dbbbca702cdde607869ac57228e5479/transformed/jetified-material-ripple-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a770c6577a4088ccffb566e8e07194aa/transformed/jetified-foundation-layout-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.foundation:foundation-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/030e472aeec2c62febe14810938e73bf/transformed/jetified-foundation-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-core-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b6d23e6b28fef3b3784264b6c7270a68/transformed/jetified-animation-core-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.animation:animation-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/c4e625caea0b7315d625810926f03174/transformed/jetified-animation-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/94a0bcfc450c6f74102731189bc03646/transformed/jetified-material-icons-core-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/1ac60b421bbf6180bd55c208d4d81902/transformed/jetified-ui-unit-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/73e8d52b867a4f30909cdffade4e0f4e/transformed/jetified-ui-graphics-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/82383d99a0ea6c75b10c4992b11153e9/transformed/jetified-ui-geometry-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-util-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0dda06f115a38ddb3bb8b68b060aa10d/transformed/jetified-ui-util-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-text-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8f177c3f2cd0c0d2d1d14006904fa5cd/transformed/jetified-ui-text-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.loader:loader:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/ba25c6b7f347d04c4f8053cd730d2f8b/transformed/loader-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.autofill:autofill:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/90add1e2dacfd5cdd641f195f1969a26/transformed/jetified-autofill-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/981074490cfdd2bfaf5b61ab8ce45734/transformed/viewpager-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/93af2ed7eb2a0d87a40b99c7d164c5c1/transformed/jetified-customview-poolingcontainer-1.0.0/AndroidManifest.xml:17:1-23:12
+MERGED from [androidx.core:core-ktx:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/2c7ce08c0cde89c2580472ab377ea153/transformed/jetified-core-ktx-1.13.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.customview:customview:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6cba041b554cc74cee92042b5e223b0e/transformed/customview-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.graphics:graphics-path:1.0.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8121710cd2ff822d33441ccd8f88e907/transformed/jetified-graphics-path-1.0.1/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:17:1-30:12
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/c02d6dcef0b857ef570ad714f529a6af/transformed/jetified-savedstate-ktx-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/d0d536da8bba8fd251c1763eb4e19faa/transformed/jetified-savedstate-1.2.1/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0a7e8c05a8dab71d089dff1dbd862d8b/transformed/lifecycle-viewmodel-2.8.3/AndroidManifest.xml:2:1-5:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8a0f9506a5cff99039b5a9f59fdcc3f7/transformed/jetified-lifecycle-viewmodel-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/f8cc374e34665139efa3edbedfad30ff/transformed/jetified-lifecycle-livedata-core-ktx-2.8.3/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8260a6ba5ac515c56caa216b315f9c0e/transformed/jetified-lifecycle-runtime-ktx-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/7dbf7cefc3569c88a8b492ad2b3ffbd0/transformed/jetified-lifecycle-runtime-release/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/4301a5c759e009e4072d495878f368a1/transformed/jetified-lifecycle-viewmodel-ktx-2.8.3/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/e370481a1cdcc8f529f55e53aa87d0f2/transformed/jetified-lifecycle-viewmodel-savedstate-2.8.3/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:17:1-35:12
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/ff6e6ef97b9a27e32028c874a9142358/transformed/lifecycle-livedata-core-2.8.3/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/3f49c8a77a676cd12982dd7df4f07a4a/transformed/lifecycle-livedata-2.8.3/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/014e1add0578bda6db10263bc8c84d07/transformed/jetified-lifecycle-runtime-compose-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9f90eadb975e7e56a28a38610acb83d4/transformed/jetified-lifecycle-viewmodel-compose-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.ui:ui-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8625af000c116a98aaf7a9905792ee88/transformed/jetified-ui-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity-ktx:1.9.2] /Users/ElRouby/.gradle/caches/8.10.2/transforms/e42ed0bc1842e5fa6e22012b6ee83e8b/transformed/jetified-activity-ktx-1.9.2/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.activity:activity-compose:1.9.2] /Users/ElRouby/.gradle/caches/8.10.2/transforms/06b87093fe0bd2ae3d4323687c8bce95/transformed/jetified-activity-compose-1.9.2/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.core:core-splashscreen:1.0.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/5d917c1ae2d40030aff6c9b3936f197e/transformed/jetified-core-splashscreen-1.0.1/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b2708b1e6e9cddf02c7dfdf55157824d/transformed/jetified-runtime-saveable-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.compose.runtime:runtime-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/006cb5d1c136eda3ef2e9f98185181b2/transformed/jetified-runtime-release/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/f14e4e48b317c6e69f761b02b996f846/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:2:1-7:12
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/e8c97494364de41663ee6cc3571da067/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:17:1-27:12
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:17:1-55:12
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/69d106c04418de32fa74c2704cadb7d8/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:17:1-33:12
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b058e83f6977e8c3af5704d38ff0dff5/transformed/jetified-tracing-1.0.0/AndroidManifest.xml:17:1-24:12
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0f9528007096cb02d365e42e8bf44c80/transformed/interpolator-1.0.0/AndroidManifest.xml:17:1-22:12
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b68abd97d36ccc51d22f04d12b2e6367/transformed/core-runtime-2.2.0/AndroidManifest.xml:17:1-22:12
+	package
+		INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml
+	android:versionCode
+		INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:1:11-69
+uses-feature#android.hardware.type.watch
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:4:5-88
+	android:required
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:4:62-85
+	android:name
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:4:19-61
+application
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:6:5-35:19
+INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:6:5-35:19
+MERGED from [androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:22:5-26:19
+MERGED from [androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-wearable:18.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/bf73a1e06da7de359885c0f9093d8f20/transformed/jetified-play-services-wearable-18.2.0/AndroidManifest.xml:6:5-20
+MERGED from [com.google.android.gms:play-services-wearable:18.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/bf73a1e06da7de359885c0f9093d8f20/transformed/jetified-play-services-wearable-18.2.0/AndroidManifest.xml:6:5-20
+MERGED from [com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:4:5-6:19
+MERGED from [com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:4:5-6:19
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9b151807b0dd9157352470625814fa78/transformed/jetified-play-services-tasks-18.2.0/AndroidManifest.xml:4:5-20
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9b151807b0dd9157352470625814fa78/transformed/jetified-play-services-tasks-18.2.0/AndroidManifest.xml:4:5-20
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:5:5-7:19
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:5:5-7:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
+MERGED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:28:5-89
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:23:5-33:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/e8c97494364de41663ee6cc3571da067/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/e8c97494364de41663ee6cc3571da067/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:24:5-25:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:23:5-53:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/69d106c04418de32fa74c2704cadb7d8/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/69d106c04418de32fa74c2704cadb7d8/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:25:5-31:19
+	android:extractNativeLibs
+		INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml
+	android:appComponentFactory
+		ADDED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+	android:label
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:7:9-41
+	android:icon
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:8:9-45
+	android:allowBackup
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:9:9-36
+	android:theme
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:10:9-59
+meta-data#com.google.android.wearable.standalone
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:12:9-14:36
+	android:value
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:14:13-33
+	android:name
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:13:13-66
+activity#com.btrackscaffold.wear.MainActivity
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:16:9-25:20
+	android:exported
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:18:13-36
+	android:theme
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:20:13-63
+	android:taskAffinity
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:19:13-36
+	android:name
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:17:13-41
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:21:13-24:29
+action#android.intent.action.MAIN
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:22:17-69
+	android:name
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:22:25-66
+category#android.intent.category.LAUNCHER
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:23:17-77
+	android:name
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:23:27-74
+service#com.btrackscaffold.wear.PhoneMessageService
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:27:9-34:19
+	android:exported
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:29:13-36
+	android:name
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:28:13-48
+intent-filter#action:name:com.google.android.gms.wearable.MESSAGE_RECEIVED+data:host:*+data:pathPrefix:/btrack+data:scheme:wear
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:30:13-33:29
+action#com.google.android.gms.wearable.MESSAGE_RECEIVED
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:31:17-91
+	android:name
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:31:25-88
+data
+ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:32:17-93
+	android:host
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:32:45-61
+	android:scheme
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:32:23-44
+	android:pathPrefix
+		ADDED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:32:62-90
+uses-sdk
+INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml
+INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml
+MERGED from [androidx.wear.compose:compose-material-core:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b4a25e98324089a1670c9fba0e599526/transformed/jetified-compose-material-core-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-material-core:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b4a25e98324089a1670c9fba0e599526/transformed/jetified-compose-material-core-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.wear.compose:compose-material:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/311722a10d31f367be10c80d5b71b69e/transformed/jetified-compose-material-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-material:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/311722a10d31f367be10c80d5b71b69e/transformed/jetified-compose-material-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-navigation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/5fdee2e75cf42268808c711a1becf2ff/transformed/jetified-compose-navigation-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.wear.compose:compose-navigation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/5fdee2e75cf42268808c711a1becf2ff/transformed/jetified-compose-navigation-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.navigation:navigation-common-ktx:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/2897443d294026fa105f0bf680ae36e9/transformed/navigation-common-ktx-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common-ktx:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/2897443d294026fa105f0bf680ae36e9/transformed/navigation-common-ktx-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/16a2d9262c5df5ec419583f87c7702f9/transformed/navigation-runtime-ktx-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime-ktx:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/16a2d9262c5df5ec419583f87c7702f9/transformed/navigation-runtime-ktx-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-compose:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/5ab31118c13487991e036feccc715665/transformed/jetified-navigation-compose-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-compose:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/5ab31118c13487991e036feccc715665/transformed/jetified-navigation-compose-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9ea82ec0ea5f9e96c9c59c42d6c37aaf/transformed/navigation-common-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-common:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9ea82ec0ea5f9e96c9c59c42d6c37aaf/transformed/navigation-common-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/4b1cf40749b37e773ea2088349734982/transformed/navigation-runtime-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.navigation:navigation-runtime:2.6.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/4b1cf40749b37e773ea2088349734982/transformed/navigation-runtime-2.6.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-wearable:18.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/bf73a1e06da7de359885c0f9093d8f20/transformed/jetified-play-services-wearable-18.2.0/AndroidManifest.xml:4:5-44
+MERGED from [com.google.android.gms:play-services-wearable:18.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/bf73a1e06da7de359885c0f9093d8f20/transformed/jetified-play-services-wearable-18.2.0/AndroidManifest.xml:4:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9b151807b0dd9157352470625814fa78/transformed/jetified-play-services-tasks-18.2.0/AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-tasks:18.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9b151807b0dd9157352470625814fa78/transformed/jetified-play-services-tasks-18.2.0/AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:3:5-44
+MERGED from [com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:3:5-44
+MERGED from [androidx.fragment:fragment:1.1.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/d3cd0587a14f9ec85e66ea40c5e4d36b/transformed/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.fragment:fragment:1.1.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/d3cd0587a14f9ec85e66ea40c5e4d36b/transformed/fragment-1.1.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.activity:activity:1.9.2] /Users/ElRouby/.gradle/caches/8.10.2/transforms/98f86d75f25485eb695a3db2bedb9147/transformed/jetified-activity-1.9.2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.activity:activity:1.9.2] /Users/ElRouby/.gradle/caches/8.10.2/transforms/98f86d75f25485eb695a3db2bedb9147/transformed/jetified-activity-1.9.2/AndroidManifest.xml:20:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/3dbbbca702cdde607869ac57228e5479/transformed/jetified-material-ripple-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-ripple-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/3dbbbca702cdde607869ac57228e5479/transformed/jetified-material-ripple-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a770c6577a4088ccffb566e8e07194aa/transformed/jetified-foundation-layout-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-layout-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a770c6577a4088ccffb566e8e07194aa/transformed/jetified-foundation-layout-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/030e472aeec2c62febe14810938e73bf/transformed/jetified-foundation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.foundation:foundation-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/030e472aeec2c62febe14810938e73bf/transformed/jetified-foundation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b6d23e6b28fef3b3784264b6c7270a68/transformed/jetified-animation-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-core-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b6d23e6b28fef3b3784264b6c7270a68/transformed/jetified-animation-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/c4e625caea0b7315d625810926f03174/transformed/jetified-animation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.animation:animation-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/c4e625caea0b7315d625810926f03174/transformed/jetified-animation-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/94a0bcfc450c6f74102731189bc03646/transformed/jetified-material-icons-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.material:material-icons-core-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/94a0bcfc450c6f74102731189bc03646/transformed/jetified-material-icons-core-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/1ac60b421bbf6180bd55c208d4d81902/transformed/jetified-ui-unit-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-unit-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/1ac60b421bbf6180bd55c208d4d81902/transformed/jetified-ui-unit-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/73e8d52b867a4f30909cdffade4e0f4e/transformed/jetified-ui-graphics-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-graphics-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/73e8d52b867a4f30909cdffade4e0f4e/transformed/jetified-ui-graphics-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/82383d99a0ea6c75b10c4992b11153e9/transformed/jetified-ui-geometry-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-geometry-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/82383d99a0ea6c75b10c4992b11153e9/transformed/jetified-ui-geometry-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0dda06f115a38ddb3bb8b68b060aa10d/transformed/jetified-ui-util-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-util-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0dda06f115a38ddb3bb8b68b060aa10d/transformed/jetified-ui-util-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8f177c3f2cd0c0d2d1d14006904fa5cd/transformed/jetified-ui-text-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-text-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8f177c3f2cd0c0d2d1d14006904fa5cd/transformed/jetified-ui-text-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/ba25c6b7f347d04c4f8053cd730d2f8b/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.loader:loader:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/ba25c6b7f347d04c4f8053cd730d2f8b/transformed/loader-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:21:5-44
+MERGED from [androidx.autofill:autofill:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/90add1e2dacfd5cdd641f195f1969a26/transformed/jetified-autofill-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.autofill:autofill:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/90add1e2dacfd5cdd641f195f1969a26/transformed/jetified-autofill-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/981074490cfdd2bfaf5b61ab8ce45734/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.viewpager:viewpager:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/981074490cfdd2bfaf5b61ab8ce45734/transformed/viewpager-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/93af2ed7eb2a0d87a40b99c7d164c5c1/transformed/jetified-customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.customview:customview-poolingcontainer:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/93af2ed7eb2a0d87a40b99c7d164c5c1/transformed/jetified-customview-poolingcontainer-1.0.0/AndroidManifest.xml:20:5-21:38
+MERGED from [androidx.core:core-ktx:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/2c7ce08c0cde89c2580472ab377ea153/transformed/jetified-core-ktx-1.13.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-ktx:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/2c7ce08c0cde89c2580472ab377ea153/transformed/jetified-core-ktx-1.13.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.customview:customview:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6cba041b554cc74cee92042b5e223b0e/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.customview:customview:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6cba041b554cc74cee92042b5e223b0e/transformed/customview-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8121710cd2ff822d33441ccd8f88e907/transformed/jetified-graphics-path-1.0.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.graphics:graphics-path:1.0.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8121710cd2ff822d33441ccd8f88e907/transformed/jetified-graphics-path-1.0.1/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/c02d6dcef0b857ef570ad714f529a6af/transformed/jetified-savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate-ktx:1.2.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/c02d6dcef0b857ef570ad714f529a6af/transformed/jetified-savedstate-ktx-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/d0d536da8bba8fd251c1763eb4e19faa/transformed/jetified-savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.savedstate:savedstate:1.2.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/d0d536da8bba8fd251c1763eb4e19faa/transformed/jetified-savedstate-1.2.1/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0a7e8c05a8dab71d089dff1dbd862d8b/transformed/lifecycle-viewmodel-2.8.3/AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0a7e8c05a8dab71d089dff1dbd862d8b/transformed/lifecycle-viewmodel-2.8.3/AndroidManifest.xml:4:5-43
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8a0f9506a5cff99039b5a9f59fdcc3f7/transformed/jetified-lifecycle-viewmodel-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8a0f9506a5cff99039b5a9f59fdcc3f7/transformed/jetified-lifecycle-viewmodel-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/f8cc374e34665139efa3edbedfad30ff/transformed/jetified-lifecycle-livedata-core-ktx-2.8.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core-ktx:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/f8cc374e34665139efa3edbedfad30ff/transformed/jetified-lifecycle-livedata-core-ktx-2.8.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8260a6ba5ac515c56caa216b315f9c0e/transformed/jetified-lifecycle-runtime-ktx-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-ktx-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8260a6ba5ac515c56caa216b315f9c0e/transformed/jetified-lifecycle-runtime-ktx-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/7dbf7cefc3569c88a8b492ad2b3ffbd0/transformed/jetified-lifecycle-runtime-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/7dbf7cefc3569c88a8b492ad2b3ffbd0/transformed/jetified-lifecycle-runtime-release/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/4301a5c759e009e4072d495878f368a1/transformed/jetified-lifecycle-viewmodel-ktx-2.8.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/4301a5c759e009e4072d495878f368a1/transformed/jetified-lifecycle-viewmodel-ktx-2.8.3/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/e370481a1cdcc8f529f55e53aa87d0f2/transformed/jetified-lifecycle-viewmodel-savedstate-2.8.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-savedstate:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/e370481a1cdcc8f529f55e53aa87d0f2/transformed/jetified-lifecycle-viewmodel-savedstate-2.8.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:21:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/ff6e6ef97b9a27e32028c874a9142358/transformed/lifecycle-livedata-core-2.8.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata-core:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/ff6e6ef97b9a27e32028c874a9142358/transformed/lifecycle-livedata-core-2.8.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/3f49c8a77a676cd12982dd7df4f07a4a/transformed/lifecycle-livedata-2.8.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-livedata:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/3f49c8a77a676cd12982dd7df4f07a4a/transformed/lifecycle-livedata-2.8.3/AndroidManifest.xml:20:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/014e1add0578bda6db10263bc8c84d07/transformed/jetified-lifecycle-runtime-compose-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-runtime-compose-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/014e1add0578bda6db10263bc8c84d07/transformed/jetified-lifecycle-runtime-compose-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9f90eadb975e7e56a28a38610acb83d4/transformed/jetified-lifecycle-viewmodel-compose-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.lifecycle:lifecycle-viewmodel-compose-android:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9f90eadb975e7e56a28a38610acb83d4/transformed/jetified-lifecycle-viewmodel-compose-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8625af000c116a98aaf7a9905792ee88/transformed/jetified-ui-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.ui:ui-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/8625af000c116a98aaf7a9905792ee88/transformed/jetified-ui-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.2] /Users/ElRouby/.gradle/caches/8.10.2/transforms/e42ed0bc1842e5fa6e22012b6ee83e8b/transformed/jetified-activity-ktx-1.9.2/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-ktx:1.9.2] /Users/ElRouby/.gradle/caches/8.10.2/transforms/e42ed0bc1842e5fa6e22012b6ee83e8b/transformed/jetified-activity-ktx-1.9.2/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.9.2] /Users/ElRouby/.gradle/caches/8.10.2/transforms/06b87093fe0bd2ae3d4323687c8bce95/transformed/jetified-activity-compose-1.9.2/AndroidManifest.xml:5:5-44
+MERGED from [androidx.activity:activity-compose:1.9.2] /Users/ElRouby/.gradle/caches/8.10.2/transforms/06b87093fe0bd2ae3d4323687c8bce95/transformed/jetified-activity-compose-1.9.2/AndroidManifest.xml:5:5-44
+MERGED from [androidx.core:core-splashscreen:1.0.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/5d917c1ae2d40030aff6c9b3936f197e/transformed/jetified-core-splashscreen-1.0.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.core:core-splashscreen:1.0.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/5d917c1ae2d40030aff6c9b3936f197e/transformed/jetified-core-splashscreen-1.0.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b2708b1e6e9cddf02c7dfdf55157824d/transformed/jetified-runtime-saveable-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-saveable-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b2708b1e6e9cddf02c7dfdf55157824d/transformed/jetified-runtime-saveable-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/006cb5d1c136eda3ef2e9f98185181b2/transformed/jetified-runtime-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.compose.runtime:runtime-android:1.7.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/006cb5d1c136eda3ef2e9f98185181b2/transformed/jetified-runtime-release/AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/f14e4e48b317c6e69f761b02b996f846/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.annotation:annotation-experimental:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/f14e4e48b317c6e69f761b02b996f846/transformed/jetified-annotation-experimental-1.4.0/AndroidManifest.xml:5:5-44
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/e8c97494364de41663ee6cc3571da067/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.versionedparcelable:versionedparcelable:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/e8c97494364de41663ee6cc3571da067/transformed/versionedparcelable-1.1.1/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:21:5-44
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/69d106c04418de32fa74c2704cadb7d8/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/69d106c04418de32fa74c2704cadb7d8/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:21:5-23:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b058e83f6977e8c3af5704d38ff0dff5/transformed/jetified-tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.tracing:tracing:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b058e83f6977e8c3af5704d38ff0dff5/transformed/jetified-tracing-1.0.0/AndroidManifest.xml:20:5-22:41
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0f9528007096cb02d365e42e8bf44c80/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.interpolator:interpolator:1.0.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0f9528007096cb02d365e42e8bf44c80/transformed/interpolator-1.0.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b68abd97d36ccc51d22f04d12b2e6367/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+MERGED from [androidx.arch.core:core-runtime:2.2.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b68abd97d36ccc51d22f04d12b2e6367/transformed/core-runtime-2.2.0/AndroidManifest.xml:20:5-44
+	android:targetSdkVersion
+		INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml
+uses-library#wear-sdk
+ADDED from [androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:23:9-25:40
+	android:required
+		ADDED from [androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:25:13-37
+	android:name
+		ADDED from [androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:24:13-36
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:9-173
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:146-170
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:86-145
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:19-85
+meta-data#com.google.android.gms.version
+ADDED from [com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:9-122
+	android:value
+		ADDED from [com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:66-119
+	android:name
+		ADDED from [com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:20-65
+provider#androidx.startup.InitializationProvider
+ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:24:9-32:20
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/69d106c04418de32fa74c2704cadb7d8/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+MERGED from [androidx.startup:startup-runtime:1.1.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/69d106c04418de32fa74c2704cadb7d8/transformed/jetified-startup-runtime-1.1.1/AndroidManifest.xml:26:9-30:34
+	tools:node
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:28:13-31
+	android:authorities
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:26:13-68
+	android:exported
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:27:13-37
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:25:13-67
+meta-data#androidx.emoji2.text.EmojiCompatInitializer
+ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:30:17-75
+permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+permission#com.btrackscaffold.wear.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+	android:protectionLevel
+		ADDED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+uses-permission#${applicationId}.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+uses-permission#com.btrackscaffold.wear.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION
+ADDED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+	android:name
+		ADDED from [androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+meta-data#androidx.lifecycle.ProcessLifecycleInitializer
+ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:30:17-78
+meta-data#androidx.profileinstaller.ProfileInstallerInitializer
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+	android:value
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+receiver#androidx.profileinstaller.ProfileInstallReceiver
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+	android:enabled
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+	android:exported
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+	android:permission
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+	android:directBootAware
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+intent-filter#action:name:androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+action#androidx.profileinstaller.action.INSTALL_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+intent-filter#action:name:androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+action#androidx.profileinstaller.action.SKIP_FILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+intent-filter#action:name:androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+action#androidx.profileinstaller.action.SAVE_PROFILE
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+intent-filter#action:name:androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+action#androidx.profileinstaller.action.BENCHMARK_OPERATION
+ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+	android:name
+		ADDED from [androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:25-92

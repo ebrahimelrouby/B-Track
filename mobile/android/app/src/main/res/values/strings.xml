@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">BTrack</string>
+    <string name="today_glance_widget_description">Today\'s calories, water, steps and sleep at a glance</string>
+</resources>

@@ -1,0 +1,146 @@
+{
+  "buildFiles": [
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/@react-native-async-storage/async-storage/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/@react-native-community/netinfo/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-android-widget/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-gesture-handler/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-haptic-feedback/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-iap/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-image-picker/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-mmkv/MMKV/Core/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-mmkv/android/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-mmkv/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-reanimated/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-safe-area-context/android/src/main/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-screens/android/src/main/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-svg/android/src/main/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-vector-icons/android/build/generated/source/codegen/jni/CMakeLists.txt",
+    "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native/ReactAndroid/cmake-utils/default-app-setup/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/ElRouby/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/ElRouby/Downloads/B-Track/mobile/android/app/.cxx/Debug/5k635y4j/x86",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/ElRouby/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/ElRouby/Downloads/B-Track/mobile/android/app/.cxx/Debug/5k635y4j/x86",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {
+    "react_codegen_RNVectorIconsSpec::@479809fae146501fd34d": {
+      "artifactName": "react_codegen_RNVectorIconsSpec",
+      "abi": "x86",
+      "runtimeFiles": []
+    },
+    "react_codegen_safeareacontext::@7984cd80db47aa7b952a": {
+      "artifactName": "react_codegen_safeareacontext",
+      "abi": "x86",
+      "output": "/Users/ElRouby/Downloads/B-Track/mobile/android/app/build/intermediates/cxx/Debug/5k635y4j/obj/x86/libreact_codegen_safeareacontext.so",
+      "runtimeFiles": [
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/d51b0c1ef5a2adce1aea4bc70aa4d41d/transformed/jetified-fbjni-0.7.0/prefab/modules/fbjni/libs/android.x86/libfbjni.so",
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/66872b560834013084af7bf28524a707/transformed/react-android-0.79.4-debug/prefab/modules/jsi/libs/android.x86/libjsi.so",
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/66872b560834013084af7bf28524a707/transformed/react-android-0.79.4-debug/prefab/modules/reactnative/libs/android.x86/libreactnative.so"
+      ]
+    },
+    "react_codegen_rngesturehandler_codegen::@39f233abcd2c728bc6ec": {
+      "artifactName": "react_codegen_rngesturehandler_codegen",
+      "abi": "x86",
+      "runtimeFiles": []
+    },
+    "appmodules::@6890427a1f51a3e7e1df": {
+      "artifactName": "appmodules",
+      "abi": "x86",
+      "output": "/Users/ElRouby/Downloads/B-Track/mobile/android/app/build/intermediates/cxx/Debug/5k635y4j/obj/x86/libappmodules.so",
+      "runtimeFiles": [
+        "/Users/ElRouby/Downloads/B-Track/mobile/android/app/build/intermediates/cxx/Debug/5k635y4j/obj/x86/libreact-native-mmkv.so",
+        "/Users/ElRouby/Downloads/B-Track/mobile/android/app/build/intermediates/cxx/Debug/5k635y4j/obj/x86/libreact_codegen_safeareacontext.so",
+        "/Users/ElRouby/Downloads/B-Track/mobile/android/app/build/intermediates/cxx/Debug/5k635y4j/obj/x86/libreact_codegen_rnscreens.so",
+        "/Users/ElRouby/Downloads/B-Track/mobile/android/app/build/intermediates/cxx/Debug/5k635y4j/obj/x86/libreact_codegen_rnsvg.so",
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/d51b0c1ef5a2adce1aea4bc70aa4d41d/transformed/jetified-fbjni-0.7.0/prefab/modules/fbjni/libs/android.x86/libfbjni.so",
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/66872b560834013084af7bf28524a707/transformed/react-android-0.79.4-debug/prefab/modules/jsi/libs/android.x86/libjsi.so",
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/66872b560834013084af7bf28524a707/transformed/react-android-0.79.4-debug/prefab/modules/reactnative/libs/android.x86/libreactnative.so"
+      ]
+    },
+    "react_codegen_RNHapticFeedbackSpec::@a83561f277f6afbb326c": {
+      "artifactName": "react_codegen_RNHapticFeedbackSpec",
+      "abi": "x86",
+      "runtimeFiles": []
+    },
+    "react_codegen_rnsvg::@4f40eb209d0c0b4a3b65": {
+      "artifactName": "react_codegen_rnsvg",
+      "abi": "x86",
+      "output": "/Users/ElRouby/Downloads/B-Track/mobile/android/app/build/intermediates/cxx/Debug/5k635y4j/obj/x86/libreact_codegen_rnsvg.so",
+      "runtimeFiles": [
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/66872b560834013084af7bf28524a707/transformed/react-android-0.79.4-debug/prefab/modules/reactnative/libs/android.x86/libreactnative.so",
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/66872b560834013084af7bf28524a707/transformed/react-android-0.79.4-debug/prefab/modules/jsi/libs/android.x86/libjsi.so",
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/d51b0c1ef5a2adce1aea4bc70aa4d41d/transformed/jetified-fbjni-0.7.0/prefab/modules/fbjni/libs/android.x86/libfbjni.so"
+      ]
+    },
+    "react_codegen_RNCNetInfoSpec::@c36c96bfd5b5770618a5": {
+      "artifactName": "react_codegen_RNCNetInfoSpec",
+      "abi": "x86",
+      "runtimeFiles": []
+    },
+    "react_codegen_rnasyncstorage::@1596841e19ec5b9eeffe": {
+      "artifactName": "react_codegen_rnasyncstorage",
+      "abi": "x86",
+      "runtimeFiles": []
+    },
+    "react_codegen_rnreanimated::@8afabad14bfffa3f8b9a": {
+      "artifactName": "react_codegen_rnreanimated",
+      "abi": "x86",
+      "runtimeFiles": []
+    },
+    "core::@1b9a7d546b295b7d0867": {
+      "artifactName": "core",
+      "abi": "x86",
+      "output": "/Users/ElRouby/Downloads/B-Track/mobile/android/app/.cxx/Debug/5k635y4j/x86/RNMmkvSpec_cxxmodule_autolinked_build/core/libcore.a",
+      "runtimeFiles": []
+    },
+    "react-native-mmkv::@4ae6a1e65d3e68ba0197": {
+      "artifactName": "react-native-mmkv",
+      "abi": "x86",
+      "output": "/Users/ElRouby/Downloads/B-Track/mobile/android/app/build/intermediates/cxx/Debug/5k635y4j/obj/x86/libreact-native-mmkv.so",
+      "runtimeFiles": [
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/d51b0c1ef5a2adce1aea4bc70aa4d41d/transformed/jetified-fbjni-0.7.0/prefab/modules/fbjni/libs/android.x86/libfbjni.so",
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/66872b560834013084af7bf28524a707/transformed/react-android-0.79.4-debug/prefab/modules/jsi/libs/android.x86/libjsi.so",
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/66872b560834013084af7bf28524a707/transformed/react-android-0.79.4-debug/prefab/modules/reactnative/libs/android.x86/libreactnative.so"
+      ]
+    },
+    "react_codegen_RNIap::@91a736e576f79a9e87b9": {
+      "artifactName": "react_codegen_RNIap",
+      "abi": "x86",
+      "runtimeFiles": []
+    },
+    "react_codegen_RNImagePickerSpec::@f66ee9a2efecfb28bee4": {
+      "artifactName": "react_codegen_RNImagePickerSpec",
+      "abi": "x86",
+      "runtimeFiles": []
+    },
+    "react_codegen_rnscreens::@25bcbd507e98d3a854ad": {
+      "artifactName": "react_codegen_rnscreens",
+      "abi": "x86",
+      "output": "/Users/ElRouby/Downloads/B-Track/mobile/android/app/build/intermediates/cxx/Debug/5k635y4j/obj/x86/libreact_codegen_rnscreens.so",
+      "runtimeFiles": [
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/66872b560834013084af7bf28524a707/transformed/react-android-0.79.4-debug/prefab/modules/reactnative/libs/android.x86/libreactnative.so",
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/66872b560834013084af7bf28524a707/transformed/react-android-0.79.4-debug/prefab/modules/jsi/libs/android.x86/libjsi.so",
+        "/Users/ElRouby/.gradle/caches/8.10.2/transforms/d51b0c1ef5a2adce1aea4bc70aa4d41d/transformed/jetified-fbjni-0.7.0/prefab/modules/fbjni/libs/android.x86/libfbjni.so"
+      ]
+    },
+    "react_codegen_AndroidWidget::@8ee9d6dd26ffa90c075b": {
+      "artifactName": "react_codegen_AndroidWidget",
+      "abi": "x86",
+      "runtimeFiles": []
+    },
+    "react_codegen_RNMmkvSpec::@7541eabbae598da31a69": {
+      "artifactName": "react_codegen_RNMmkvSpec",
+      "abi": "x86",
+      "runtimeFiles": []
+    }
+  }
+}

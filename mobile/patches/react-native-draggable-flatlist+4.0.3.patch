@@ -1,0 +1,12 @@
+diff --git a/node_modules/react-native-draggable-flatlist/src/components/CellRendererComponent.tsx b/node_modules/react-native-draggable-flatlist/src/components/CellRendererComponent.tsx
+index 1234567..abcdef1 100644
+--- a/node_modules/react-native-draggable-flatlist/src/components/CellRendererComponent.tsx
++++ b/node_modules/react-native-draggable-flatlist/src/components/CellRendererComponent.tsx
+@@ -183,7 +183,9 @@ export default typedMemo(CellRendererComponent);
+-runOnUI(() => {
+-  "worklet";
+-  global.RNDFLLayoutAnimationConfigStash = {};
+-})();
++// Module-level runOnUI removed: stashConfig/getStashedConfig already
++// guard against undefined, and calling runOnUI at import time crashes
++// on RN New Architecture (Bridgeless) before the worklet runtime is ready.

@@ -1,0 +1,44 @@
+import Foundation
+import WatchConnectivity
+
+// Manages the connection to the iPhone app. The phone is the source of truth —
+// state always flows phone -> watch via updateApplicationContext (delivered
+// even if the watch app isn't foregrounded), and actions flow watch -> phone
+// via sendMessage (needs both apps active, which matches "mid-workout" usage).
+class WorkoutSessionManager: NSObject, ObservableObject {
+
+    static let shared = WorkoutSessionManager()
+
+    @Published var state = WorkoutState()
+
+    private var session: WCSession?
+
+    override init() {
+        super.init()
+        if WCSession.isSupported() {
+            session = WCSession.default
+            session?.delegate = self
+            session?.activate()
+        }
+    }
+
+    func sendAction(_ action: String) {
+        guard session?.isReachable == true else { return }
+        session?.sendMessage(["action": action], replyHandler: nil, errorHandler: nil)
+    }
+}
+
+extension WorkoutSessionManager: WCSessionDelegate {
+
+    func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
+        DispatchQueue.main.async { [weak self] in
+            self?.state = WorkoutState.from(session.receivedApplicationContext)
+        }
+    }
+
+    func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
+        DispatchQueue.main.async { [weak self] in
+            self?.state = WorkoutState.from(applicationContext)
+        }
+    }
+}
