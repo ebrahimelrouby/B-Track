@@ -115,6 +115,10 @@ public class GeminiProvider implements AiProvider {
                 "contents", List.of(Map.of("role", "user", "parts", userParts)),
                 "generationConfig", Map.of(
                         "temperature", temperature,
+                        // Current Gemini flash models spend several hundred tokens on internal
+                        // "thinking" before the visible answer, which counts against this budget —
+                        // maxTokens needs real headroom above the actual JSON payload size or the
+                        // response gets cut off mid-object.
                         "maxOutputTokens", maxTokens,
                         "responseMimeType", "application/json"
                 )

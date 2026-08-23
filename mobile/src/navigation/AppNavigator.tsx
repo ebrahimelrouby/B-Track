@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { useQuery } from '@tanstack/react-query';
 import { useAuthStore } from '@/store/auth.store';
 import { useThemeStore } from '@/store/theme.store';
 import { RootStackParamList } from './types';
 import { useColors } from '@/theme';
+import { navigationRef } from './navigationRef';
+import { userApi } from '@/api/user.api';
 
 import AuthNavigator from './AuthNavigator';
 import OnboardingNavigator from './OnboardingNavigator';
@@ -17,12 +20,26 @@ import NotificationsScreen from '@/screens/notifications/NotificationsScreen';
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function AppNavigator() {
-  const { isAuthenticated, user } = useAuthStore();
+  const { isAuthenticated, user, setEntitlements } = useAuthStore();
   const colors = useColors();
   const isDark = useThemeStore((s) => s.isDark);
 
+  // Without this, `entitlements` in the auth store stays null forever — every
+  // premium check (usePremiumFeature/usePlanLimit) silently treats every user
+  // as free, even right after a real purchase succeeds server-side.
+  const { data: entitlements } = useQuery({
+    queryKey: ['entitlements'],
+    queryFn: userApi.getEntitlements,
+    enabled: isAuthenticated,
+  });
+
+  useEffect(() => {
+    if (entitlements) setEntitlements(entitlements);
+  }, [entitlements, setEntitlements]);
+
   return (
     <NavigationContainer
+      ref={navigationRef}
       theme={{
         dark: isDark,
         colors: {

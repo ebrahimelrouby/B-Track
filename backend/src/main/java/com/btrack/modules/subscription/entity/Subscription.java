@@ -45,8 +45,19 @@ public class Subscription extends BaseEntity {
     @Column(name = "store_transaction_id", length = 500)
     private String storeTransactionId;
 
+    // Apple identifies a subscription by this value across all of its renewals —
+    // storeTransactionId changes every renewal, this doesn't.
+    @Column(name = "store_original_transaction_id", length = 500)
+    private String storeOriginalTransactionId;
+
     @Column(name = "purchase_token", columnDefinition = "TEXT")
     private String purchaseToken;
+
+    @Column(name = "stripe_customer_id", length = 255)
+    private String stripeCustomerId;
+
+    @Column(name = "stripe_subscription_id", length = 255)
+    private String stripeSubscriptionId;
 
     @Column(name = "starts_at")
     private Instant startsAt;

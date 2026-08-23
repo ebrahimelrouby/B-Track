@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <!-- Standalone: installable without a paired phone, though it's most useful paired with BTrack. -->
     <uses-feature android:name="android.hardware.type.watch" android:required="true" />
 

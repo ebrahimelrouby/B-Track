@@ -8,7 +8,7 @@ const Stack = createNativeStackNavigator<OnboardingStackParamList>();
 export default function OnboardingNavigator() {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Onboarding" component={OnboardingScreen} />
+      <Stack.Screen name="OnboardingFlow" component={OnboardingScreen} />
     </Stack.Navigator>
   );
 }

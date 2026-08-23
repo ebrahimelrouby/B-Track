@@ -1,37 +1,86 @@
-import React, { useMemo, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { useQueryClient } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
+import { useIAP, ErrorCode } from 'react-native-iap';
 
 import { useColors, ColorPalette, Spacing, Typography, Radius } from '@/theme';
 import Button from '@/components/common/Button';
+import { IAP_PRODUCTS } from '@/constants/config';
+import { subscriptionApi } from '@/api/subscription.api';
+import { useAuthStore } from '@/store/auth.store';
+import { displayPrice } from './displayPrice';
+
+type PlanId = 'monthly' | 'annual';
 
 export default function UpgradeScreen() {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
   const colors = useColors();
   const styles = useMemo(() => getStyles(colors), [colors]);
-  const [selectedPlan, setSelectedPlan] = useState('annual');
+  const [selectedPlan, setSelectedPlan] = useState<PlanId>('annual');
   const [purchasing, setPurchasing] = useState(false);
+  const [restoring, setRestoring] = useState(false);
   const { t } = useTranslation();
+  const setEntitlements = useAuthStore((s) => s.setEntitlements);
+  const queryClient = useQueryClient();
+  const purchaseTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const clearPurchaseTimeout = () => {
+    if (purchaseTimeoutRef.current) {
+      clearTimeout(purchaseTimeoutRef.current);
+      purchaseTimeoutRef.current = null;
+    }
+  };
+
+  useEffect(() => clearPurchaseTimeout, []);
+
+  // After a real server-verified purchase, write to both the store (for
+  // synchronous reads) and the query cache `AppNavigator` owns — otherwise a
+  // later refetch of ['entitlements'] has nothing new to reconcile against
+  // and could appear to race with what we just set.
+  const applyEntitlements = (entitlements: Awaited<ReturnType<typeof subscriptionApi.verifyPurchase>>) => {
+    setEntitlements(entitlements);
+    queryClient.setQueryData(['entitlements'], entitlements);
+  };
+
+  const {
+    connected,
+    subscriptions,
+    getSubscriptions,
+    requestSubscription,
+    currentPurchase,
+    currentPurchaseError,
+    finishTransaction,
+    availablePurchases,
+    getAvailablePurchases,
+  } = useIAP();
+
+  const monthlySku = Platform.OS === 'ios' ? IAP_PRODUCTS.PREMIUM_MONTHLY_IOS : IAP_PRODUCTS.PREMIUM_MONTHLY_ANDROID;
+  const annualSku = Platform.OS === 'ios' ? IAP_PRODUCTS.PREMIUM_ANNUAL_IOS : IAP_PRODUCTS.PREMIUM_ANNUAL_ANDROID;
+
+  useEffect(() => {
+    if (connected) getSubscriptions({ skus: [monthlySku, annualSku] });
+  }, [connected]);
 
   const PLANS = [
     {
-      id: 'monthly',
+      id: 'monthly' as const,
       label: t('upgrade.planMonthly'),
-      price: '$9.99',
+      price: displayPrice(subscriptions.find((s) => s.productId === monthlySku), '$9.99'),
       period: t('upgrade.periodMonth'),
-      productId: 'com.btrack.premium.monthly',
+      sku: monthlySku,
       badge: null,
     },
     {
-      id: 'annual',
+      id: 'annual' as const,
       label: t('upgrade.planAnnual'),
-      price: '$59.99',
+      price: displayPrice(subscriptions.find((s) => s.productId === annualSku), '$59.99'),
       period: t('upgrade.periodYear'),
-      productId: 'com.btrack.premium.annual',
+      sku: annualSku,
       badge: t('upgrade.saveBadge'),
     },
   ];
@@ -50,14 +99,114 @@ export default function UpgradeScreen() {
 
   const handlePurchase = async () => {
     setPurchasing(true);
-    try {
-      // TODO: Integrate react-native-iap here
-      // await requestSubscription({ sku: selectedPlan === 'annual' ? IAP_PRODUCTS.PREMIUM_ANNUAL_IOS : IAP_PRODUCTS.PREMIUM_MONTHLY_IOS });
-      Alert.alert(t('upgrade.purchaseTitle'), 'IAP integration required. See docs/IAP_SETUP.md');
-    } finally {
+    // Some purchase flows (e.g. iOS Ask to Buy pending approval, or a sheet
+    // dismissal react-native-iap doesn't surface as currentPurchaseError) never
+    // fire either listener — without this, the button would stay stuck
+    // "purchasing" forever with no way to retry short of restarting the app.
+    clearPurchaseTimeout();
+    purchaseTimeoutRef.current = setTimeout(() => {
       setPurchasing(false);
+      Alert.alert(
+        t('upgrade.purchaseTitle'),
+        'This is taking longer than expected. If you approved the purchase elsewhere (e.g. Ask to Buy), use "Restore Purchases" once it\'s approved.'
+      );
+    }, 30_000);
+    try {
+      const sku = selectedPlan === 'annual' ? annualSku : monthlySku;
+      if (Platform.OS === 'android') {
+        const product = subscriptions.find((s) => s.productId === sku) as any;
+        const offerToken = product?.subscriptionOfferDetails?.[0]?.offerToken;
+        if (!offerToken) throw new Error('This plan is not available for purchase right now.');
+        await requestSubscription({ subscriptionOffers: [{ sku, offerToken }] });
+      } else {
+        await requestSubscription({ sku });
+      }
+    } catch (e: any) {
+      clearPurchaseTimeout();
+      setPurchasing(false);
+      Alert.alert(t('upgrade.purchaseTitle'), e?.message ?? 'Purchase failed. Please try again.');
     }
   };
+
+  // Purchase completed natively — verify server-side (never trust the client's
+  // own copy of the receipt for anything) before reflecting premium locally.
+  useEffect(() => {
+    if (!currentPurchase) return;
+    clearPurchaseTimeout();
+    (async () => {
+      try {
+        const isIos = Platform.OS === 'ios';
+        const plan: PlanId = currentPurchase.productId === annualSku ? 'annual' : 'monthly';
+        const entitlements = await subscriptionApi.verifyPurchase({
+          platform: isIos ? 'ios' : 'android',
+          plan,
+          purchaseToken: currentPurchase.purchaseToken,
+          receiptData: isIos ? currentPurchase.transactionReceipt : undefined,
+        });
+        await finishTransaction({ purchase: currentPurchase, isConsumable: false });
+        applyEntitlements(entitlements);
+        setPurchasing(false);
+        Alert.alert(t('upgrade.purchaseTitle'), t('upgrade.purchaseSuccessMsg'));
+        navigation.goBack();
+      } catch (e: any) {
+        setPurchasing(false);
+        Alert.alert(t('upgrade.purchaseTitle'), e?.response?.data?.message ?? 'Could not verify your purchase. Please contact support.');
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPurchase]);
+
+  useEffect(() => {
+    if (!currentPurchaseError) return;
+    clearPurchaseTimeout();
+    setPurchasing(false);
+    // The user closing the native purchase sheet isn't an error worth alerting on.
+    if (currentPurchaseError.code === ErrorCode.E_USER_CANCELLED) return;
+    Alert.alert(t('upgrade.purchaseTitle'), currentPurchaseError.message);
+  }, [currentPurchaseError]);
+
+  const handleRestore = async () => {
+    setRestoring(true);
+    try {
+      await getAvailablePurchases();
+    } catch {
+      setRestoring(false);
+      Alert.alert(t('upgrade.restoreTitle'), 'Could not restore purchases.');
+    }
+  };
+
+  useEffect(() => {
+    if (!restoring || availablePurchases.length === 0) return;
+    (async () => {
+      const isIos = Platform.OS === 'ios';
+      let succeeded = 0;
+      let failed = 0;
+      for (const purchase of availablePurchases) {
+        try {
+          const plan: PlanId = purchase.productId === annualSku ? 'annual' : 'monthly';
+          const entitlements = await subscriptionApi.verifyPurchase({
+            platform: isIos ? 'ios' : 'android',
+            plan,
+            purchaseToken: purchase.purchaseToken,
+            receiptData: isIos ? purchase.transactionReceipt : undefined,
+          });
+          applyEntitlements(entitlements);
+          succeeded += 1;
+        } catch {
+          // Keep restoring the rest even if one purchase fails to re-verify —
+          // but count it, so the final message doesn't falsely claim success.
+          failed += 1;
+        }
+      }
+      setRestoring(false);
+      if (succeeded > 0) {
+        Alert.alert(t('upgrade.restoreTitle'), t('upgrade.restoreMsg'));
+      } else if (failed > 0) {
+        Alert.alert(t('upgrade.restoreTitle'), 'Could not restore your purchases. Please try again or contact support.');
+      }
+    })();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [availablePurchases]);
 
   return (
     <ScrollView
@@ -117,8 +266,8 @@ export default function UpgradeScreen() {
         style={styles.ctaButton}
       />
 
-      <TouchableOpacity style={styles.restoreButton} onPress={() => Alert.alert(t('upgrade.restoreTitle'), t('upgrade.restoreMsg'))}>
-        <Text style={styles.restoreText}>{t('upgrade.restoreBtn')}</Text>
+      <TouchableOpacity style={styles.restoreButton} onPress={handleRestore} disabled={restoring}>
+        <Text style={styles.restoreText}>{restoring ? t('upgrade.restoring') : t('upgrade.restoreBtn')}</Text>
       </TouchableOpacity>
 
       <Text style={styles.legalText}>{t('upgrade.legalText')}</Text>

@@ -8,6 +8,8 @@
         android:minSdkVersion="30"
         android:targetSdkVersion="34" />
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
     <!-- Standalone: installable without a paired phone, though it's most useful paired with BTrack. -->
     <uses-feature
         android:name="android.hardware.type.watch"

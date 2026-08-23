@@ -38,6 +38,10 @@ public class BTrackException extends RuntimeException {
         );
     }
 
+    public static BTrackException purchaseVerificationFailed(String message) {
+        return new BTrackException(message, HttpStatus.UNPROCESSABLE_ENTITY, ErrorCode.PURCHASE_VERIFICATION_FAILED);
+    }
+
     public static BTrackException badRequest(String message, String errorCode) {
         return new BTrackException(message, HttpStatus.BAD_REQUEST, errorCode);
     }

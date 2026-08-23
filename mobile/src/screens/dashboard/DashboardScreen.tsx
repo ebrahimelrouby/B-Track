@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image,
+  View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, RefreshControl,
 } from 'react-native';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
@@ -17,6 +17,7 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 
 import { useColors, ColorPalette, Spacing, Typography, Radius, TAB_BAR_PADDING } from '@/theme';
+import { useThemeStore, ThemeId } from '@/store/theme.store';
 import { useAuthStore } from '@/store/auth.store';
 import { useLangStore } from '@/store/language.store';
 import PremiumTag from '@/components/common/PremiumTag';
@@ -29,8 +30,19 @@ import { DashboardNavigationProp } from '@/navigation/types';
 import { WorkoutSession } from '@/types';
 import { refreshHomeScreenWidgets } from '@/native/widgets';
 
+// The scan artwork is themed raster art (not tinted at runtime) — themes not
+// listed here fall back to the default (Lime-colored) image.
 const FOOD_SCAN_ICON = require('@/assets/images/food-scan-icon.png');
+const FOOD_SCAN_ICON_BY_THEME: Partial<Record<ThemeId, ReturnType<typeof require>>> = {
+  orange: require('@/assets/images/food-scan-icon-ember.png'),
+  azure: require('@/assets/images/food-scan-icon-azure.png'),
+};
+
 const BODY_SCAN_ICON = require('@/assets/images/body-scan-icon.png');
+const BODY_SCAN_ICON_BY_THEME: Partial<Record<ThemeId, ReturnType<typeof require>>> = {
+  orange: require('@/assets/images/body-scan-icon-ember.png'),
+  azure: require('@/assets/images/body-scan-icon-azure.png'),
+};
 
 const W = Dimensions.get('window').width;
 const today = () => new Date().toISOString().split('T')[0];
@@ -268,13 +280,16 @@ export default function DashboardScreen() {
   const { lang } = useLangStore();
   const colors = useColors();
   const styles = React.useMemo(() => getStyles(colors), [colors]);
+  const theme = useThemeStore(s => s.theme);
+  const foodScanIcon = FOOD_SCAN_ICON_BY_THEME[theme] ?? FOOD_SCAN_ICON;
+  const bodyScanIcon = BODY_SCAN_ICON_BY_THEME[theme] ?? BODY_SCAN_ICON;
 
   const [localAvatar, setLocalAvatar] = useState<string | null>(null);
 
   const { data: profileData, refetch: refetchProfile } = useQuery({ queryKey: ['me'], queryFn: userApi.getMe });
   const profile = profileData?.profile;
 
-  const { data: plans } = useQuery({ queryKey: ['workout-plans'], queryFn: workoutApi.getPlans });
+  const { data: plans, refetch: refetchPlans } = useQuery({ queryKey: ['workout-plans'], queryFn: workoutApi.getPlans });
 
   const { data: diary = [], refetch: refetchDiary } = useQuery({
     queryKey: ['diary-today'],
@@ -286,16 +301,16 @@ export default function DashboardScreen() {
     queryFn: () => nutritionApi.getWater(today()),
   });
 
-  const { data: historyData } = useQuery({
+  const { data: historyData, refetch: refetchHistory } = useQuery({
     queryKey: ['workout-history-dash'],
     queryFn: () => workoutApi.getHistory(0, 50),
   });
 
-  const { data: lastNutritionPage } = useQuery({
+  const { data: lastNutritionPage, refetch: refetchLastNutrition } = useQuery({
     queryKey: ['ai-nutrition-last'],
     queryFn: () => aiApi.getNutritionHistory(0, 1),
   });
-  const { data: lastBodyFatPage } = useQuery({
+  const { data: lastBodyFatPage, refetch: refetchLastBodyFat } = useQuery({
     queryKey: ['ai-bodyfat-last'],
     queryFn: () => aiApi.getBodyFatHistory(0, 1),
   });
@@ -306,6 +321,23 @@ export default function DashboardScreen() {
     if (!iso) return '';
     return formatDistanceToNow(new Date(iso), { addSuffix: true, locale: lang === 'ar' ? arLocale : undefined });
   }, [lang]);
+
+  const [refreshing, setRefreshing] = useState(false);
+  const refetchAll = useCallback(async () => {
+    await Promise.all([
+      refetchProfile(), refetchPlans(), refetchDiary(), refetchWater(),
+      refetchHistory(), refetchLastNutrition(), refetchLastBodyFat(),
+    ]);
+  }, [refetchProfile, refetchPlans, refetchDiary, refetchWater, refetchHistory, refetchLastNutrition, refetchLastBodyFat]);
+
+  const onRefresh = useCallback(async () => {
+    setRefreshing(true);
+    try {
+      await refetchAll();
+    } finally {
+      setRefreshing(false);
+    }
+  }, [refetchAll]);
 
   useFocusEffect(useCallback(() => {
     refetchDiary();
@@ -434,6 +466,7 @@ export default function DashboardScreen() {
       style={[styles.root, { paddingTop: insets.top }]}
       contentContainerStyle={[styles.scroll, { paddingBottom: TAB_BAR_PADDING }]}
       showsVerticalScrollIndicator={false}
+      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />}
     >
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <View style={styles.headerCard}>
@@ -710,35 +743,35 @@ export default function DashboardScreen() {
         <View style={styles.aiGridRow}>
           {/* ── Food Scan tile ─────────────────────────────────────── */}
           <TouchableOpacity
-            style={[styles.aiGridCard, { borderColor: '#FB923C35' }]}
+            style={[styles.aiGridCard, { borderColor: colors.primary + '35' }]}
             activeOpacity={0.80}
             onPress={() => navigation.navigate('AiStack', { screen: 'AiFoodEntry' })}
           >
-            <View style={[styles.aiGridHero, { backgroundColor: '#FB923C10', overflow: 'hidden' }]}>
-              <ScanFrame accent="#FB923C" />
-              <Image source={FOOD_SCAN_ICON} style={styles.aiGridHeroIcon} resizeMode="contain" />
-              <View style={[styles.aiGridTopBadge, { backgroundColor: '#FB923C22', borderColor: '#FB923C50' }]}>
-                <Icon name="camera-outline" size={8} color="#FB923C" />
-                <Text style={[styles.aiGridTopBadgeText, { color: '#FB923C' }]}>{t('dashboard.photo')}</Text>
+            <View style={[styles.aiGridHero, { backgroundColor: colors.primaryDim, overflow: 'hidden' }]}>
+              <ScanFrame accent="#00E5FF" />
+              <Image source={foodScanIcon} style={styles.aiGridHeroIcon} resizeMode="contain" />
+              <View style={[styles.aiGridTopBadge, { backgroundColor: colors.primaryDim, borderColor: colors.primary + '50' }]}>
+                <Icon name="camera-outline" size={8} color={colors.primary} />
+                <Text style={[styles.aiGridTopBadgeText, { color: colors.primary }]}>{t('dashboard.photo')}</Text>
               </View>
             </View>
             <View style={styles.aiGridBody}>
               <Text style={styles.aiGridTitle}>{t('dashboard.calorieScan')}</Text>
               <View style={styles.aiGridStats}>
                 <View style={styles.aiGridStat}>
-                  <Icon name="lightning-bolt" size={9} color="#FB923C" />
-                  <Text style={[styles.aiGridStatText, { color: '#FB923C' }]}>{t('dashboard.lessThan5sec')}</Text>
+                  <Icon name="lightning-bolt" size={9} color={colors.primary} />
+                  <Text style={[styles.aiGridStatText, { color: colors.primary }]}>{t('dashboard.lessThan5sec')}</Text>
                 </View>
                 <View style={styles.aiGridStat}>
-                  <Icon name="food-apple" size={9} color="#FB923C88" />
-                  <Text style={[styles.aiGridStatText, { color: '#FB923C88' }]}>{t('dashboard.calMacros')}</Text>
+                  <Icon name="food-apple" size={9} color={colors.primary + '88'} />
+                  <Text style={[styles.aiGridStatText, { color: colors.primary + '88' }]}>{t('dashboard.calMacros')}</Text>
                 </View>
               </View>
             </View>
-            <View style={[styles.aiGridCta, { borderTopColor: '#FB923C20', backgroundColor: '#FB923C0C' }]}>
-              <Text style={[styles.aiGridCtaText, { color: '#FB923C' }]}>{t('dashboard.scanMeal')}</Text>
-              <View style={[styles.aiGridCtaArrow, { backgroundColor: '#FB923C25' }]}>
-                <Icon name="arrow-right" size={11} color="#FB923C" />
+            <View style={[styles.aiGridCta, { borderTopColor: colors.primary + '20', backgroundColor: colors.primary + '0C' }]}>
+              <Text style={[styles.aiGridCtaText, { color: colors.primary }]}>{t('dashboard.scanMeal')}</Text>
+              <View style={[styles.aiGridCtaArrow, { backgroundColor: colors.primary + '25' }]}>
+                <Icon name="arrow-right" size={11} color={colors.primary} />
               </View>
             </View>
           </TouchableOpacity>
@@ -751,7 +784,7 @@ export default function DashboardScreen() {
           >
             <View style={[styles.aiGridHero, { backgroundColor: colors.primaryDim, overflow: 'hidden' }]}>
               <ScanFrame accent="#00E5FF" />
-              <Image source={BODY_SCAN_ICON} style={styles.aiGridHeroIcon} resizeMode="contain" />
+              <Image source={bodyScanIcon} style={styles.aiGridHeroIcon} resizeMode="contain" />
               <View style={[styles.aiGridTopBadge, { backgroundColor: colors.primaryDim, borderColor: colors.primary + '50' }]}>
                 <Icon name="human-male-board" size={8} color={colors.primary} />
                 <Text style={[styles.aiGridTopBadgeText, { color: colors.primary }]}>{t('dashboard.scan')}</Text>

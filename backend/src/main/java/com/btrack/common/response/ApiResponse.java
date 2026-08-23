@@ -12,6 +12,10 @@ import java.time.Instant;
 public class ApiResponse<T> {
     private final boolean success;
     private final String message;
+    // Always serialized, even when null — several endpoints legitimately return
+    // null data (e.g. "no check-in submitted yet today"), and clients rely on
+    // the `data` key being present to tell "null" apart from "missing"/undefined.
+    @JsonInclude(JsonInclude.Include.ALWAYS)
     private final T data;
     private final String errorCode;
     @Builder.Default

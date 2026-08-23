@@ -1,6 +1,6 @@
 import { AiNutritionEstimate, AiBodyFatEstimate } from '@/types';
 
-const delay = (ms: number) => new Promise(res => setTimeout(res, ms));
+const delay = (ms: number) => new Promise<void>(res => setTimeout(() => res(), ms));
 
 const mockNutritionEstimate = (description: string): AiNutritionEstimate => ({
   id: `mock-${Date.now()}`,

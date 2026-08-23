@@ -13,7 +13,7 @@ export type AuthStackParamList = {
 
 // Onboarding Stack
 export type OnboardingStackParamList = {
-  Onboarding: undefined;
+  OnboardingFlow: undefined;
 };
 
 // Main Tab Navigator

@@ -981,9 +981,11 @@
     "featExport": "Data export",
     "ctaBtn": "Start Premium — {{price}}",
     "restoreBtn": "Restore purchases",
+    "restoring": "Restoring...",
     "legalText": "Subscription automatically renews unless cancelled at least 24 hours before the end of the current period. Manage subscriptions in your App Store / Play Store account settings.",
     "purchaseTitle": "Purchase",
+    "purchaseSuccessMsg": "You're now Premium. Enjoy your new features!",
     "restoreTitle": "Restore",
-    "restoreMsg": "Checking previous purchases..."
+    "restoreMsg": "Previous purchases have been restored."
   }
 }

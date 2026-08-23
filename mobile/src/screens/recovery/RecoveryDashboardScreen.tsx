@@ -179,7 +179,7 @@ export default function RecoveryDashboardScreen() {
     subjectiveWellness: t('recoveryDetails.compWellness'),
   }[key] ?? key);
 
-  const { data: score, isLoading, refetch } = useQuery<RecoveryScore>({
+  const { data: score, isLoading, isRefetching, refetch } = useQuery<RecoveryScore>({
     queryKey: ['recovery-today'],
     queryFn:  recoveryApi.getToday,
   });
@@ -208,7 +208,7 @@ export default function RecoveryDashboardScreen() {
       style={[styles.root, { paddingTop: insets.top }]}
       contentContainerStyle={[styles.scroll, { paddingBottom: TAB_BAR_PADDING }]}
       showsVerticalScrollIndicator={false}
-      refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} tintColor={colors.primary} />}
+      refreshControl={<RefreshControl refreshing={isLoading || isRefetching} onRefresh={refetch} tintColor={colors.primary} />}
     >
       {/* ── Header ─────────────────────────────────────────────────────────── */}
       <View style={styles.header}>

@@ -1,4 +1,5 @@
 import SwiftUI
+import WatchKit
 
 struct ContentView: View {
     @StateObject private var manager = WorkoutSessionManager.shared
@@ -8,7 +9,7 @@ struct ContentView: View {
             if manager.state.isActive {
                 ActiveWorkoutView(state: manager.state, manager: manager)
             } else {
-                IdleView()
+                IdleView(onStart: { manager.sendAction("startWorkout") })
             }
         }
     }
@@ -17,6 +18,8 @@ struct ContentView: View {
 // MARK: — Idle View
 
 struct IdleView: View {
+    let onStart: () -> Void
+
     var body: some View {
         VStack(spacing: 10) {
             Image(systemName: "dumbbell")
@@ -28,11 +31,23 @@ struct IdleView: View {
                 .foregroundColor(.white)
                 .tracking(3)
 
-            Text("Start a workout\non your phone")
+            Text("Start a workout\non your phone, or right here")
                 .font(.system(size: 11))
                 .foregroundColor(.gray)
                 .multilineTextAlignment(.center)
+
+            Button(action: onStart) {
+                Text("Start Workout")
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundColor(.black)
+                    .frame(maxWidth: .infinity)
+                    .padding(.vertical, 8)
+                    .background(Color(hex: "#AAFF00"))
+                    .cornerRadius(8)
+            }
+            .buttonStyle(.plain)
         }
+        .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color.black)
     }
@@ -117,6 +132,16 @@ struct ActiveWorkoutView: View {
         }
         .background(Color(red: 0.05, green: 0.05, blue: 0.05))
         .onReceive(ticker) { now = $0 }
+        // Re-runs whenever the phone pushes a new rest end time (new rest period
+        // started, or cleared via skip) and fires exactly once when it naturally elapses.
+        .task(id: state.restEndTimeMs) {
+            guard let endTime = state.restEndTimeMs else { return }
+            let remainingMs = endTime - Date().timeIntervalSince1970 * 1000
+            guard remainingMs > 0 else { return }
+            try? await Task.sleep(nanoseconds: UInt64(remainingMs * 1_000_000))
+            guard !Task.isCancelled else { return }
+            WKInterfaceDevice.current().play(.notification)
+        }
     }
 
     private func formatTime(_ seconds: Int) -> String {

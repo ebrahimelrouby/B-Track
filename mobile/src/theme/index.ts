@@ -112,32 +112,88 @@ export const pinkColors = {
   core: '#EC4899', cardio: '#F97316',
 };
 
-// ─── Azure / Shopeers-inspired light palette ──────────────────────────────────
+// ─── Gold palette — inspired by the black/gold body-fat-analysis mockup ──────
+
+export const goldColors = {
+  background: '#0A0A0A',       // pure black, matches the mockup's gym backdrop
+  surface: '#151210',
+  surfaceElevated: '#1F1B17',
+  surfaceBorder: '#2B251E',
+
+  primary: '#E8B923',          // rich amber-gold, lifted from the mockup's logo/labels
+  primaryDim: 'rgba(232,185,35,0.15)',
+  primaryHover: '#F5CC4D',     // lighter gold, matches the "Start Detecting" button
+
+  success: '#22C55E',
+  warning: '#F59E0B',
+  error: '#EF4444',
+  info: '#3B82F6',
+
+  textPrimary: '#FBF3E0',      // warm cream-white
+  textSecondary: '#A89873',    // muted gold-gray
+  textTertiary: '#6B5F49',
+  textDisabled: '#3A3226',
+  textInverse: '#0A0A0A',
+
+  chest: '#EF4444', back: '#3B82F6', shoulders: '#8B5CF6',
+  biceps: '#06B6D4', triceps: '#F59E0B', legs: '#22C55E',
+  core: '#EC4899', cardio: '#F97316',
+};
+
+// ─── Azure — deep navy dark palette ────────────────────────────────────────
 
 export const azureColors = {
-  background: '#F0F4F9',
-  surface: '#FFFFFF',
-  surfaceElevated: '#F8FAFC',
-  surfaceBorder: '#E2E8F0',
+  background: '#070B14',
+  surface: '#141414',
+  surfaceElevated: '#161C2C',
+  surfaceBorder: '#212A3D',
 
   primary: '#2563EB',
-  primaryDim: 'rgba(37,99,235,0.10)',
+  primaryDim: 'rgba(37,99,235,0.15)',
   primaryHover: '#3B82F6',
 
-  success: '#16A34A',
-  warning: '#D97706',
-  error: '#DC2626',
-  info: '#0284C7',
+  success: '#22C55E',
+  warning: '#F59E0B',
+  error: '#EF4444',
+  info: '#3B82F6',
 
-  textPrimary: '#0F172A',
-  textSecondary: '#475569',
-  textTertiary: '#94A3B8',
-  textDisabled: '#CBD5E1',
-  textInverse: '#FFFFFF',
+  textPrimary: '#F0F4FF',
+  textSecondary: '#8A93B8',
+  textTertiary: '#4A5578',
+  textDisabled: '#2A3350',
+  textInverse: '#070B14',
 
-  chest: '#DC2626', back: '#2563EB', shoulders: '#7C3AED',
-  biceps: '#0284C7', triceps: '#D97706', legs: '#16A34A',
-  core: '#DB2777', cardio: '#EA580C',
+  chest: '#EF4444', back: '#3B82F6', shoulders: '#8B5CF6',
+  biceps: '#06B6D4', triceps: '#F59E0B', legs: '#22C55E',
+  core: '#EC4899', cardio: '#F97316',
+};
+
+// ─── Coral palette — inspired by the LogBox error-screen red ─────────────────
+
+export const coralColors = {
+  background: '#120E0F',       // warm near-black, not neutral or navy-tinted
+  surface: '#1C1616',
+  surfaceElevated: '#241C1D',
+  surfaceBorder: '#302526',
+
+  primary: '#E8677D',          // dusty coral-rose, lifted from the LogBox header
+  primaryDim: 'rgba(232,103,125,0.15)',
+  primaryHover: '#F2879A',
+
+  success: '#22C55E',
+  warning: '#F59E0B',
+  error: '#EF4444',
+  info: '#3B82F6',
+
+  textPrimary: '#FDF4F5',      // faint warm white
+  textSecondary: '#AD8B8F',    // muted rose-gray
+  textTertiary: '#6B5558',
+  textDisabled: '#3D2E2F',
+  textInverse: '#120E0F',
+
+  chest: '#EF4444', back: '#3B82F6', shoulders: '#8B5CF6',
+  biceps: '#06B6D4', triceps: '#F59E0B', legs: '#22C55E',
+  core: '#EC4899', cardio: '#F97316',
 };
 
 // ─── Light palette ────────────────────────────────────────────────────────────
@@ -177,6 +233,8 @@ const PALETTE_MAP: Record<ThemeId, ColorPalette> = {
   pink: pinkColors,
   azure: azureColors,
   midnight: midnightColors,
+  coral: coralColors,
+  gold: goldColors,
 };
 
 // Backward-compat alias used by files not yet migrated to useColors()

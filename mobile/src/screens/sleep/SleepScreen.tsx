@@ -361,12 +361,12 @@ export default function SleepScreen() {
   }));
   const [modalVisible, setModalVisible] = useState(false);
 
-  const { data: sleepToday, isLoading, refetch } = useQuery<DailySleep>({
+  const { data: sleepToday, isLoading, isRefetching, refetch } = useQuery<DailySleep>({
     queryKey: ['sleep-today'],
     queryFn: healthApi.getSleepToday,
   });
 
-  const { data: history = [] } = useQuery<DailySleep[]>({
+  const { data: history = [], refetch: refetchHistory } = useQuery<DailySleep[]>({
     queryKey: ['sleep-history'],
     queryFn: () => healthApi.getSleepHistory(14),
   });
@@ -401,7 +401,13 @@ export default function SleepScreen() {
         style={{ flex: 1, paddingTop: insets.top }}
         contentContainerStyle={{ padding: Spacing.base, gap: Spacing.lg, paddingBottom: TAB_BAR_PADDING }}
         showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} tintColor={SLEEP_COLOR} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading || isRefetching}
+            onRefresh={() => { refetch(); refetchHistory(); }}
+            tintColor={SLEEP_COLOR}
+          />
+        }
       >
         {/* Header */}
         <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', paddingTop: Spacing.sm }}>

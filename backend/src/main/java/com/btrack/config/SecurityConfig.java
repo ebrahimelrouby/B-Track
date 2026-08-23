@@ -44,6 +44,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/v1/auth/**").permitAll()
                         .requestMatchers("/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
+                        // Called directly by Stripe, not the app — authenticated via
+                        // Stripe-Signature header verification instead of a JWT.
+                        .requestMatchers(HttpMethod.POST, "/api/v1/subscriptions/stripe/webhook").permitAll()
                         // Exercise catalog (mobile) — public read
                         .requestMatchers(HttpMethod.GET, "/api/v1/exercises/**").permitAll()
                         // Admin endpoints — ADMIN and SUPER_ADMIN only

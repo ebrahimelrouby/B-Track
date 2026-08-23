@@ -2,7 +2,7 @@ import React from 'react';
 import { FlexWidget, TextWidget } from 'react-native-android-widget';
 import { format } from 'date-fns';
 import { useThemeStore } from '@/store/theme.store';
-import { darkColors, orangeColors, midnightColors, pinkColors, azureColors, lightColors } from '@/theme';
+import { darkColors, orangeColors, midnightColors, pinkColors, azureColors, lightColors, coralColors, goldColors } from '@/theme';
 import { TodayGlanceStats } from './todayStats';
 
 const PALETTE_MAP: Record<string, typeof darkColors> = {
@@ -10,6 +10,8 @@ const PALETTE_MAP: Record<string, typeof darkColors> = {
   orange: orangeColors,
   midnight: midnightColors,
   pink: pinkColors,
+  coral: coralColors,
+  gold: goldColors,
   azure: azureColors,
   light: lightColors,
 };

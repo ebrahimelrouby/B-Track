@@ -18,7 +18,7 @@ export interface WatchWorkoutState {
   restEndTimeMs?: number;
 }
 
-export type WatchAction = 'logSet' | 'finishWorkout' | 'skipRest';
+export type WatchAction = 'startWorkout' | 'logSet' | 'finishWorkout' | 'skipRest';
 
 const watchModule = NativeModules.WatchBridge;
 

@@ -20,9 +20,29 @@ const THEMES = [
   { id: 'midnight',  label: 'Midnight', bg: '#0C0D1A', accent: '#7B6CF0', text: '#E8EAFF' },
   { id: 'orange', label: 'Ember',  bg: '#1A1A1A', accent: '#F97316', text: '#FFFFFF' },
   { id: 'pink',   label: 'Rose',   bg: '#0D0D0D', accent: '#F020A0', text: '#FFFFFF' },
-  { id: 'azure',  label: 'Azure',  bg: '#F0F4F9', accent: '#2563EB', text: '#0F172A' },
+  { id: 'coral',  label: 'Coral',  bg: '#120E0F', accent: '#E8677D', text: '#FDF4F5' },
+  { id: 'gold',   label: 'Gold',   bg: '#0A0A0A', accent: '#E8B923', text: '#FBF3E0' },
+  { id: 'azure',  label: 'Azure',  bg: '#070B14', accent: '#2563EB', text: '#F0F4FF' },
   { id: 'light',  label: 'Light',  bg: '#F4F6F8', accent: '#7ACC00', text: '#111827' },
 ] as const;
+
+// Picks a readable check-icon color for a swatch's accent background using
+// WCAG relative luminance (gamma-corrected), so it works for any accent hue —
+// including bright ones like Lime/Light/Gold where a plain white icon would
+// nearly vanish — instead of hardcoding which theme's text color needs which icon.
+function readableIconColor(hex: string): string {
+  const toLinear = (channel: number) => {
+    const s = channel / 255;
+    return s <= 0.03928 ? s / 12.92 : Math.pow((s + 0.055) / 1.055, 2.4);
+  };
+  const r = toLinear(parseInt(hex.slice(1, 3), 16));
+  const g = toLinear(parseInt(hex.slice(3, 5), 16));
+  const b = toLinear(parseInt(hex.slice(5, 7), 16));
+  const luminance = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+  // Below this, black and white icons have equal contrast against the
+  // background; above it, black wins (WCAG contrast-ratio crossover).
+  return luminance > 0.179 ? '#0A0A0A' : '#FFFFFF';
+}
 
 const GOAL_LABELS: Record<string, string> = {
   LOSE_FAT: 'Lose Fat', MAINTAIN: 'Maintain', GAIN_MUSCLE: 'Gain Muscle',
@@ -250,7 +270,7 @@ export default function ProfileScreen() {
                   >
                     {selected && (
                       <View style={[styles.themeCheckBadge, { backgroundColor: th.accent }]}>
-                        <Icon name="check" size={10} color={th.text === '#FFFFFF' || th.text === '#E8EAFF' ? '#0A0A0A' : '#FFFFFF'} />
+                        <Icon name="check" size={10} color={readableIconColor(th.accent)} />
                       </View>
                     )}
                     <View style={[styles.themeSwatch, { backgroundColor: th.bg, borderColor: th.accent + '55' }]}>

@@ -8,179 +8,183 @@
 8        android:minSdkVersion="30"
 9        android:targetSdkVersion="34" />
 10
-11    <!-- Standalone: installable without a paired phone, though it's most useful paired with BTrack. -->
-12    <uses-feature
-12-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:4:5-88
-13        android:name="android.hardware.type.watch"
-13-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:4:19-61
-14        android:required="true" />
-14-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:4:62-85
-15
-16    <permission
-16-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
-17        android:name="com.btrackscaffold.wear.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
-17-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
-18        android:protectionLevel="signature" />
-18-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
-19
-20    <uses-permission android:name="com.btrackscaffold.wear.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
-20-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
-20-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+11    <uses-permission android:name="android.permission.VIBRATE" />
+11-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:3:5-66
+11-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:3:22-63
+12
+13    <!-- Standalone: installable without a paired phone, though it's most useful paired with BTrack. -->
+14    <uses-feature
+14-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:6:5-88
+15        android:name="android.hardware.type.watch"
+15-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:6:19-61
+16        android:required="true" />
+16-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:6:62-85
+17
+18    <permission
+18-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:22:5-24:47
+19        android:name="com.btrackscaffold.wear.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION"
+19-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:23:9-81
+20        android:protectionLevel="signature" />
+20-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:24:9-44
 21
-22    <application
-22-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:6:5-35:19
-23        android:allowBackup="false"
-23-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:9:9-36
-24        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
-24-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
-25        android:debuggable="true"
-26        android:extractNativeLibs="false"
-27        android:icon="@drawable/ic_launcher"
-27-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:8:9-45
-28        android:label="@string/app_name"
-28-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:7:9-41
-29        android:theme="@android:style/Theme.DeviceDefault" >
-29-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:10:9-59
-30        <meta-data
-30-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:12:9-14:36
-31            android:name="com.google.android.wearable.standalone"
-31-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:13:13-66
-32            android:value="true" />
-32-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:14:13-33
-33
-34        <activity
-34-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:16:9-25:20
-35            android:name="com.btrackscaffold.wear.MainActivity"
-35-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:17:13-41
-36            android:exported="true"
-36-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:18:13-36
-37            android:taskAffinity=""
-37-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:19:13-36
-38            android:theme="@android:style/Theme.DeviceDefault" >
-38-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:20:13-63
-39            <intent-filter>
-39-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:21:13-24:29
-40                <action android:name="android.intent.action.MAIN" />
-40-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:22:17-69
-40-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:22:25-66
-41
-42                <category android:name="android.intent.category.LAUNCHER" />
-42-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:23:17-77
-42-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:23:27-74
-43            </intent-filter>
-44        </activity>
-45
-46        <service
-46-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:27:9-34:19
-47            android:name="com.btrackscaffold.wear.PhoneMessageService"
-47-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:28:13-48
-48            android:exported="true" >
-48-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:29:13-36
-49            <intent-filter>
-49-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:30:13-33:29
-50                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
-50-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:31:17-91
-50-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:31:25-88
-51
-52                <data
-52-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:32:17-93
-53                    android:host="*"
-53-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:32:45-61
-54                    android:pathPrefix="/btrack"
-54-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:32:62-90
-55                    android:scheme="wear" />
-55-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:32:23-44
-56            </intent-filter>
-57        </service>
-58
-59        <uses-library
-59-->[androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:23:9-25:40
-60            android:name="wear-sdk"
-60-->[androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:24:13-36
-61            android:required="false" />
-61-->[androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:25:13-37
-62
-63        <activity
-63-->[com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:9-173
-64            android:name="com.google.android.gms.common.api.GoogleApiActivity"
-64-->[com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:19-85
-65            android:exported="false"
-65-->[com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:146-170
-66            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-66-->[com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:86-145
-67
-68        <meta-data
-68-->[com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:9-122
-69            android:name="com.google.android.gms.version"
-69-->[com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:20-65
-70            android:value="@integer/google_play_services_version" />
-70-->[com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:66-119
-71
-72        <provider
-72-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
-73            android:name="androidx.startup.InitializationProvider"
-73-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:25:13-67
-74            android:authorities="com.btrackscaffold.wear.androidx-startup"
-74-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:26:13-68
-75            android:exported="false" >
-75-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:27:13-37
-76            <meta-data
-76-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
-77                android:name="androidx.emoji2.text.EmojiCompatInitializer"
-77-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:30:17-75
-78                android:value="androidx.startup" />
-78-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:31:17-49
-79            <meta-data
-79-->[androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:29:13-31:52
-80                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
-80-->[androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:30:17-78
-81                android:value="androidx.startup" />
-81-->[androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:31:17-49
-82            <meta-data
-82-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
-83                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
-83-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
-84                android:value="androidx.startup" />
-84-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
-85        </provider>
-86
-87        <receiver
-87-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
-88            android:name="androidx.profileinstaller.ProfileInstallReceiver"
-88-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
-89            android:directBootAware="false"
-89-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
-90            android:enabled="true"
-90-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
-91            android:exported="true"
-91-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
-92            android:permission="android.permission.DUMP" >
-92-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
-93            <intent-filter>
-93-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
-94                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
-94-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
-94-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
-95            </intent-filter>
-96            <intent-filter>
-96-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
-97                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
-97-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
-97-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
-98            </intent-filter>
-99            <intent-filter>
-99-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
-100                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
-100-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
-100-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
-101            </intent-filter>
-102            <intent-filter>
-102-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
-103                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
-103-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
-103-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
-104            </intent-filter>
-105        </receiver>
-106    </application>
-107
-108</manifest>
+22    <uses-permission android:name="com.btrackscaffold.wear.DYNAMIC_RECEIVER_NOT_EXPORTED_PERMISSION" />
+22-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:26:5-97
+22-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:26:22-94
+23
+24    <application
+24-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:8:5-37:19
+25        android:allowBackup="false"
+25-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:11:9-36
+26        android:appComponentFactory="androidx.core.app.CoreComponentFactory"
+26-->[androidx.core:core:1.13.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/fbdb26c4dfa402c86713d6b94e5321f1/transformed/core-1.13.1/AndroidManifest.xml:28:18-86
+27        android:debuggable="true"
+28        android:extractNativeLibs="false"
+29        android:icon="@drawable/ic_launcher"
+29-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:10:9-45
+30        android:label="@string/app_name"
+30-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:9:9-41
+31        android:theme="@android:style/Theme.DeviceDefault" >
+31-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:12:9-59
+32        <meta-data
+32-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:14:9-16:36
+33            android:name="com.google.android.wearable.standalone"
+33-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:15:13-66
+34            android:value="true" />
+34-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:16:13-33
+35
+36        <activity
+36-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:18:9-27:20
+37            android:name="com.btrackscaffold.wear.MainActivity"
+37-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:19:13-41
+38            android:exported="true"
+38-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:20:13-36
+39            android:taskAffinity=""
+39-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:21:13-36
+40            android:theme="@android:style/Theme.DeviceDefault" >
+40-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:22:13-63
+41            <intent-filter>
+41-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:23:13-26:29
+42                <action android:name="android.intent.action.MAIN" />
+42-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:24:17-69
+42-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:24:25-66
+43
+44                <category android:name="android.intent.category.LAUNCHER" />
+44-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:25:17-77
+44-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:25:27-74
+45            </intent-filter>
+46        </activity>
+47
+48        <service
+48-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:29:9-36:19
+49            android:name="com.btrackscaffold.wear.PhoneMessageService"
+49-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:30:13-48
+50            android:exported="true" >
+50-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:31:13-36
+51            <intent-filter>
+51-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:32:13-35:29
+52                <action android:name="com.google.android.gms.wearable.MESSAGE_RECEIVED" />
+52-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:33:17-91
+52-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:33:25-88
+53
+54                <data
+54-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:34:17-93
+55                    android:host="*"
+55-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:34:45-61
+56                    android:pathPrefix="/btrack"
+56-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:34:62-90
+57                    android:scheme="wear" />
+57-->/Users/ElRouby/Downloads/B-Track/mobile/android/wear/src/main/AndroidManifest.xml:34:23-44
+58            </intent-filter>
+59        </service>
+60
+61        <uses-library
+61-->[androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:23:9-25:40
+62            android:name="wear-sdk"
+62-->[androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:24:13-36
+63            android:required="false" />
+63-->[androidx.wear.compose:compose-foundation:1.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/74170244965a5aaea57151546e4c8a7c/transformed/jetified-compose-foundation-1.4.0/AndroidManifest.xml:25:13-37
+64
+65        <activity
+65-->[com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:9-173
+66            android:name="com.google.android.gms.common.api.GoogleApiActivity"
+66-->[com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:19-85
+67            android:exported="false"
+67-->[com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:146-170
+68            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+68-->[com.google.android.gms:play-services-base:18.5.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/6426ae70350699162572b402e089381e/transformed/jetified-play-services-base-18.5.0/AndroidManifest.xml:5:86-145
+69
+70        <meta-data
+70-->[com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:9-122
+71            android:name="com.google.android.gms.version"
+71-->[com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:20-65
+72            android:value="@integer/google_play_services_version" />
+72-->[com.google.android.gms:play-services-basement:18.4.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/9e41b8858a2e9ac1925006c32e138736/transformed/jetified-play-services-basement-18.4.0/AndroidManifest.xml:6:66-119
+73
+74        <provider
+74-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:24:9-32:20
+75            android:name="androidx.startup.InitializationProvider"
+75-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:25:13-67
+76            android:authorities="com.btrackscaffold.wear.androidx-startup"
+76-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:26:13-68
+77            android:exported="false" >
+77-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:27:13-37
+78            <meta-data
+78-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:29:13-31:52
+79                android:name="androidx.emoji2.text.EmojiCompatInitializer"
+79-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:30:17-75
+80                android:value="androidx.startup" />
+80-->[androidx.emoji2:emoji2:1.3.0] /Users/ElRouby/.gradle/caches/8.10.2/transforms/a0ddeed63ccd75680b520b5dd37d6fa3/transformed/jetified-emoji2-1.3.0/AndroidManifest.xml:31:17-49
+81            <meta-data
+81-->[androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:29:13-31:52
+82                android:name="androidx.lifecycle.ProcessLifecycleInitializer"
+82-->[androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:30:17-78
+83                android:value="androidx.startup" />
+83-->[androidx.lifecycle:lifecycle-process:2.8.3] /Users/ElRouby/.gradle/caches/8.10.2/transforms/b708f4603c2c2cd3335ed2ce025d09aa/transformed/jetified-lifecycle-process-2.8.3/AndroidManifest.xml:31:17-49
+84            <meta-data
+84-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:29:13-31:52
+85                android:name="androidx.profileinstaller.ProfileInstallerInitializer"
+85-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:30:17-85
+86                android:value="androidx.startup" />
+86-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:31:17-49
+87        </provider>
+88
+89        <receiver
+89-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:34:9-52:20
+90            android:name="androidx.profileinstaller.ProfileInstallReceiver"
+90-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:35:13-76
+91            android:directBootAware="false"
+91-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:36:13-44
+92            android:enabled="true"
+92-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:37:13-35
+93            android:exported="true"
+93-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:38:13-36
+94            android:permission="android.permission.DUMP" >
+94-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:39:13-57
+95            <intent-filter>
+95-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:40:13-42:29
+96                <action android:name="androidx.profileinstaller.action.INSTALL_PROFILE" />
+96-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:17-91
+96-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:41:25-88
+97            </intent-filter>
+98            <intent-filter>
+98-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:43:13-45:29
+99                <action android:name="androidx.profileinstaller.action.SKIP_FILE" />
+99-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:17-85
+99-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:44:25-82
+100            </intent-filter>
+101            <intent-filter>
+101-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:46:13-48:29
+102                <action android:name="androidx.profileinstaller.action.SAVE_PROFILE" />
+102-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:17-88
+102-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:47:25-85
+103            </intent-filter>
+104            <intent-filter>
+104-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:49:13-51:29
+105                <action android:name="androidx.profileinstaller.action.BENCHMARK_OPERATION" />
+105-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:17-95
+105-->[androidx.profileinstaller:profileinstaller:1.3.1] /Users/ElRouby/.gradle/caches/8.10.2/transforms/0cc4b86a40b02f6e48ffdadbafe8ca06/transformed/jetified-profileinstaller-1.3.1/AndroidManifest.xml:50:25-92
+106            </intent-filter>
+107        </receiver>
+108    </application>
+109
+110</manifest>

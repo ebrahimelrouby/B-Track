@@ -633,7 +633,7 @@ export default function HealthHubScreen() {
   const targetMl    = profile?.targetWaterMl ?? 2500;
   const targetSteps = profile?.targetSteps   ?? 10000;
 
-  const { data: score, isLoading: scoreLoading, refetch: refetchScore } = useQuery<RecoveryScore>({
+  const { data: score, isLoading: scoreLoading, isRefetching: scoreRefetching, refetch: refetchScore } = useQuery<RecoveryScore>({
     queryKey: ['recovery-today'],
     queryFn: recoveryApi.getToday,
   });
@@ -671,7 +671,10 @@ export default function HealthHubScreen() {
     },
   });
 
-  const isRefreshing = scoreLoading;
+  // isLoading is only true on the very first fetch (no cached data yet); a
+  // pull-to-refresh re-triggers isRefetching instead, so both are needed for
+  // the spinner to actually show while refetching.
+  const isRefreshing = scoreLoading || scoreRefetching;
 
   const refetchAll = useCallback(() => {
     refetchScore();

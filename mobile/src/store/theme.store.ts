@@ -3,7 +3,9 @@ import { MMKV } from 'react-native-mmkv';
 
 const storage = new MMKV({ id: 'theme-storage' });
 
-export type ThemeId = 'dark' | 'orange' | 'light' | 'pink' | 'azure' | 'midnight';
+export type ThemeId = 'dark' | 'orange' | 'light' | 'pink' | 'azure' | 'midnight' | 'coral' | 'gold';
+
+const THEME_IDS: ThemeId[] = ['dark', 'orange', 'light', 'pink', 'azure', 'midnight', 'coral', 'gold'];
 
 interface ThemeState {
   theme: ThemeId;
@@ -14,7 +16,7 @@ interface ThemeState {
 
 function load(): ThemeId {
   const saved = storage.getString('theme') as ThemeId | undefined;
-  if (saved === 'dark' || saved === 'orange' || saved === 'light' || saved === 'pink' || saved === 'azure' || saved === 'midnight') return saved;
+  if (saved && THEME_IDS.includes(saved)) return saved;
   return (storage.getBoolean('isDark') ?? true) ? 'dark' : 'light';
 }
 

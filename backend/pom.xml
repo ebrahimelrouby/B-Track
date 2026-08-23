@@ -104,6 +104,13 @@
             <version>3.9.11</version>
         </dependency>
 
+        <!-- Stripe (web checkout) -->
+        <dependency>
+            <groupId>com.stripe</groupId>
+            <artifactId>stripe-java</artifactId>
+            <version>29.3.0</version>
+        </dependency>
+
         <!-- OpenAPI -->
         <dependency>
             <groupId>org.springdoc</groupId>

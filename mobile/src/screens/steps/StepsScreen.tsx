@@ -219,12 +219,12 @@ export default function StepsScreen() {
 
   const [modalVisible, setModalVisible] = useState(false);
 
-  const { data: stepsToday, isLoading, refetch } = useQuery<DailySteps>({
+  const { data: stepsToday, isLoading, isRefetching, refetch } = useQuery<DailySteps>({
     queryKey: ['steps-today'],
     queryFn: healthApi.getStepsToday,
   });
 
-  const { data: history = [] } = useQuery<DailySteps[]>({
+  const { data: history = [], refetch: refetchHistory } = useQuery<DailySteps[]>({
     queryKey: ['steps-history'],
     queryFn: () => healthApi.getStepsHistory(14),
   });
@@ -248,7 +248,13 @@ export default function StepsScreen() {
         style={{ flex: 1, paddingTop: insets.top }}
         contentContainerStyle={{ padding: Spacing.base, gap: Spacing.lg, paddingBottom: TAB_BAR_PADDING }}
         showsVerticalScrollIndicator={false}
-        refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} tintColor={STEPS_COLOR} />}
+        refreshControl={
+          <RefreshControl
+            refreshing={isLoading || isRefetching}
+            onRefresh={() => { refetch(); refetchHistory(); }}
+            tintColor={STEPS_COLOR}
+          />
+        }
       >
         {/* Header */}
         <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', paddingTop: Spacing.sm }}>

@@ -87,7 +87,7 @@ export default function HydrationScreen() {
   const PRESETS = PRESETS_BASE.map(p => ({ ...p, label: t(`hydration.${p.key}` as any) }));
   const [customMl, setCustomMl] = useState('');
 
-  const { data: waterMl = 0, isLoading, refetch } = useQuery<number>({
+  const { data: waterMl = 0, isLoading, isRefetching, refetch } = useQuery<number>({
     queryKey: ['water-today'],
     queryFn: () => nutritionApi.getWater(today()),
   });
@@ -113,7 +113,7 @@ export default function HydrationScreen() {
       style={{ flex: 1, backgroundColor: colors.background, paddingTop: insets.top }}
       contentContainerStyle={{ padding: Spacing.base, gap: Spacing.lg, paddingBottom: TAB_BAR_PADDING }}
       showsVerticalScrollIndicator={false}
-      refreshControl={<RefreshControl refreshing={isLoading} onRefresh={refetch} tintColor={WATER_COLOR} />}
+      refreshControl={<RefreshControl refreshing={isLoading || isRefetching} onRefresh={refetch} tintColor={WATER_COLOR} />}
     >
       {/* Header */}
       <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', paddingTop: Spacing.sm }}>
