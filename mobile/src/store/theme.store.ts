@@ -3,9 +3,9 @@ import { MMKV } from 'react-native-mmkv';
 
 const storage = new MMKV({ id: 'theme-storage' });
 
-export type ThemeId = 'dark' | 'orange' | 'light' | 'pink' | 'azure' | 'midnight' | 'coral' | 'gold';
+export type ThemeId = 'dark' | 'orange' | 'light' | 'pink' | 'azure' | 'midnight' | 'coral' | 'gold' | 'teal';
 
-const THEME_IDS: ThemeId[] = ['dark', 'orange', 'light', 'pink', 'azure', 'midnight', 'coral', 'gold'];
+const THEME_IDS: ThemeId[] = ['dark', 'orange', 'light', 'pink', 'azure', 'midnight', 'coral', 'gold', 'teal'];
 
 interface ThemeState {
   theme: ThemeId;

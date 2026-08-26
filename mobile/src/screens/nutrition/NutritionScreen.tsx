@@ -1,9 +1,10 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity, TextInput,
-  FlatList, Modal, ActivityIndicator, Alert, I18nManager } from 'react-native';
+  FlatList, Modal, ActivityIndicator, Alert, I18nManager, Platform } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Svg, { Circle } from 'react-native-svg';
 
@@ -24,6 +25,21 @@ const MEALS: { key: MealName; label: string; icon: string; color: string }[] = [
 const WATER_OPTIONS = [200, 250, 330, 500];
 
 function today() { return new Date().toISOString().split('T')[0]; }
+
+// Parsing "YYYY-MM-DD" via `new Date(iso)` reads it as UTC midnight, which can
+// display as the previous day in negative-UTC-offset timezones — build the
+// Date from local parts instead.
+function parseLocalDate(iso: string): Date {
+  const [y, m, d] = iso.split('-').map(Number);
+  return new Date(y, m - 1, d);
+}
+
+function toIsoDate(d: Date): string {
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, '0');
+  const day = String(d.getDate()).padStart(2, '0');
+  return `${y}-${m}-${day}`;
+}
 
 // Calorie ring
 function CalRing({ eaten, goal, size, colors }: { eaten: number; goal: number; size: number; colors: ColorPalette }) {
@@ -57,7 +73,8 @@ export default function NutritionScreen() {
   const styles = React.useMemo(() => getStyles(colors), [colors]);
   const { t } = useTranslation();
 
-  const [date] = useState(today());
+  const [date, setDate] = useState(today());
+  const [showDatePicker, setShowDatePicker] = useState(false);
   const [diary, setDiary] = useState<MealEntry[]>([]);
   const [waterMl, setWaterMl] = useState(0);
   const [searchQuery, setSearchQuery] = useState('');
@@ -78,6 +95,17 @@ export default function NutritionScreen() {
   }, [date]);
 
   useFocusEffect(useCallback(() => { loadDiary(); }, [loadDiary]));
+  // Reload immediately when the user picks a different date — useFocusEffect
+  // only fires on focus/blur transitions, not on every dependency change
+  // while already focused.
+  useEffect(() => { loadDiary(); }, [loadDiary]);
+
+  const handleDateChange = (event: DateTimePickerEvent, selected?: Date) => {
+    setShowDatePicker(false);
+    if (event.type === 'set' && selected) {
+      setDate(toIsoDate(selected));
+    }
+  };
 
   const doSearch = async (q: string) => {
     setSearchQuery(q);
@@ -136,7 +164,9 @@ export default function NutritionScreen() {
   const goals      = { cal: 2200, protein: 150, carbs: 250, fat: 70 };
   const remaining  = Math.max(0, goals.cal - Math.round(totals.cal));
   const isOver     = totals.cal > goals.cal;
-  const dateLabel  = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+  const dateLabel  = date === today()
+    ? t('nutrition.today')
+    : parseLocalDate(date).toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
 
   const MACROS = [
     { label: t('nutrition.protein'), value: totals.protein, goal: goals.protein, color: colors.info,    icon: 'arm-flex' },
@@ -157,11 +187,25 @@ export default function NutritionScreen() {
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: Spacing.sm }}>
             <PremiumTag />
-            <TouchableOpacity style={[styles.headerIconBtn, { backgroundColor: colors.surfaceElevated }]}>
+            <TouchableOpacity
+              style={[styles.headerIconBtn, { backgroundColor: colors.surfaceElevated }]}
+              onPress={() => setShowDatePicker(true)}
+              activeOpacity={0.75}
+            >
               <Icon name="calendar-month-outline" size={19} color={colors.textSecondary} />
             </TouchableOpacity>
           </View>
         </View>
+
+        {showDatePicker && (
+          <DateTimePicker
+            value={parseLocalDate(date)}
+            mode="date"
+            display={Platform.OS === 'ios' ? 'spinner' : 'default'}
+            maximumDate={new Date()}
+            onChange={handleDateChange}
+          />
+        )}
 
         {/* Row 2: Full-width AI scan banner */}
         <TouchableOpacity

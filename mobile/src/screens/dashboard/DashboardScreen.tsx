@@ -1,7 +1,8 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, RefreshControl,
+  View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, RefreshControl, Animated,
 } from 'react-native';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { launchImageLibrary } from 'react-native-image-picker';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery } from '@tanstack/react-query';
@@ -16,7 +17,7 @@ import Svg, {
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 
-import { useColors, ColorPalette, Spacing, Typography, Radius, TAB_BAR_PADDING } from '@/theme';
+import { useColors, ColorPalette, Spacing, Typography, Radius, Shadows, TAB_BAR_PADDING } from '@/theme';
 import { useThemeStore, ThemeId } from '@/store/theme.store';
 import { useAuthStore } from '@/store/auth.store';
 import { useLangStore } from '@/store/language.store';
@@ -257,6 +258,74 @@ function ScanFrame({ accent }: { accent: string }) {
       <Circle cx="88%" cy="20%" r={1.4} fill={accent} opacity={0.55} />
       <Circle cx="10%" cy="78%" r={1} fill={accent} opacity={0.35} />
     </Svg>
+  );
+}
+
+// Subtle press-in scale + haptic tick, shared by both AI scan cards so they
+// feel tactile instead of a flat opacity fade.
+function ScanCardPress({
+  onPress, style, children,
+}: { onPress: () => void; style?: object; children: React.ReactNode }) {
+  const scale = useRef(new Animated.Value(1)).current;
+
+  const pressIn = () => {
+    Animated.spring(scale, { toValue: 0.96, useNativeDriver: true, speed: 40, bounciness: 6 }).start();
+  };
+  const pressOut = () => {
+    Animated.spring(scale, { toValue: 1, useNativeDriver: true, speed: 40, bounciness: 6 }).start();
+  };
+  const handlePress = () => {
+    ReactNativeHapticFeedback.trigger('impactLight');
+    onPress();
+  };
+
+  return (
+    // Shadow lives on this (non-clipping) wrapper — aiGridCard itself needs
+    // overflow:hidden to clip the hero art to its rounded corners, and on iOS
+    // overflow:hidden silently clips shadows on the same view to nothing.
+    <Animated.View style={[{ flex: 1, transform: [{ scale }] }, Shadows.sm]}>
+      <TouchableOpacity
+        style={style}
+        activeOpacity={0.85}
+        onPress={handlePress}
+        onPressIn={pressIn}
+        onPressOut={pressOut}
+      >
+        {children}
+      </TouchableOpacity>
+    </Animated.View>
+  );
+}
+
+// Small looping opacity/scale pulse — makes the "LIVE AI" dot actually read
+// as live instead of a static colored circle.
+function PulsingDot({ color }: { color: string }) {
+  const pulse = useRef(new Animated.Value(0)).current;
+
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulse, { toValue: 1, duration: 900, useNativeDriver: true }),
+        Animated.timing(pulse, { toValue: 0, duration: 900, useNativeDriver: true }),
+      ])
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [pulse]);
+
+  const scale = pulse.interpolate({ inputRange: [0, 1], outputRange: [1, 1.8] });
+  const opacity = pulse.interpolate({ inputRange: [0, 1], outputRange: [0.55, 0] });
+
+  return (
+    <View style={{ width: 6, height: 6, alignItems: 'center', justifyContent: 'center' }}>
+      <Animated.View
+        style={{
+          position: 'absolute', width: 6, height: 6, borderRadius: 3,
+          backgroundColor: color, transform: [{ scale }], opacity,
+        }}
+      />
+      <View style={{ width: 6, height: 6, borderRadius: 3, backgroundColor: color }} />
+    </View>
   );
 }
 
@@ -735,16 +804,15 @@ export default function DashboardScreen() {
             </View>
           </View>
           <View style={[styles.aiSectionBadge, { backgroundColor: colors.primaryDim, borderColor: colors.primary + '40' }]}>
-            <View style={[styles.aiSectionDot, { backgroundColor: colors.primary }]} />
+            <PulsingDot color={colors.primary} />
             <Text style={[styles.aiSectionBadgeText, { color: colors.primary }]}>{t('dashboard.liveAI')}</Text>
           </View>
         </View>
 
         <View style={styles.aiGridRow}>
           {/* ── Food Scan tile ─────────────────────────────────────── */}
-          <TouchableOpacity
+          <ScanCardPress
             style={[styles.aiGridCard, { borderColor: colors.primary + '35' }]}
-            activeOpacity={0.80}
             onPress={() => navigation.navigate('AiStack', { screen: 'AiFoodEntry' })}
           >
             <View style={[styles.aiGridHero, { backgroundColor: colors.primaryDim, overflow: 'hidden' }]}>
@@ -758,11 +826,11 @@ export default function DashboardScreen() {
             <View style={styles.aiGridBody}>
               <Text style={styles.aiGridTitle}>{t('dashboard.calorieScan')}</Text>
               <View style={styles.aiGridStats}>
-                <View style={styles.aiGridStat}>
+                <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '18', borderColor: colors.primary + '35' }]}>
                   <Icon name="lightning-bolt" size={9} color={colors.primary} />
                   <Text style={[styles.aiGridStatText, { color: colors.primary }]}>{t('dashboard.lessThan5sec')}</Text>
                 </View>
-                <View style={styles.aiGridStat}>
+                <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '0C', borderColor: colors.primary + '20' }]}>
                   <Icon name="food-apple" size={9} color={colors.primary + '88'} />
                   <Text style={[styles.aiGridStatText, { color: colors.primary + '88' }]}>{t('dashboard.calMacros')}</Text>
                 </View>
@@ -774,12 +842,11 @@ export default function DashboardScreen() {
                 <Icon name="arrow-right" size={11} color={colors.primary} />
               </View>
             </View>
-          </TouchableOpacity>
+          </ScanCardPress>
 
           {/* ── Body Scan tile ─────────────────────────────────────── */}
-          <TouchableOpacity
+          <ScanCardPress
             style={[styles.aiGridCard, { borderColor: colors.primary + '35' }]}
-            activeOpacity={0.80}
             onPress={() => navigation.navigate('AiStack', { screen: 'AiBodyFatConsent' })}
           >
             <View style={[styles.aiGridHero, { backgroundColor: colors.primaryDim, overflow: 'hidden' }]}>
@@ -793,11 +860,11 @@ export default function DashboardScreen() {
             <View style={styles.aiGridBody}>
               <Text style={styles.aiGridTitle}>{t('dashboard.bodyFatScan')}</Text>
               <View style={styles.aiGridStats}>
-                <View style={styles.aiGridStat}>
+                <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '18', borderColor: colors.primary + '35' }]}>
                   <Icon name="shield-check-outline" size={9} color={colors.primary} />
                   <Text style={[styles.aiGridStatText, { color: colors.primary }]}>{t('dashboard.private')}</Text>
                 </View>
-                <View style={styles.aiGridStat}>
+                <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '0C', borderColor: colors.primary + '20' }]}>
                   <Icon name="chart-donut" size={9} color={colors.primary + '88'} />
                   <Text style={[styles.aiGridStatText, { color: colors.primary + '88' }]}>{t('dashboard.visual3D')}</Text>
                 </View>
@@ -809,7 +876,7 @@ export default function DashboardScreen() {
                 <Icon name="arrow-right" size={11} color={colors.primary} />
               </View>
             </View>
-          </TouchableOpacity>
+          </ScanCardPress>
         </View>
 
         {/* ── Last-result insight strip ─────────────────────────────── */}
@@ -1344,6 +1411,7 @@ function getStyles(c: ColorPalette) {
       backgroundColor: c.surface, borderRadius: Radius.lg,
       borderWidth: 1, borderColor: c.primary + '25',
       padding: Spacing.base, gap: Spacing.md,
+      ...Shadows.sm,
     },
     aiSectionHeader: {
       flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
@@ -1391,9 +1459,13 @@ function getStyles(c: ColorPalette) {
       fontSize: Typography.sm, fontWeight: Typography.bold,
       color: c.textPrimary,
     },
-    aiGridStats: { flexDirection: 'row', gap: Spacing.sm, flexWrap: 'wrap' },
-    aiGridStat: { flexDirection: 'row', alignItems: 'center', gap: 3 },
-    aiGridStatText: { fontSize: 9, fontWeight: Typography.semibold },
+    aiGridStats: { flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginTop: 2 },
+    aiGridStat: {
+      flexDirection: 'row', alignItems: 'center', gap: 4,
+      paddingHorizontal: 7, paddingVertical: 4,
+      borderRadius: Radius.sm, borderWidth: 1,
+    },
+    aiGridStatText: { fontSize: 9.5, fontWeight: Typography.bold },
     aiGridCta: {
       flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
       paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm, borderTopWidth: 1,

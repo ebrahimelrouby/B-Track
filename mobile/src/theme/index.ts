@@ -196,6 +196,34 @@ export const coralColors = {
   core: '#EC4899', cardio: '#F97316',
 };
 
+// ─── Teal palette — inspired by a dark slate dashboard mockup ────────────────
+
+export const tealColors = {
+  background: '#14161D',       // dark slate, faint blue-gray tint
+  surface: '#1C1F29',
+  surfaceElevated: '#242836',
+  surfaceBorder: '#2E3341',
+
+  primary: '#2DD4BF',          // bright teal, lifted from the accent spiral/progress ring
+  primaryDim: 'rgba(45,212,191,0.15)',
+  primaryHover: '#5EEAD4',
+
+  success: '#22C55E',
+  warning: '#F59E0B',
+  error: '#EF4444',
+  info: '#3B82F6',
+
+  textPrimary: '#F1F5F9',      // cool off-white
+  textSecondary: '#94A3B8',    // slate gray
+  textTertiary: '#5B6478',
+  textDisabled: '#333847',
+  textInverse: '#14161D',
+
+  chest: '#EF4444', back: '#3B82F6', shoulders: '#8B5CF6',
+  biceps: '#06B6D4', triceps: '#F59E0B', legs: '#22C55E',
+  core: '#EC4899', cardio: '#F97316',
+};
+
 // ─── Light palette ────────────────────────────────────────────────────────────
 
 export const lightColors = {
@@ -235,6 +263,7 @@ const PALETTE_MAP: Record<ThemeId, ColorPalette> = {
   midnight: midnightColors,
   coral: coralColors,
   gold: goldColors,
+  teal: tealColors,
 };
 
 // Backward-compat alias used by files not yet migrated to useColors()

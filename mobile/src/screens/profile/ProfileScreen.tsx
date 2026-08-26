@@ -22,6 +22,7 @@ const THEMES = [
   { id: 'pink',   label: 'Rose',   bg: '#0D0D0D', accent: '#F020A0', text: '#FFFFFF' },
   { id: 'coral',  label: 'Coral',  bg: '#120E0F', accent: '#E8677D', text: '#FDF4F5' },
   { id: 'gold',   label: 'Gold',   bg: '#0A0A0A', accent: '#E8B923', text: '#FBF3E0' },
+  { id: 'teal',   label: 'Teal',   bg: '#14161D', accent: '#2DD4BF', text: '#F1F5F9' },
   { id: 'azure',  label: 'Azure',  bg: '#070B14', accent: '#2563EB', text: '#F0F4FF' },
   { id: 'light',  label: 'Light',  bg: '#F4F6F8', accent: '#7ACC00', text: '#111827' },
 ] as const;
