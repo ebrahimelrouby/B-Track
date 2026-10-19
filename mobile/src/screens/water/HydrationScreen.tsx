@@ -116,51 +116,74 @@ export default function HydrationScreen() {
       refreshControl={<RefreshControl refreshing={isLoading || isRefetching} onRefresh={refetch} tintColor={WATER_COLOR} />}
     >
       {/* Header */}
-      <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', paddingTop: Spacing.sm }}>
-        <View>
-          <Text style={{ fontSize: Typography.xl, fontWeight: Typography.bold, color: colors.textPrimary }}>{t('hydration.title')}</Text>
-          <Text style={{ fontSize: Typography.sm, color: colors.textTertiary, marginTop: 2 }}>
-            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
-          </Text>
-        </View>
+      <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: Spacing.sm }}>
         <TouchableOpacity
           style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: colors.surfaceElevated, alignItems: 'center', justifyContent: 'center' }}
           onPress={() => navigation.goBack()}
         >
           <Icon name={I18nManager.isRTL ? "arrow-right" : "arrow-left"} size={20} color={colors.textSecondary} />
         </TouchableOpacity>
+        <View style={{ flex: 1, alignItems: 'center' }}>
+          <Text style={{ fontSize: Typography.xl, fontWeight: Typography.bold, color: colors.textPrimary }}>{t('hydration.title')}</Text>
+          <Text style={{ fontSize: Typography.sm, color: colors.textTertiary, marginTop: 2 }}>
+            {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
+          </Text>
+        </View>
+        <View style={{ width: 36 }} />
       </View>
 
-      {/* Main ring card */}
-      <View style={{ backgroundColor: colors.surface, borderRadius: Radius.xl, borderWidth: 1, borderColor: colors.surfaceBorder, padding: Spacing.xl, alignItems: 'center', gap: Spacing.lg }}>
-        <WaterRing ml={waterMl} targetMl={targetMl} size={200} />
+      {/* Main card — ring + status + today's detail, all in one */}
+      <View style={{ backgroundColor: colors.surface, borderRadius: Radius.xl, borderWidth: 1, borderColor: colors.surfaceBorder, padding: Spacing.lg, gap: Spacing.lg }}>
+        <View style={{ alignItems: 'center', gap: Spacing.lg }}>
+          <WaterRing ml={waterMl} targetMl={targetMl} size={200} />
 
-        {isDone ? (
-          <View style={{ backgroundColor: WATER_FULL + '15', borderRadius: Radius.full, paddingHorizontal: Spacing.md, paddingVertical: 6, flexDirection: 'row', alignItems: 'center', gap: 6 }}>
-            <Icon name="check-circle" size={14} color={WATER_FULL} />
-            <Text style={{ color: WATER_FULL, fontWeight: Typography.semibold, fontSize: Typography.sm }}>{t('hydration.goalReached')}</Text>
+          {isDone ? (
+            <View style={{ backgroundColor: WATER_FULL + '15', borderRadius: Radius.full, paddingHorizontal: Spacing.md, paddingVertical: 6, flexDirection: 'row', alignItems: 'center', gap: 6 }}>
+              <Icon name="check-circle" size={14} color={WATER_FULL} />
+              <Text style={{ color: WATER_FULL, fontWeight: Typography.semibold, fontSize: Typography.sm }}>{t('hydration.goalReached')}</Text>
+            </View>
+          ) : (
+            <Text style={{ fontSize: Typography.sm, color: colors.textSecondary }}>
+              {t('hydration.moreToGoal', { n: (remaining / 1000).toFixed(2) })}
+            </Text>
+          )}
+
+          {/* Segments strip */}
+          <View style={{ flexDirection: 'row', gap: 3, width: '100%' }}>
+            {Array.from({ length: segments }).map((_, i) => (
+              <View
+                key={i}
+                style={{
+                  flex: 1, height: 8, borderRadius: 4,
+                  backgroundColor: i < filledSegs ? color : colors.surfaceElevated,
+                }}
+              />
+            ))}
           </View>
-        ) : (
-          <Text style={{ fontSize: Typography.sm, color: colors.textSecondary }}>
-            {t('hydration.moreToGoal', { n: (remaining / 1000).toFixed(2) })}
+          <Text style={{ fontSize: Typography.xs, color: colors.textTertiary, marginTop: -Spacing.sm }}>
+            {t('hydration.segmentLabel')}
           </Text>
-        )}
+        </View>
 
-        {/* Segments strip */}
-        <View style={{ flexDirection: 'row', gap: 3, width: '100%' }}>
-          {Array.from({ length: segments }).map((_, i) => (
-            <View
-              key={i}
-              style={{
-                flex: 1, height: 8, borderRadius: 4,
-                backgroundColor: i < filledSegs ? color : colors.surfaceElevated,
-              }}
-            />
+        <View style={{ height: 1, backgroundColor: colors.surfaceBorder }} />
+        <Text style={{ fontSize: Typography.xs, fontWeight: Typography.bold, color: colors.textTertiary, textTransform: 'uppercase', letterSpacing: 0.8 }}>
+          {t('hydration.todayDetail')}
+        </Text>
+        <View style={{ flexDirection: 'row', gap: Spacing.sm }}>
+          {[
+            { label: t('hydration.loggedToday'), value: `${(waterMl / 1000).toFixed(2)}L`,       icon: 'water',         color },
+            { label: t('hydration.remaining'),   value: remaining > 0 ? `${(remaining/1000).toFixed(2)}L` : t('hydration.doneBadge'), icon: 'flag-checkered', color: isDone ? WATER_FULL : '#F59E0B' },
+            { label: t('hydration.dailyTarget'), value: `${(targetMl / 1000).toFixed(1)}L`,       icon: 'bullseye-arrow', color: colors.textTertiary },
+          ].map(s => (
+            <View key={s.label} style={{ flex: 1, backgroundColor: colors.surfaceElevated, borderRadius: Radius.md, padding: Spacing.sm, alignItems: 'center', gap: 4 }}>
+              <View style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: s.color + '20', alignItems: 'center', justifyContent: 'center' }}>
+                <Icon name={s.icon} size={15} color={s.color} />
+              </View>
+              <Text style={{ fontSize: Typography.sm, fontWeight: Typography.bold, color: colors.textPrimary }}>{s.value}</Text>
+              <Text style={{ fontSize: 10, color: colors.textTertiary, textAlign: 'center' }}>{s.label}</Text>
+            </View>
           ))}
         </View>
-        <Text style={{ fontSize: Typography.xs, color: colors.textTertiary }}>
-          {t('hydration.segmentLabel')}
-        </Text>
       </View>
 
       {/* Quick-add presets */}
@@ -225,23 +248,6 @@ export default function HydrationScreen() {
             <Icon name="plus" size={22} color="#FFFFFF" />
           </TouchableOpacity>
         </View>
-      </View>
-
-      {/* Stats row */}
-      <View style={{ flexDirection: 'row', gap: Spacing.sm }}>
-        {[
-          { label: t('hydration.loggedToday'), value: `${(waterMl / 1000).toFixed(2)}L`,       icon: 'water',         color },
-          { label: t('hydration.remaining'),   value: remaining > 0 ? `${(remaining/1000).toFixed(2)}L` : t('hydration.doneBadge'), icon: 'flag-checkered', color: isDone ? WATER_FULL : '#F59E0B' },
-          { label: t('hydration.dailyTarget'), value: `${(targetMl / 1000).toFixed(1)}L`,       icon: 'bullseye-arrow', color: colors.textTertiary },
-        ].map(s => (
-          <View key={s.label} style={{ flex: 1, backgroundColor: colors.surface, borderRadius: Radius.lg, borderWidth: 1, borderColor: colors.surfaceBorder, padding: Spacing.sm, alignItems: 'center', gap: 4 }}>
-            <View style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: s.color + '20', alignItems: 'center', justifyContent: 'center' }}>
-              <Icon name={s.icon} size={15} color={s.color} />
-            </View>
-            <Text style={{ fontSize: Typography.sm, fontWeight: Typography.bold, color: colors.textPrimary }}>{s.value}</Text>
-            <Text style={{ fontSize: 10, color: colors.textTertiary, textAlign: 'center' }}>{s.label}</Text>
-          </View>
-        ))}
       </View>
 
       {/* Hydration tips */}

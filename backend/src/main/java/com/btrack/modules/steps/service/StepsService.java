@@ -24,14 +24,14 @@ public class StepsService {
     private final UserRepository userRepository;
 
     public DailyStepsResponse getToday(UUID userId) {
-        return toResponse(stepLogRepository.findByUserIdAndDate(userId, LocalDate.now())
+        return toResponse(userId, stepLogRepository.findByUserIdAndDate(userId, LocalDate.now())
                 .orElse(null));
     }
 
     public List<DailyStepsResponse> getHistory(UUID userId, int days) {
         LocalDate from = LocalDate.now().minusDays(days - 1L);
         return stepLogRepository.findByUserIdSince(userId, from)
-                .stream().map(this::toResponse).toList();
+                .stream().map(log -> toResponse(userId, log)).toList();
     }
 
     @Transactional
@@ -44,15 +44,25 @@ public class StepsService {
 
         log.setStepCount(req.steps());
         log.setDistanceM(BigDecimal.valueOf(req.steps() * 0.75)); // ~0.75 m per step
-        log.setCaloriesBurned(BigDecimal.valueOf(req.steps() * 0.04));
-        log.setSource("manual");
+        log.setCaloriesBurned(req.caloriesBurned() != null
+                ? BigDecimal.valueOf(req.caloriesBurned())
+                : BigDecimal.valueOf(req.steps() * 0.04));
+        log.setSource(req.source() != null ? req.source() : "manual");
         stepLogRepository.save(log);
-        return toResponse(log);
+        return toResponse(userId, log);
     }
 
-    private DailyStepsResponse toResponse(StepLog log) {
+    private int targetStepsFor(UUID userId) {
+        return userRepository.findByIdWithProfile(userId)
+                .map(u -> u.getProfile())
+                .map(p -> p.getTargetSteps())
+                .orElse(DEFAULT_TARGET);
+    }
+
+    private DailyStepsResponse toResponse(UUID userId, StepLog log) {
+        int target = targetStepsFor(userId);
         if (log == null) {
-            return new DailyStepsResponse(LocalDate.now(), 0, DEFAULT_TARGET, 0, 0, 0);
+            return new DailyStepsResponse(LocalDate.now(), 0, target, 0, 0, 0);
         }
         int steps = log.getStepCount();
         double distKm = log.getDistanceM() != null
@@ -60,7 +70,7 @@ public class StepsService {
         int cals = log.getCaloriesBurned() != null
                 ? log.getCaloriesBurned().intValue() : (int) (steps * 0.04);
         int active = steps / 100; // ~1 min per 100 steps
-        return new DailyStepsResponse(log.getDate(), steps, DEFAULT_TARGET,
+        return new DailyStepsResponse(log.getDate(), steps, target,
                 Math.round(distKm * 100.0) / 100.0, cals, active);
     }
 }

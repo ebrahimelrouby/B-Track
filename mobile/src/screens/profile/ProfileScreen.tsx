@@ -66,11 +66,15 @@ export default function ProfileScreen() {
 
   const [editPersonal, setEditPersonal] = useState(false);
   const [editMetrics, setEditMetrics] = useState(false);
+  const [editGoals, setEditGoals] = useState(false);
   const [firstName, setFirstName] = useState(user?.firstName ?? '');
   const [lastName, setLastName] = useState(user?.lastName ?? '');
   const [weightKg, setWeightKg] = useState('');
   const [heightCm, setHeightCm] = useState('');
   const [targetWeightKg, setTargetWeightKg] = useState('');
+  const [targetSteps, setTargetSteps] = useState('');
+  const [targetSleepHours, setTargetSleepHours] = useState('');
+  const [targetActiveCalories, setTargetActiveCalories] = useState('');
 
   const { data: me } = useQuery({ queryKey: ['me'], queryFn: userApi.getMe });
   const { data: history } = useQuery({
@@ -221,6 +225,42 @@ export default function ProfileScreen() {
             <View key={f.label} style={[styles.fieldRow, i > 0 && styles.fieldBorder]}>
               <Text style={styles.fieldLabel}>{f.label}</Text>
               {editMetrics
+                ? <TextInput style={styles.fieldInput} value={f.value} onChangeText={f.set} keyboardType="numeric" placeholderTextColor={colors.textTertiary} />
+                : <Text style={styles.fieldValue}>{f.display}</Text>
+              }
+            </View>
+          ))}
+        </View>
+
+        {/* Goals */}
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Text style={styles.cardTitle}>{t('profile.goals')}</Text>
+            <TouchableOpacity onPress={() => {
+              if (editGoals) {
+                const updates: Record<string, number> = {};
+                if (targetSteps) updates.targetSteps = parseInt(targetSteps, 10);
+                if (targetSleepHours) updates.targetSleepHours = parseFloat(targetSleepHours);
+                if (targetActiveCalories) updates.targetActiveCalories = parseInt(targetActiveCalories, 10);
+                updateMutation.mutate(updates);
+              } else {
+                setTargetSteps(String(profile?.targetSteps ?? ''));
+                setTargetSleepHours(String(profile?.targetSleepHours ?? ''));
+                setTargetActiveCalories(String(profile?.targetActiveCalories ?? ''));
+              }
+              setEditGoals(v => !v);
+            }}>
+              <Text style={styles.editBtn}>{editGoals ? t('common.save') : t('common.edit')}</Text>
+            </TouchableOpacity>
+          </View>
+          {[
+            { label: t('profile.targetSteps'), display: profile?.targetSteps ? profile.targetSteps.toLocaleString() : '—', value: targetSteps, set: setTargetSteps },
+            { label: t('profile.targetSleepHours'), display: profile?.targetSleepHours ? `${profile.targetSleepHours}h` : '—', value: targetSleepHours, set: setTargetSleepHours },
+            { label: t('profile.targetActiveCalories'), display: profile?.targetActiveCalories ? `${profile.targetActiveCalories} kcal` : '—', value: targetActiveCalories, set: setTargetActiveCalories },
+          ].map((f, i) => (
+            <View key={f.label} style={[styles.fieldRow, i > 0 && styles.fieldBorder]}>
+              <Text style={styles.fieldLabel}>{f.label}</Text>
+              {editGoals
                 ? <TextInput style={styles.fieldInput} value={f.value} onChangeText={f.set} keyboardType="numeric" placeholderTextColor={colors.textTertiary} />
                 : <Text style={styles.fieldValue}>{f.display}</Text>
               }

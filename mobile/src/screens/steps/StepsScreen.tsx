@@ -1,9 +1,9 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity,
-  Modal, TextInput, RefreshControl, I18nManager } from 'react-native';
+  RefreshControl, I18nManager } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -13,9 +13,10 @@ import { useTranslation } from 'react-i18next';
 import { useColors, ColorPalette, Spacing, Typography, Radius, TAB_BAR_PADDING } from '@/theme';
 import { healthApi } from '@/api/health.api';
 import { userApi } from '@/api/user.api';
+import { useHealthStore } from '@/store/health.store';
+import { healthService } from '@/services/health/healthService';
+import { syncRecentHealthData } from '@/services/health/syncRecent';
 import { DailySteps } from '@/types';
-
-function today() { return new Date().toISOString().split('T')[0]; }
 
 const STEPS_COLOR = '#3B82F6';
 const DONE_COLOR  = '#22C55E';
@@ -125,87 +126,6 @@ function WeeklyStepsChart({ history, target, colors }: { history: DailySteps[]; 
   );
 }
 
-// ─── Log Steps Modal ──────────────────────────────────────────────────────────
-
-function LogStepsModal({
-  visible, onClose, onSubmit, isLoading, currentSteps, colors,
-}: {
-  visible: boolean; onClose: () => void;
-  onSubmit: (steps: number) => void;
-  isLoading: boolean;
-  currentSteps: number;
-  colors: ColorPalette;
-}) {
-  const { t } = useTranslation();
-  const [value, setValue] = useState(currentSteps > 0 ? String(currentSteps) : '');
-
-  const QUICK_VALUES = [2000, 4000, 6000, 8000, 10000, 12000, 15000];
-
-  return (
-    <Modal visible={visible} animationType="slide" presentationStyle="formSheet" onRequestClose={onClose}>
-      <View style={{ flex: 1, backgroundColor: colors.background, padding: Spacing.lg, gap: Spacing.lg }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Text style={{ fontSize: Typography.lg, fontWeight: Typography.bold, color: colors.textPrimary }}>
-            {t('steps.modalTitle')}
-          </Text>
-          <TouchableOpacity onPress={onClose}>
-            <Icon name="close" size={22} color={colors.textSecondary} />
-          </TouchableOpacity>
-        </View>
-
-        {/* Big input */}
-        <View style={{ backgroundColor: colors.surface, borderRadius: Radius.xl, borderWidth: 1, borderColor: STEPS_COLOR + '40', padding: Spacing.xl, alignItems: 'center', gap: Spacing.sm }}>
-          <Icon name="walk" size={28} color={STEPS_COLOR} />
-          <TextInput
-            style={{ fontSize: 48, fontWeight: Typography.extrabold, color: STEPS_COLOR, textAlign: 'center', minWidth: 120 }}
-            value={value}
-            onChangeText={setValue}
-            keyboardType="number-pad"
-            placeholder="0"
-            placeholderTextColor={STEPS_COLOR + '40'}
-            autoFocus
-          />
-          <Text style={{ fontSize: Typography.sm, color: colors.textTertiary }}>{t('steps.modalStepsLabel')}</Text>
-        </View>
-
-        {/* Quick-select chips */}
-        <View style={{ gap: Spacing.xs }}>
-          <Text style={{ fontSize: Typography.xs, color: colors.textTertiary, textTransform: 'uppercase', letterSpacing: 0.6 }}>{t('steps.quickSelect')}</Text>
-          <View style={{ flexDirection: 'row', flexWrap: 'wrap', gap: Spacing.xs }}>
-            {QUICK_VALUES.map(v => (
-              <TouchableOpacity
-                key={v}
-                style={{
-                  paddingHorizontal: Spacing.sm, paddingVertical: 6, borderRadius: Radius.full,
-                  backgroundColor: Number(value) === v ? STEPS_COLOR + '25' : colors.surfaceElevated,
-                  borderWidth: 1,
-                  borderColor: Number(value) === v ? STEPS_COLOR : colors.surfaceBorder,
-                }}
-                onPress={() => setValue(String(v))}
-              >
-                <Text style={{ fontSize: Typography.xs, fontWeight: Typography.semibold, color: Number(value) === v ? STEPS_COLOR : colors.textSecondary }}>
-                  {v >= 1000 ? `${v / 1000}k` : v}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </View>
-        </View>
-
-        <TouchableOpacity
-          style={{ backgroundColor: STEPS_COLOR, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8, padding: Spacing.base, borderRadius: Radius.lg, opacity: isLoading ? 0.6 : 1 }}
-          onPress={() => onSubmit(parseInt(value, 10) || 0)}
-          disabled={isLoading || !value}
-        >
-          <Icon name="check" size={18} color="#FFFFFF" />
-          <Text style={{ color: '#FFFFFF', fontWeight: Typography.bold, fontSize: Typography.base }}>
-            {isLoading ? t('steps.savingBtn') : t('steps.saveBtn')}
-          </Text>
-        </TouchableOpacity>
-      </View>
-    </Modal>
-  );
-}
-
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 
 export default function StepsScreen() {
@@ -217,7 +137,8 @@ export default function StepsScreen() {
   const { data: meData } = useQuery({ queryKey: ['me'], queryFn: userApi.getMe });
   const targetSteps = meData?.profile?.targetSteps ?? 10000;
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const { stepsAuthorized: authorized, setAuthorized } = useHealthStore();
+  const [isConnecting, setIsConnecting] = useState(false);
 
   const { data: stepsToday, isLoading, isRefetching, refetch } = useQuery<DailySteps>({
     queryKey: ['steps-today'],
@@ -229,14 +150,30 @@ export default function StepsScreen() {
     queryFn: () => healthApi.getStepsHistory(14),
   });
 
-  const logMutation = useMutation({
-    mutationFn: (steps: number) => healthApi.logSteps({ date: today(), steps }),
-    onSuccess: () => {
+  const refetchAll = () => { refetch(); refetchHistory(); };
+
+  async function handleConnect() {
+    setIsConnecting(true);
+    try {
+      const granted = await healthService.requestAuthorization();
+      setAuthorized(granted);
+      await syncRecentHealthData();
       qc.invalidateQueries({ queryKey: ['steps-today'] });
       qc.invalidateQueries({ queryKey: ['steps-history'] });
-      setModalVisible(false);
-    },
-  });
+    } finally {
+      setIsConnecting(false);
+    }
+  }
+
+  async function handleSyncNow() {
+    setIsConnecting(true);
+    try {
+      await syncRecentHealthData();
+      refetchAll();
+    } finally {
+      setIsConnecting(false);
+    }
+  }
 
   const steps   = stepsToday?.steps ?? 0;
   const isDone  = steps >= targetSteps;
@@ -251,59 +188,82 @@ export default function StepsScreen() {
         refreshControl={
           <RefreshControl
             refreshing={isLoading || isRefetching}
-            onRefresh={() => { refetch(); refetchHistory(); }}
+            onRefresh={refetchAll}
             tintColor={STEPS_COLOR}
           />
         }
       >
         {/* Header */}
-        <View style={{ flexDirection: 'row', alignItems: 'flex-start', justifyContent: 'space-between', paddingTop: Spacing.sm }}>
-          <View>
-            <Text style={{ fontSize: Typography.xl, fontWeight: Typography.bold, color: colors.textPrimary }}>{t('steps.title')}</Text>
-            <Text style={{ fontSize: Typography.sm, color: colors.textTertiary, marginTop: 2 }}>
-              {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
-            </Text>
-          </View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', paddingTop: Spacing.sm }}>
           <TouchableOpacity
             style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: colors.surfaceElevated, alignItems: 'center', justifyContent: 'center' }}
             onPress={() => navigation.goBack()}
           >
             <Icon name={I18nManager.isRTL ? "arrow-right" : "arrow-left"} size={20} color={colors.textSecondary} />
           </TouchableOpacity>
-        </View>
-
-        {/* Main ring card */}
-        <View style={{ backgroundColor: colors.surface, borderRadius: Radius.xl, borderWidth: 1, borderColor: colors.surfaceBorder, padding: Spacing.xl, alignItems: 'center', gap: Spacing.lg }}>
-          <StepsRing steps={steps} target={targetSteps} size={200} />
-          <TouchableOpacity
-            style={{ backgroundColor: color + '20', flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: Spacing.lg, paddingVertical: Spacing.sm, borderRadius: Radius.full }}
-            onPress={() => setModalVisible(true)}
-          >
-            <Icon name={steps > 0 ? 'pencil' : 'plus'} size={14} color={color} />
-            <Text style={{ color, fontWeight: Typography.semibold, fontSize: Typography.sm }}>
-              {steps > 0 ? t('steps.updateSteps') : t('steps.logSteps')}
+          <View style={{ flex: 1, alignItems: 'center' }}>
+            <Text style={{ fontSize: Typography.xl, fontWeight: Typography.bold, color: colors.textPrimary }}>{t('steps.title')}</Text>
+            <Text style={{ fontSize: Typography.sm, color: colors.textTertiary, marginTop: 2 }}>
+              {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric' })}
             </Text>
-          </TouchableOpacity>
+          </View>
+          <View style={{ width: 36 }} />
         </View>
 
-        {/* Stats row */}
-        {stepsToday && (
-          <View style={{ flexDirection: 'row', gap: Spacing.sm }}>
-            {[
-              { icon: 'map-marker-distance', label: t('steps.statDistance'), value: `${stepsToday.distanceKm} km`, color },
-              { icon: 'fire', label: t('steps.statCalories'), value: `${stepsToday.caloriesBurned} kcal`, color: '#F97316' },
-              { icon: 'timer-outline', label: t('steps.statActive'), value: `${stepsToday.activeMinutes} min`, color: '#22C55E' },
-            ].map(stat => (
-              <View key={stat.label} style={{ flex: 1, backgroundColor: colors.surface, borderRadius: Radius.lg, borderWidth: 1, borderColor: colors.surfaceBorder, padding: Spacing.sm, alignItems: 'center', gap: 4 }}>
-                <View style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: stat.color + '20', alignItems: 'center', justifyContent: 'center' }}>
-                  <Icon name={stat.icon} size={16} color={stat.color} />
-                </View>
-                <Text style={{ fontSize: Typography.sm, fontWeight: Typography.bold, color: colors.textPrimary }}>{stat.value}</Text>
-                <Text style={{ fontSize: Typography.xs, color: colors.textTertiary }}>{stat.label}</Text>
-              </View>
-            ))}
+        {/* Main card — ring + connect state + today's detail, all in one */}
+        <View style={{ backgroundColor: colors.surface, borderRadius: Radius.xl, borderWidth: 1, borderColor: colors.surfaceBorder, padding: Spacing.lg, gap: Spacing.lg }}>
+          <View style={{ alignItems: 'center', gap: Spacing.lg }}>
+            <StepsRing steps={steps} target={targetSteps} size={200} />
+
+            {!authorized ? (
+              <TouchableOpacity
+                style={{ backgroundColor: STEPS_COLOR, flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: Spacing.lg, paddingVertical: Spacing.sm, borderRadius: Radius.full, opacity: isConnecting ? 0.6 : 1 }}
+                onPress={handleConnect}
+                disabled={isConnecting}
+              >
+                <Icon name="heart-plus-outline" size={16} color="#FFFFFF" />
+                <Text style={{ color: '#FFFFFF', fontWeight: Typography.bold, fontSize: Typography.sm }}>
+                  {isConnecting ? t('steps.connecting') : t('steps.connectHealth')}
+                </Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity
+                style={{ backgroundColor: color + '20', flexDirection: 'row', alignItems: 'center', gap: 6, paddingHorizontal: Spacing.lg, paddingVertical: Spacing.sm, borderRadius: Radius.full, opacity: isConnecting ? 0.6 : 1 }}
+                onPress={handleSyncNow}
+                disabled={isConnecting}
+              >
+                <Icon name="sync" size={14} color={color} />
+                <Text style={{ color, fontWeight: Typography.semibold, fontSize: Typography.sm }}>
+                  {isConnecting ? t('steps.syncing') : t('steps.syncNow')}
+                </Text>
+              </TouchableOpacity>
+            )}
           </View>
-        )}
+
+          {stepsToday && (
+            <>
+              <View style={{ height: 1, backgroundColor: colors.surfaceBorder }} />
+              <Text style={{ fontSize: Typography.xs, fontWeight: Typography.bold, color: colors.textTertiary, textTransform: 'uppercase', letterSpacing: 0.8 }}>
+                {t('steps.todayDetail')}
+              </Text>
+              <View style={{ flexDirection: 'row', gap: Spacing.sm }}>
+                {[
+                  { icon: 'map-marker-distance', label: t('steps.statDistance'), value: `${stepsToday.distanceKm} km`, color },
+                  { icon: 'fire', label: t('steps.statCalories'), value: `${stepsToday.caloriesBurned} kcal`, color: '#F97316' },
+                  { icon: 'timer-outline', label: t('steps.statActive'), value: `${stepsToday.activeMinutes} min`, color: '#22C55E' },
+                ].map(stat => (
+                  <View key={stat.label} style={{ flex: 1, backgroundColor: colors.surfaceElevated, borderRadius: Radius.md, padding: Spacing.sm, alignItems: 'center', gap: 4 }}>
+                    <View style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: stat.color + '20', alignItems: 'center', justifyContent: 'center' }}>
+                      <Icon name={stat.icon} size={16} color={stat.color} />
+                    </View>
+                    <Text style={{ fontSize: Typography.sm, fontWeight: Typography.bold, color: colors.textPrimary }}>{stat.value}</Text>
+                    <Text style={{ fontSize: Typography.xs, color: colors.textTertiary }}>{stat.label}</Text>
+                  </View>
+                ))}
+              </View>
+            </>
+          )}
+        </View>
 
         {/* Segmented progress bar */}
         <View style={{ backgroundColor: colors.surface, borderRadius: Radius.lg, borderWidth: 1, borderColor: colors.surfaceBorder, padding: Spacing.base, gap: Spacing.sm }}>
@@ -359,15 +319,6 @@ export default function StepsScreen() {
           ))}
         </View>
       </ScrollView>
-
-      <LogStepsModal
-        visible={modalVisible}
-        onClose={() => setModalVisible(false)}
-        onSubmit={(s) => logMutation.mutate(s)}
-        isLoading={logMutation.isPending}
-        currentSteps={steps}
-        colors={colors}
-      />
     </View>
   );
 }

@@ -60,6 +60,7 @@ public class UserService {
         if (request.targetWaterMl() != null) profile.setTargetWaterMl(request.targetWaterMl());
         if (request.targetSteps() != null) profile.setTargetSteps(request.targetSteps());
         if (request.targetSleepHours() != null) profile.setTargetSleepHours(request.targetSleepHours());
+        if (request.targetActiveCalories() != null) profile.setTargetActiveCalories(request.targetActiveCalories());
 
         // Auto-calculate macros
         if (profile.getWeightKg() != null && profile.getHeightCm() != null

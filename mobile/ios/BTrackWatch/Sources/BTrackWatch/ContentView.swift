@@ -1,5 +1,6 @@
 import SwiftUI
 import WatchKit
+import HealthKit
 
 struct ContentView: View {
     @StateObject private var manager = WorkoutSessionManager.shared
@@ -9,7 +10,16 @@ struct ContentView: View {
             if manager.state.isActive {
                 ActiveWorkoutView(state: manager.state, manager: manager)
             } else {
-                IdleView(onStart: { manager.sendAction("startWorkout") })
+                IdleView(onStart: {
+                    manager.sendAction("startWorkout")
+                    // Starting locally (rather than only via the phone) needs its
+                    // own real HealthKit session too, same as ExtensionDelegate
+                    // does for a phone-triggered launch.
+                    let configuration = HKWorkoutConfiguration()
+                    configuration.activityType = .traditionalStrengthTraining
+                    configuration.locationType = .indoor
+                    HealthKitWorkoutManager.shared.startSession(configuration: configuration)
+                })
             }
         }
     }
@@ -59,6 +69,7 @@ struct ActiveWorkoutView: View {
     let state: WorkoutState
     let manager: WorkoutSessionManager
 
+    @StateObject private var healthKit = HealthKitWorkoutManager.shared
     @State private var now = Date()
     private let ticker = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
 
@@ -84,6 +95,16 @@ struct ActiveWorkoutView: View {
                     Text(name)
                         .font(.system(size: 11))
                         .foregroundColor(.gray)
+                }
+
+                if healthKit.isSessionActive {
+                    HStack(spacing: 12) {
+                        Label("\(Int(healthKit.heartRate))", systemImage: "heart.fill")
+                            .foregroundColor(.red)
+                        Label("\(Int(healthKit.activeCalories))", systemImage: "flame.fill")
+                            .foregroundColor(.orange)
+                    }
+                    .font(.system(size: 12, weight: .semibold))
                 }
 
                 Divider().background(Color.gray.opacity(0.3))
@@ -122,7 +143,10 @@ struct ActiveWorkoutView: View {
                     .buttonStyle(.plain)
                 }
 
-                Button(action: { manager.sendAction("finishWorkout") }) {
+                Button(action: {
+                    manager.sendAction("finishWorkout")
+                    healthKit.endSession()
+                }) {
                     Text("Finish Workout")
                         .font(.system(size: 12, weight: .semibold))
                         .foregroundColor(.red)

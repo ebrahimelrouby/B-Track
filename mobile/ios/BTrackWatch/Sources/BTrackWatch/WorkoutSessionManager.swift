@@ -32,13 +32,25 @@ extension WorkoutSessionManager: WCSessionDelegate {
 
     func session(_ session: WCSession, activationDidCompleteWith activationState: WCSessionActivationState, error: Error?) {
         DispatchQueue.main.async { [weak self] in
-            self?.state = WorkoutState.from(session.receivedApplicationContext)
+            self?.apply(WorkoutState.from(session.receivedApplicationContext))
         }
     }
 
     func session(_ session: WCSession, didReceiveApplicationContext applicationContext: [String: Any]) {
         DispatchQueue.main.async { [weak self] in
-            self?.state = WorkoutState.from(applicationContext)
+            self?.apply(WorkoutState.from(applicationContext))
+        }
+    }
+
+    // The phone is the source of truth for when a workout stops (Finish or
+    // Discard both end up here), regardless of which side ended it — so the
+    // real HealthKit session must be closed here too, not just when the
+    // watch's own Finish button is tapped.
+    private func apply(_ newState: WorkoutState) {
+        let wasActive = state.isActive
+        state = newState
+        if wasActive && !newState.isActive {
+            Task { @MainActor in HealthKitWorkoutManager.shared.endSession() }
         }
     }
 }

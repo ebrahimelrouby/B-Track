@@ -473,7 +473,7 @@ export default function RecoveryDetailsScreen() {
         <TouchableOpacity style={styles.backBtn} onPress={() => navigation.goBack()}>
           <Icon name={I18nManager.isRTL ? "arrow-right" : "arrow-left"} size={22} color={colors.textPrimary} />
         </TouchableOpacity>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, alignItems: 'center' }}>
           <Text style={[styles.headerTitle, { color: colors.textPrimary }]}>{t('recoveryDetails.title')}</Text>
           <Text style={[styles.headerSub, { color: colors.textTertiary }]}>{formattedDate}</Text>
         </View>
@@ -489,6 +489,7 @@ export default function RecoveryDetailsScreen() {
             </Text>
           </TouchableOpacity>
         )}
+        {!isToday && <View style={{ width: 36 }} />}
       </View>
 
       <ScrollView

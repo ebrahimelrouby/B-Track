@@ -37,6 +37,7 @@ export interface UserProfile {
   targetWaterMl?: number;
   targetSteps?: number;
   targetSleepHours?: number;
+  targetActiveCalories?: number;
   avatarUrl?: string;
 }
 
@@ -302,6 +303,7 @@ export interface SleepLogRequest {
   wakeTime: string;
   quality: SleepQuality;
   notes?: string;
+  source?: string;
 }
 
 // ─── Steps ─────────────────────────────────────────────────────────────────────
@@ -318,6 +320,8 @@ export interface DailySteps {
 export interface StepsLogRequest {
   date: string;
   steps: number;
+  source?: string;
+  caloriesBurned?: number;
 }
 
 // ─── API Response ──────────────────────────────────────────────────────────────

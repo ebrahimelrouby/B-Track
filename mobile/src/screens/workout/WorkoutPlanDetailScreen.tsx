@@ -173,6 +173,19 @@ export default function WorkoutPlanDetailScreen() {
                   <Text style={[styles.exBadgeText, { color: colors.primary }]}>{exCount}</Text>
                 </View>
               )}
+              {hasEx && (
+                <TouchableOpacity
+                  style={[styles.startBtn, { backgroundColor: colors.primary }]}
+                  onPress={() => navigation.navigate('ActiveWorkout', {
+                    planId: params.planId,
+                    dayId: item.id,
+                    workoutName: item.name,
+                  })}
+                  hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
+                >
+                  <Icon name="play" size={14} color="#000" />
+                </TouchableOpacity>
+              )}
               <TouchableOpacity onPress={() => setMenuDay(item)} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
                 <Icon name="dots-vertical" size={20} color={colors.textTertiary} />
               </TouchableOpacity>
@@ -184,7 +197,7 @@ export default function WorkoutPlanDetailScreen() {
         </TouchableOpacity>
       </ScaleDecorator>
     );
-  }, [colors, styles, navigation, editingDayId, editingName, submitRename, renameDayMutation.isPending]);
+  }, [colors, styles, navigation, params.planId, editingDayId, editingName, submitRename, renameDayMutation.isPending]);
 
   // ── Plan header ───────────────────────────────────────────────────────────────
 
@@ -404,6 +417,10 @@ function getStyles(c: ColorPalette) {
       paddingHorizontal: Spacing.sm, paddingVertical: 4, borderRadius: Radius.full,
     },
     exBadgeText: { fontSize: Typography.xs, fontWeight: Typography.bold },
+    startBtn: {
+      width: 28, height: 28, borderRadius: 14,
+      alignItems: 'center', justifyContent: 'center',
+    },
 
     renameInput: {
       fontSize: Typography.base, fontWeight: Typography.semibold,

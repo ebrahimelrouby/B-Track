@@ -8,6 +8,7 @@ import { RootStackParamList } from './types';
 import { useColors } from '@/theme';
 import { navigationRef } from './navigationRef';
 import { userApi } from '@/api/user.api';
+import { useHealthAutoSync } from '@/hooks/useHealthAutoSync';
 
 import AuthNavigator from './AuthNavigator';
 import OnboardingNavigator from './OnboardingNavigator';
@@ -36,6 +37,8 @@ export default function AppNavigator() {
   useEffect(() => {
     if (entitlements) setEntitlements(entitlements);
   }, [entitlements, setEntitlements]);
+
+  useHealthAutoSync(isAuthenticated);
 
   return (
     <NavigationContainer

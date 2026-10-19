@@ -6,5 +6,7 @@ import java.time.LocalDate;
 
 public record StepsLogRequest(
         @NotNull LocalDate date,
-        @NotNull @Min(0) Integer steps
+        @NotNull @Min(0) Integer steps,
+        String source,
+        Double caloriesBurned
 ) {}

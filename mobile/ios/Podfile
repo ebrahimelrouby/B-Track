@@ -33,5 +33,58 @@ target 'BTrack' do
       :mac_catalyst_enabled => false,
       # :ccache_enabled => true
     )
+
+    # NitroModules (used by @kingstinct/react-native-healthkit) is a Swift
+    # pod, which forces Clang module builds project-wide. glog 0.3.5's
+    # logging.h has two #include lines nested inside `namespace google {
+    # ... }`, which Clang treats as an illegal in-namespace module import
+    # once glog is modularized ("could not build module 'glog'"). Newer
+    # glog releases fixed this by making log_severity.h/vlog_is_on.h
+    # self-contained (wrapped in their own `namespace google {}`) so they
+    # can be included at top level instead of nested — replicate that fix
+    # here since this vendored copy predates it. Must re-run every
+    # `pod install`, since CocoaPods re-vendors these headers each time.
+    def patch_file(path)
+      return unless File.exist?(path)
+      content = File.read(path)
+      patched = yield(content)
+      return if patched == content
+      File.chmod(0644, path)
+      File.write(path, patched)
+    end
+
+    glog_src = File.join(installer.sandbox.root, 'glog', 'src', 'glog')
+
+    # logging.h and raw_logging.h each already have their own
+    # `namespace google { ... }` and re-include their glog/*.h dependencies
+    # as the first thing inside it (for standalone-include safety) — hoist
+    # those nested includes to just above the namespace.
+    def hoist_nested_glog_includes(content)
+      content.sub(/namespace google \{\n\n((?:\/\/[^\n]*\n)?(?:#include "glog\/[\w.]+\.h"\n)+)/) do
+        "#{$1}\nnamespace google {\n\n"
+      end
+    end
+
+    patch_file(File.join(glog_src, 'logging.h')) { |c| hoist_nested_glog_includes(c) }
+    patch_file(File.join(glog_src, 'raw_logging.h')) { |c| hoist_nested_glog_includes(c) }
+
+    # log_severity.h has no namespace of its own — wrap its whole body so
+    # the constants it declares still resolve as `google::GLOG_WARNING`
+    # etc. for code that references them, now that it's included at top
+    # level instead of from inside another header's namespace.
+    patch_file(File.join(glog_src, 'log_severity.h')) do |content|
+      content
+        .sub("#define BASE_LOG_SEVERITY_H__\n", "#define BASE_LOG_SEVERITY_H__\n\nnamespace google {\n")
+        .sub("#endif  // BASE_LOG_SEVERITY_H__", "}  // namespace google\n\n#endif  // BASE_LOG_SEVERITY_H__")
+    end
+
+    # vlog_is_on.h has its own top-level `#include "glog/log_severity.h"`
+    # (not nested — keep it there) followed by declarations that need
+    # wrapping in `namespace google {}` themselves.
+    patch_file(File.join(glog_src, 'vlog_is_on.h')) do |content|
+      content
+        .sub("#include \"glog/log_severity.h\"\n\n", "#include \"glog/log_severity.h\"\n\nnamespace google {\n\n")
+        .sub("#endif  // BASE_VLOG_IS_ON_H_", "}  // namespace google\n\n#endif  // BASE_VLOG_IS_ON_H_")
+    end
   end
 end

@@ -49,6 +49,7 @@ function Stepper({ value, min, max, format, onDecrement, onIncrement }: StepperP
 
 const WATER_DEFAULT = 2500;
 const STEPS_DEFAULT = 8000;
+const SLEEP_DEFAULT = 8;
 
 export default function GoalsStep({ data, onChange }: Props) {
   const { t } = useTranslation();
@@ -56,6 +57,7 @@ export default function GoalsStep({ data, onChange }: Props) {
   const st = useMemo(() => getStyles(colors), [colors]);
   const water = data.waterGoalMl ?? WATER_DEFAULT;
   const steps = data.stepsGoal ?? STEPS_DEFAULT;
+  const sleepHours = data.sleepGoalHours ?? SLEEP_DEFAULT;
 
   return (
     <View style={st.container}>
@@ -123,6 +125,41 @@ export default function GoalsStep({ data, onChange }: Props) {
             >
               <Text style={[st.presetText, steps === v && st.presetTextSelected]}>
                 {v >= 1000 ? `${v / 1000}k` : v}
+              </Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      </View>
+
+      {/* Sleep */}
+      <View style={st.card}>
+        <View style={st.cardHeader}>
+          <View style={[st.iconWrap, { backgroundColor: '#2E1A5C' }]}>
+            <Icon name="moon-waning-crescent" size={22} color="#A78BFA" />
+          </View>
+          <View style={st.cardText}>
+            <Text style={st.cardTitle}>{t('onboarding.sleepGoalTitle')}</Text>
+            <Text style={st.cardSub}>{t('onboarding.sleepGoalDesc')}</Text>
+          </View>
+        </View>
+        <Stepper
+          value={sleepHours}
+          min={5}
+          max={10}
+          step={0.5}
+          format={(v) => `${v}h`}
+          onDecrement={() => onChange({ sleepGoalHours: Math.max(5, Math.round((sleepHours - 0.5) * 2) / 2) })}
+          onIncrement={() => onChange({ sleepGoalHours: Math.min(10, Math.round((sleepHours + 0.5) * 2) / 2) })}
+        />
+        <View style={st.presets}>
+          {[6, 7, 7.5, 8, 9].map((v) => (
+            <TouchableOpacity
+              key={v}
+              style={[st.preset, sleepHours === v && st.presetSelected]}
+              onPress={() => onChange({ sleepGoalHours: v })}
+            >
+              <Text style={[st.presetText, sleepHours === v && st.presetTextSelected]}>
+                {v}h
               </Text>
             </TouchableOpacity>
           ))}

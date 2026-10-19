@@ -62,6 +62,7 @@ export type HealthStackParamList = {
   SleepScreen:       undefined;
   StepsScreen:       undefined;
   HydrationScreen:   undefined;
+  CaloriesScreen:    undefined;
 };
 
 // Root navigator

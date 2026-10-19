@@ -9,12 +9,12 @@
 /* Begin PBXBuildFile section */
 		0C80B921A6F3F58F76C31292 /* libPods-BTrack.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DCACB8F33CDC322A6C60F78 /* libPods-BTrack.a */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		1F35D434ABE6C5D063ACCB4D /* WidgetBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 0579251700262C0652EB4BA4 /* WidgetBridge.m */; };
+		1F35D434ABE6C5D063ACCB4D /* BTrack/WidgetBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 0579251700262C0652EB4BA4 /* BTrack/WidgetBridge.m */; };
 		476E6B111E73F588168FF3A9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FCCC2151FF49809B7C702B3C /* Foundation.framework */; };
 		48368BD9154114E952BE1BCD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		5E9A6050A44C6773926D8A98 /* BTrackWidget.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = 3D2034A9ECA174E1239525D6 /* BTrackWidget.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		5F04BF6B1040A8E63889B7E6 /* TodayGlanceStats.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9CE87F09617D039E42E5D787 /* TodayGlanceStats.swift */; };
-		6B8D34EF4274E41FF337A42F /* WidgetBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C92A5A354617F505C958B7E /* WidgetBridge.swift */; };
+		6B8D34EF4274E41FF337A42F /* BTrack/WidgetBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C92A5A354617F505C958B7E /* BTrack/WidgetBridge.swift */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		89F740B15B3F327D204BCC6E /* TodayGlanceWidgetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F75A123C41338FD7A082EC1 /* TodayGlanceWidgetView.swift */; };
@@ -49,7 +49,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		0579251700262C0652EB4BA4 /* WidgetBridge.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = BTrack/WidgetBridge.m; sourceTree = "<group>"; };
+		0579251700262C0652EB4BA4 /* BTrack/WidgetBridge.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = BTrack/WidgetBridge.m; sourceTree = "<group>"; };
 		13B07F961A680F5B00A75B9A /* BTrack.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BTrack.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = BTrack/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = BTrack/Info.plist; sourceTree = "<group>"; };
@@ -57,8 +57,8 @@
 		3B4392A12AC88292D35C810B /* Pods-BTrack.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BTrack.debug.xcconfig"; path = "Target Support Files/Pods-BTrack/Pods-BTrack.debug.xcconfig"; sourceTree = "<group>"; };
 		3D2034A9ECA174E1239525D6 /* BTrackWidget.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = BTrackWidget.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		5709B34CF0A7D63546082F79 /* Pods-BTrack.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BTrack.release.xcconfig"; path = "Target Support Files/Pods-BTrack/Pods-BTrack.release.xcconfig"; sourceTree = "<group>"; };
-		5C16B2B4172C05237024A09F /* BTrack.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = BTrack/BTrack.entitlements; sourceTree = "<group>"; };
-		5C92A5A354617F505C958B7E /* WidgetBridge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BTrack/WidgetBridge.swift; sourceTree = "<group>"; };
+		5C16B2B4172C05237024A09F /* BTrack/BTrack.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = BTrack/BTrack.entitlements; sourceTree = "<group>"; };
+		5C92A5A354617F505C958B7E /* BTrack/WidgetBridge.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BTrack/WidgetBridge.swift; sourceTree = "<group>"; };
 		5DCACB8F33CDC322A6C60F78 /* libPods-BTrack.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BTrack.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5F75A123C41338FD7A082EC1 /* TodayGlanceWidgetView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodayGlanceWidgetView.swift; sourceTree = "<group>"; };
 		60FECCB5E4DE9767CC081D21 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -67,7 +67,7 @@
 		9CE87F09617D039E42E5D787 /* TodayGlanceStats.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodayGlanceStats.swift; sourceTree = "<group>"; };
 		B1B4BF6AF3BC08A4D1D72AC1 /* BTrackWidget.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = BTrackWidget.entitlements; sourceTree = "<group>"; };
 		BC4670F9B936FAA620D09F32 /* BTrackWidgetBundle.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = BTrackWidgetBundle.swift; sourceTree = "<group>"; };
-		E4728B4C414742219AFA3589 /* poppins.zip */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = undefined; includeInIndex = 0; lastKnownFileType = unknown; name = poppins.zip; path = ../assets/fonts/poppins.zip; sourceTree = "<group>"; };
+		E4728B4C414742219AFA3589 /* poppins.zip */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = poppins.zip; path = ../assets/fonts/poppins.zip; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F87436BEA3D369E391C0F891 /* TodayGlanceProvider.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = TodayGlanceProvider.swift; sourceTree = "<group>"; };
 		FCCC2151FF49809B7C702B3C /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS26.0.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
@@ -101,9 +101,9 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */,
-				5C92A5A354617F505C958B7E /* WidgetBridge.swift */,
-				0579251700262C0652EB4BA4 /* WidgetBridge.m */,
-				5C16B2B4172C05237024A09F /* BTrack.entitlements */,
+				5C92A5A354617F505C958B7E /* BTrack/WidgetBridge.swift */,
+				0579251700262C0652EB4BA4 /* BTrack/WidgetBridge.m */,
+				5C16B2B4172C05237024A09F /* BTrack/BTrack.entitlements */,
 			);
 			name = BTrack;
 			sourceTree = "<group>";
@@ -132,7 +132,6 @@
 				E4728B4C414742219AFA3589 /* poppins.zip */,
 			);
 			name = Resources;
-			path = "";
 			sourceTree = "<group>";
 		};
 		53C1F46177A742C97B0A0A0A /* BTrackWidget */ = {
@@ -145,7 +144,6 @@
 				60FECCB5E4DE9767CC081D21 /* Info.plist */,
 				B1B4BF6AF3BC08A4D1D72AC1 /* BTrackWidget.entitlements */,
 			);
-			name = BTrackWidget;
 			path = BTrackWidget;
 			sourceTree = "<group>";
 		};
@@ -311,9 +309,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BTrack/Pods-BTrack-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BTrack/Pods-BTrack-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -350,9 +352,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BTrack/Pods-BTrack-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-BTrack/Pods-BTrack-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -367,8 +373,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				761780ED2CA45674006654EE /* AppDelegate.swift in Sources */,
-				6B8D34EF4274E41FF337A42F /* WidgetBridge.swift in Sources */,
-				1F35D434ABE6C5D063ACCB4D /* WidgetBridge.m in Sources */,
+				6B8D34EF4274E41FF337A42F /* BTrack/WidgetBridge.swift in Sources */,
+				1F35D434ABE6C5D063ACCB4D /* BTrack/WidgetBridge.m in Sources */,
 				9D5B99D3E6F3B5F8A65B0631 /* TodayGlanceStats.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -404,6 +410,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BTrack/BTrack.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QMU7Q772AP;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = BTrack/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -417,7 +424,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.elrouby.b-track";
 				PRODUCT_NAME = BTrack;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -433,6 +440,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = BTrack/BTrack.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QMU7Q772AP;
 				INFOPLIST_FILE = BTrack/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -445,7 +453,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.elrouby.b-track";
 				PRODUCT_NAME = BTrack;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -459,6 +467,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = BTrackWidget/BTrackWidget.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QMU7Q772AP;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BTrackWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -468,7 +477,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.BTrack.BTrackWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.elrouby.b-track.BTrackWidget";
 				PRODUCT_NAME = BTrackWidget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
@@ -548,10 +557,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "$(inherited) DEBUG";
@@ -620,10 +626,7 @@
 					"-DFOLLY_CFG_NO_COROUTINES=1",
 					"-DFOLLY_HAVE_CLOCK_GETTIME=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					" ",
-				);
+				OTHER_LDFLAGS = "$(inherited)  ";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				USE_HERMES = true;
@@ -638,6 +641,7 @@
 				CLANG_ENABLE_OBJC_WEAK = NO;
 				CODE_SIGN_ENTITLEMENTS = BTrackWidget/BTrackWidget.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = QMU7Q772AP;
 				GENERATE_INFOPLIST_FILE = NO;
 				INFOPLIST_FILE = BTrackWidget/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.1;
@@ -647,7 +651,7 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.BTrack.BTrackWidget;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.elrouby.b-track.BTrackWidget";
 				PRODUCT_NAME = BTrackWidget;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;

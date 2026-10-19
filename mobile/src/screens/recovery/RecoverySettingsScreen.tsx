@@ -8,6 +8,9 @@ import { useTranslation } from 'react-i18next';
 
 import { useColors, ColorPalette, Spacing, Typography, Radius, TAB_BAR_PADDING } from '@/theme';
 import { useAuthStore } from '@/store/auth.store';
+import { useHealthStore } from '@/store/health.store';
+import { healthService } from '@/services/health/healthService';
+import { syncRecentHealthData } from '@/services/health/syncRecent';
 
 function SettingRow({ icon, label, value, onPress, colors }: {
   icon: string; label: string; value?: string; onPress: () => void; colors: ColorPalette;
@@ -57,10 +60,23 @@ export default function RecoverySettingsScreen() {
   const colors = useColors();
   const styles = useMemo(() => getStyles(colors), [colors]);
   const { entitlements } = useAuthStore();
+  const { stepsAuthorized: healthAuthorized, setAuthorized } = useHealthStore();
 
   const { t } = useTranslation();
   const [checkInReminder, setCheckInReminder] = React.useState(true);
   const [autoRecalculate, setAutoRecalculate] = React.useState(true);
+  const [isConnecting, setIsConnecting] = React.useState(false);
+
+  async function handleConnectHealth() {
+    setIsConnecting(true);
+    try {
+      const granted = await healthService.requestAuthorization();
+      setAuthorized(granted);
+      if (granted) await syncRecentHealthData();
+    } finally {
+      setIsConnecting(false);
+    }
+  }
 
   return (
     <View style={[styles.root, { paddingTop: insets.top }]}>
@@ -120,22 +136,37 @@ export default function RecoverySettingsScreen() {
         <Text style={styles.sectionTitle}>{t('recoverySettings.healthPermissions')}</Text>
         <View style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.surfaceBorder }]}>
           {[
-            { icon: 'moon-waning-crescent', label: t('recoverySettings.permSleep'),       status: t('recoverySettings.statusNotConnected') },
+            { icon: 'moon-waning-crescent', label: t('recoverySettings.permSleep'), connectable: true },
+            { icon: 'shoe-sneaker',         label: t('recoverySettings.permSteps'), connectable: true },
             { icon: 'heart-pulse',          label: t('recoverySettings.permHeartRate'),   status: t('recoverySettings.statusNotConnected') },
             { icon: 'heart-flash',          label: t('recoverySettings.permHrv'),         status: t('recoverySettings.statusNotAvailable') },
             { icon: 'water',                label: t('recoverySettings.permRespiratory'), status: t('recoverySettings.statusNotAvailable') },
-            { icon: 'shoe-sneaker',         label: t('recoverySettings.permSteps'),       status: t('recoverySettings.statusNotConnected') },
-          ].map(p => (
-            <View
-              key={p.label}
-              style={[rowS.row, { borderBottomColor: colors.surfaceBorder }]}
-            >
-              <Icon name={p.icon} size={18} color={colors.textTertiary} />
-              <Text style={[rowS.label, { color: colors.textPrimary }]}>{p.label}</Text>
-              <View style={{ flex: 1 }} />
-              <Text style={{ fontSize: Typography.xs, color: colors.textTertiary }}>{p.status}</Text>
-            </View>
-          ))}
+          ].map(p => {
+            const status = p.connectable
+              ? (healthAuthorized ? t('recoverySettings.statusConnected') : t('recoverySettings.statusNotConnected'))
+              : p.status;
+            const statusColor = p.connectable && healthAuthorized ? '#22C55E' : colors.textTertiary;
+            const row = (
+              <View style={[rowS.row, { borderBottomColor: colors.surfaceBorder }]}>
+                <Icon name={p.icon} size={18} color={colors.textTertiary} />
+                <Text style={[rowS.label, { color: colors.textPrimary }]}>{p.label}</Text>
+                <View style={{ flex: 1 }} />
+                {isConnecting && p.connectable && !healthAuthorized ? (
+                  <Text style={{ fontSize: Typography.xs, color: colors.textTertiary }}>{t('recoverySettings.connecting')}</Text>
+                ) : (
+                  <Text style={{ fontSize: Typography.xs, color: statusColor, fontWeight: p.connectable && healthAuthorized ? Typography.semibold : Typography.regular }}>{status}</Text>
+                )}
+                {p.connectable && !healthAuthorized && <Icon name="chevron-right" size={16} color={colors.textTertiary} />}
+              </View>
+            );
+            return p.connectable && !healthAuthorized ? (
+              <TouchableOpacity key={p.label} onPress={handleConnectHealth} disabled={isConnecting} activeOpacity={0.7}>
+                {row}
+              </TouchableOpacity>
+            ) : (
+              <View key={p.label}>{row}</View>
+            );
+          })}
         </View>
         <Text style={[styles.hint, { color: colors.textTertiary }]}>
           {t('recoverySettings.healthHint')}

@@ -5,11 +5,18 @@ export const USE_MOCK_API = false;
 
 // Android emulator can't reach the host machine via `localhost` — it maps
 // `localhost` to the emulator itself, so it needs the special 10.0.2.2 alias.
-// iOS simulator and physical devices on the same network reach `localhost`/LAN fine.
+// iOS Simulator shares the Mac's network stack, so `localhost` works there —
+// but a physical iOS device is a separate device on the network and `localhost`
+// would resolve to the phone itself, not the Mac. Use the Mac's LAN IP for
+// iOS too; it works for both the Simulator and a physical device on the same
+// Wi-Fi network. Update this if your machine's LAN IP changes (check with
+// `ipconfig getifaddr en0`).
+const DEV_LAN_IP = '192.168.100.27';
+
 export const API_BASE_URL = __DEV__
   ? Platform.OS === 'android'
     ? 'http://10.0.2.2:8080/api/v1'
-    : 'http://localhost:8080/api/v1'
+    : `http://${DEV_LAN_IP}:8080/api/v1`
   : 'https://api.btrack.app/api/v1';
 
 export const IAP_PRODUCTS = {

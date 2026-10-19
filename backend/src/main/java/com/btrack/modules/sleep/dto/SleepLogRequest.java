@@ -9,5 +9,6 @@ public record SleepLogRequest(
         @NotBlank String bedtime,   // ISO-8601 datetime
         @NotBlank String wakeTime,  // ISO-8601 datetime
         String quality,             // EXCELLENT | GOOD | FAIR | POOR
-        String notes
+        String notes,
+        String source
 ) {}

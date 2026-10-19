@@ -93,6 +93,10 @@ public class UserProfile extends BaseEntity {
     @Builder.Default
     private Double targetSleepHours = 8.0;
 
+    @Column(name = "target_active_calories")
+    @Builder.Default
+    private Integer targetActiveCalories = 500;
+
     @Column(name = "avatar_url", length = 500)
     private String avatarUrl;
 

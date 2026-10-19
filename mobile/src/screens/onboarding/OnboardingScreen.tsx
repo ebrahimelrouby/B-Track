@@ -32,6 +32,7 @@ export interface OnboardingData {
   dietaryPreference?: string;
   waterGoalMl?: number;
   stepsGoal?: number;
+  sleepGoalHours?: number;
 }
 
 const STEPS = [
@@ -94,6 +95,7 @@ export default function OnboardingScreen() {
         dateOfBirth: data.dateOfBirth,
         targetWaterMl: data.waterGoalMl ?? 2500,
         targetSteps: data.stepsGoal ?? 8000,
+        targetSleepHours: data.sleepGoalHours ?? 8,
       });
       if (user) {
         setAuth({ ...user, onboardingComplete: true });

@@ -10,6 +10,7 @@ import RecoverySettingsScreen from '@/screens/recovery/RecoverySettingsScreen';
 import SleepScreen            from '@/screens/sleep/SleepScreen';
 import StepsScreen            from '@/screens/steps/StepsScreen';
 import HydrationScreen        from '@/screens/water/HydrationScreen';
+import CaloriesScreen         from '@/screens/calories/CaloriesScreen';
 
 const Stack = createNativeStackNavigator<HealthStackParamList>();
 
@@ -28,6 +29,7 @@ export default function HealthNavigator() {
       <Stack.Screen name="SleepScreen"      component={SleepScreen} />
       <Stack.Screen name="StepsScreen"      component={StepsScreen} />
       <Stack.Screen name="HydrationScreen"  component={HydrationScreen} />
+      <Stack.Screen name="CaloriesScreen"   component={CaloriesScreen} />
     </Stack.Navigator>
   );
 }

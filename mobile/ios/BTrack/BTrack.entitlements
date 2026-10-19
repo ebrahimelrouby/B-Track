@@ -6,5 +6,7 @@
 	<array>
 		<string>group.org.reactjs.native.example.BTrack</string>
 	</array>
+	<key>com.apple.developer.healthkit</key>
+	<true/>
 </dict>
 </plist>

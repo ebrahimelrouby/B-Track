@@ -27,7 +27,7 @@ public class SleepService {
     private final UserRepository userRepository;
 
     public DailySleepResponse getToday(UUID userId) {
-        return toDaily(LocalDate.now(), sleepLogRepository
+        return toDaily(userId, LocalDate.now(), sleepLogRepository
                 .findByUserIdAndDate(userId, LocalDate.now())
                 .map(List::of).orElse(List.of()));
     }
@@ -36,7 +36,7 @@ public class SleepService {
         LocalDate from = LocalDate.now().minusDays(days - 1L);
         return sleepLogRepository.findByUserIdSince(userId, from)
                 .stream()
-                .map(log -> toDaily(log.getDate(), List.of(log)))
+                .map(log -> toDaily(userId, log.getDate(), List.of(log)))
                 .toList();
     }
 
@@ -61,7 +61,7 @@ public class SleepService {
         log.setQualityScore(qualityToScore(req.quality()));
         log.setMoodAfterSleep(req.quality());
         log.setNotes(req.notes());
-        log.setSource("manual");
+        log.setSource(req.source() != null ? req.source() : "manual");
         sleepLogRepository.save(log);
         return toResponse(log);
     }
@@ -78,11 +78,19 @@ public class SleepService {
 
     // ── Mappers ────────────────────────────────────────────────────────────────
 
-    private DailySleepResponse toDaily(LocalDate date, List<SleepLog> logs) {
+    private DailySleepResponse toDaily(UUID userId, LocalDate date, List<SleepLog> logs) {
         int total = logs.stream().mapToInt(SleepLog::getDurationMinutes).sum();
         String quality = logs.isEmpty() ? null : qualityLabel(logs.get(0).getQualityScore());
         return new DailySleepResponse(date, logs.stream().map(this::toResponse).toList(),
-                total, DEFAULT_TARGET_MINUTES, quality);
+                total, targetMinutesFor(userId), quality);
+    }
+
+    private int targetMinutesFor(UUID userId) {
+        return userRepository.findByIdWithProfile(userId)
+                .map(u -> u.getProfile())
+                .map(p -> p.getTargetSleepHours())
+                .map(hours -> (int) Math.round(hours * 60))
+                .orElse(DEFAULT_TARGET_MINUTES);
     }
 
     private SleepLogResponse toResponse(SleepLog log) {

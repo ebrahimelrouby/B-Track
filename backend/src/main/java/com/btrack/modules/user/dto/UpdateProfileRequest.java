@@ -18,5 +18,6 @@ public record UpdateProfileRequest(
         List<String> preferredWorkoutDays,
         Integer targetWaterMl,
         Integer targetSteps,
-        Double targetSleepHours
+        Double targetSleepHours,
+        Integer targetActiveCalories
 ) {}

@@ -3,6 +3,19 @@
   "reactNativePath": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native",
   "reactNativeVersion": "0.79",
   "dependencies": {
+    "@kingstinct/react-native-healthkit": {
+      "root": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/@kingstinct/react-native-healthkit",
+      "name": "@kingstinct/react-native-healthkit",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/@kingstinct/react-native-healthkit/ReactNativeHealthkit.podspec",
+          "version": "14.1.0",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": null
+      }
+    },
     "@react-native-async-storage/async-storage": {
       "root": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/@react-native-async-storage/async-storage",
       "name": "@react-native-async-storage/async-storage",
@@ -152,6 +165,26 @@
         }
       }
     },
+    "react-native-health-connect": {
+      "root": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-health-connect",
+      "name": "react-native-health-connect",
+      "platforms": {
+        "ios": null,
+        "android": {
+          "sourceDir": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-health-connect/android",
+          "packageImportPath": "import dev.matinzd.healthconnect.HealthConnectPackage;",
+          "packageInstance": "new HealthConnectPackage()",
+          "buildTypes": [],
+          "libraryName": "RNHealthConnectSpec",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-health-connect/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
+          "isPureCxxDependency": false
+        }
+      }
+    },
     "react-native-iap": {
       "root": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-iap",
       "name": "react-native-iap",
@@ -223,6 +256,31 @@
           "cxxModuleCMakeListsModuleName": "react-native-mmkv",
           "cxxModuleCMakeListsPath": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-mmkv/android/CMakeLists.txt",
           "cxxModuleHeaderName": "NativeMmkvModule",
+          "isPureCxxDependency": false
+        }
+      }
+    },
+    "react-native-nitro-modules": {
+      "root": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-nitro-modules",
+      "name": "react-native-nitro-modules",
+      "platforms": {
+        "ios": {
+          "podspecPath": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-nitro-modules/NitroModules.podspec",
+          "version": "0.37.1",
+          "configurations": [],
+          "scriptPhases": []
+        },
+        "android": {
+          "sourceDir": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-nitro-modules/android",
+          "packageImportPath": "import com.margelo.nitro.NitroModulesPackage;",
+          "packageInstance": "new NitroModulesPackage()",
+          "buildTypes": [],
+          "libraryName": "NitroModulesSpec",
+          "componentDescriptors": [],
+          "cmakeListsPath": "/Users/ElRouby/Downloads/B-Track/mobile/node_modules/react-native-nitro-modules/android/build/generated/source/codegen/jni/CMakeLists.txt",
+          "cxxModuleCMakeListsModuleName": null,
+          "cxxModuleCMakeListsPath": null,
+          "cxxModuleHeaderName": null,
           "isPureCxxDependency": false
         }
       }

@@ -281,8 +281,8 @@ function SleepCard({
             style={[scStyles.logBtn, { backgroundColor: SLEEP_COLOR + '20' }]}
             onPress={onLog}
           >
-            <Icon name="plus" size={13} color={SLEEP_COLOR} />
-            <Text style={[scStyles.logBtnText, { color: SLEEP_COLOR }]}>{t('healthHub.logBtn')}</Text>
+            <Icon name="heart-plus-outline" size={13} color={SLEEP_COLOR} />
+            <Text style={[scStyles.logBtnText, { color: SLEEP_COLOR }]}>{t('healthHub.connectBtn')}</Text>
           </TouchableOpacity>
         )}
         <Icon name="chevron-right" size={16} color={colors.textTertiary} />
@@ -325,7 +325,7 @@ function SleepCard({
           style={[scStyles.emptyState, { backgroundColor: SLEEP_COLOR + '10', borderColor: SLEEP_COLOR + '30' }]}
           onPress={onLog}
         >
-          <Icon name="plus-circle-outline" size={20} color={SLEEP_COLOR} />
+          <Icon name="heart-plus-outline" size={20} color={SLEEP_COLOR} />
           <Text style={[scStyles.emptyText, { color: SLEEP_COLOR }]}>{t('healthHub.sleepCardDesc')}</Text>
         </TouchableOpacity>
       )}
@@ -360,8 +360,8 @@ const scStyles = StyleSheet.create({
 // ─── Steps card ───────────────────────────────────────────────────────────────
 
 function StepsCard({
-  steps, onPress, colors,
-}: { steps: DailySteps; onPress: () => void; colors: ColorPalette }) {
+  steps, onPress, onCaloriesPress, colors,
+}: { steps: DailySteps; onPress: () => void; onCaloriesPress: () => void; colors: ColorPalette }) {
   const { t } = useTranslation();
   const pct    = Math.min(steps.steps / steps.targetSteps, 1);
   const isDone = steps.steps >= steps.targetSteps;
@@ -422,10 +422,11 @@ function StepsCard({
           <Icon name="map-marker-distance" size={12} color={colors.textTertiary} />
           <Text style={[stStyles.statVal, { color: colors.textSecondary }]}>{steps.distanceKm} km</Text>
         </View>
-        <View style={stStyles.statItem}>
-          <Icon name="fire" size={12} color={colors.textTertiary} />
-          <Text style={[stStyles.statVal, { color: colors.textSecondary }]}>{steps.caloriesBurned} kcal</Text>
-        </View>
+        <TouchableOpacity style={stStyles.statItem} onPress={onCaloriesPress} hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}>
+          <Icon name="fire" size={12} color="#F97316" />
+          <Text style={[stStyles.statVal, { color: '#F97316', fontWeight: Typography.semibold }]}>{steps.caloriesBurned} kcal</Text>
+          <Icon name="chevron-right" size={10} color="#F97316" />
+        </TouchableOpacity>
         <View style={stStyles.statItem}>
           <Icon name="timer-outline" size={12} color={colors.textTertiary} />
           <Text style={[stStyles.statVal, { color: colors.textSecondary }]}>{steps.activeMinutes} min</Text>
@@ -801,7 +802,7 @@ export default function HealthHubScreen() {
         <SleepCard
           sleep={sleep}
           onPress={() => navigation.navigate('SleepScreen')}
-          onLog={() => navigation.navigate('SleepScreen')}
+          onLog={() => navigation.navigate('RecoverySettings')}
           colors={colors}
         />
       )}
@@ -812,6 +813,7 @@ export default function HealthHubScreen() {
         <StepsCard
           steps={steps}
           onPress={() => navigation.navigate('StepsScreen')}
+          onCaloriesPress={() => navigation.navigate('CaloriesScreen')}
           colors={colors}
         />
       )}

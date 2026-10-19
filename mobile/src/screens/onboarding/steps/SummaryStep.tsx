@@ -60,6 +60,7 @@ export default function SummaryStep({ data }: Props) {
 
   const waterL = data.waterGoalMl ? (data.waterGoalMl / 1000).toFixed(1) : '2.5';
   const steps = data.stepsGoal?.toLocaleString() ?? '8,000';
+  const sleepHours = data.sleepGoalHours ?? 8;
 
   const goalIcon = GOAL_ICONS[data.fitnessGoal ?? ''] ?? 'lightning-bolt';
 
@@ -131,6 +132,13 @@ export default function SummaryStep({ data }: Props) {
           </View>
           <Text style={styles.activityValue}>{steps}</Text>
           <Text style={styles.activityLabel}>{t('onboarding.summarySteps')}</Text>
+        </View>
+        <View style={[styles.activityCard, { borderColor: '#A78BFA44' }]}>
+          <View style={[styles.activityIcon, { backgroundColor: '#2E1A5C' }]}>
+            <Icon name="moon-waning-crescent" size={18} color="#A78BFA" />
+          </View>
+          <Text style={styles.activityValue}>{sleepHours}h</Text>
+          <Text style={styles.activityLabel}>{t('onboarding.summarySleep')}</Text>
         </View>
       </View>
 

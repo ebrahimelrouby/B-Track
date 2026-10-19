@@ -23,6 +23,7 @@ public record UserProfileResponse(
         Integer targetWaterMl,
         Integer targetSteps,
         Double targetSleepHours,
+        Integer targetActiveCalories,
         String avatarUrl
 ) {
     public static UserProfileResponse from(UserProfile p) {
@@ -45,6 +46,7 @@ public record UserProfileResponse(
                 p.getTargetWaterMl(),
                 p.getTargetSteps(),
                 p.getTargetSleepHours(),
+                p.getTargetActiveCalories(),
                 p.getAvatarUrl()
         );
     }

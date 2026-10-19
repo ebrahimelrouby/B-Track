@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity,
-  TextInput, Modal, Image,
+  TextInput, Modal, Image, Animated,
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useMutation } from '@tanstack/react-query';
@@ -18,6 +18,7 @@ import { workoutApi } from '@/api/workout.api';
 import { ActiveExercise, ActiveSet, MuscleGroup, SetType, WorkoutSet } from '@/types';
 import { WorkoutStackParamList, WorkoutNavigationProp } from '@/navigation/types';
 import { pushWorkoutStateToWatch, subscribeToWatchActions } from '@/native/watch';
+import { startAppleWatchWorkout } from '@/native/appleWatchWorkout';
 
 type RouteProps = RouteProp<WorkoutStackParamList, 'ActiveWorkout'>;
 
@@ -510,9 +511,23 @@ export default function ActiveWorkoutScreen() {
   const loadedIds    = useRef<Set<string>>(new Set());
   const syncMutation = useMutation({ mutationFn: workoutApi.syncSession });
 
+  // Pulsing "recording" dot next to the live timer.
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+  useEffect(() => {
+    const loop = Animated.loop(
+      Animated.sequence([
+        Animated.timing(pulseAnim, { toValue: 0.25, duration: 700, useNativeDriver: true }),
+        Animated.timing(pulseAnim, { toValue: 1, duration: 700, useNativeDriver: true }),
+      ]),
+    );
+    loop.start();
+    return () => loop.stop();
+  }, [pulseAnim]);
+
   useEffect(() => {
     if (!isWorkoutActive) {
       startWorkout({ planId: params.planId, dayId: params.dayId, name: params.workoutName });
+      startAppleWatchWorkout();
     }
   }, []);
 
@@ -710,9 +725,10 @@ export default function ActiveWorkoutScreen() {
 
           <View style={styles.headerCenter}>
             <Text style={styles.workoutLabel} numberOfLines={1}>{activeWorkout.name}</Text>
-            {/* Glow halo behind timer */}
-            <View style={styles.timerGlow} />
-            <Text style={styles.timerText}>{formatTime(elapsedSeconds)}</Text>
+            <View style={styles.timerPill}>
+              <Animated.View style={[styles.timerDot, { opacity: pulseAnim }]} />
+              <Text style={styles.timerText}>{formatTime(elapsedSeconds)}</Text>
+            </View>
           </View>
 
           <TouchableOpacity
@@ -847,24 +863,26 @@ function getStyles(c: ColorPalette) {
       borderWidth: 1, borderColor: c.surfaceBorder,
       alignItems: 'center', justifyContent: 'center',
     },
-    headerCenter: { flex: 1, alignItems: 'center', paddingHorizontal: Spacing.sm },
+    headerCenter: { flex: 1, alignItems: 'center', paddingHorizontal: Spacing.sm, gap: 5 },
     workoutLabel: {
-      fontSize: Typography.xl, fontWeight: Typography.bold,
-      color: c.textPrimary, letterSpacing: 0.2,
+      fontSize: Typography.sm, fontWeight: Typography.bold,
+      color: c.textSecondary, letterSpacing: 0.8,
+      textTransform: 'uppercase',
     },
-    timerGlow: {
-      position: 'absolute',
-      width: 120, height: 40,
-      borderRadius: 60,
-      backgroundColor: c.primary,
-      opacity: 0.08,
-      top: 6,
-      alignSelf: 'center',
+    timerPill: {
+      flexDirection: 'row', alignItems: 'center', gap: 7,
+      backgroundColor: c.primary + '1A',
+      borderWidth: 1, borderColor: c.primary + '40',
+      paddingHorizontal: 14, paddingVertical: 5,
+      borderRadius: Radius.full,
+    },
+    timerDot: {
+      width: 7, height: 7, borderRadius: 3.5, backgroundColor: c.primary,
     },
     timerText: {
-      fontSize: 22, fontWeight: Typography.bold,
+      fontSize: 20, fontWeight: Typography.extrabold,
       color: c.primary, fontVariant: ['tabular-nums'],
-      letterSpacing: 0, marginTop: 2,
+      letterSpacing: 0.4,
     },
     finishBtn: {
       flexDirection: 'row', alignItems: 'center', gap: 6,

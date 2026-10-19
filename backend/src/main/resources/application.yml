@@ -39,6 +39,16 @@ spring:
     deserialization:
       fail-on-unknown-properties: false
 
+  servlet:
+    multipart:
+      # Spring Boot's own default here is 1MB, distinct from the app.upload.max-file-size
+      # property below (which is only used for app-level validation, not the actual HTTP
+      # upload ceiling) — real camera photos from react-native-image-picker at full quality
+      # are routinely 2-8MB, so without this override every AI photo scan upload gets
+      # rejected by Tomcat before the request even reaches the controller.
+      max-file-size: 10MB
+      max-request-size: 10MB
+
   mail:
     host: ${MAIL_HOST:}
     port: ${MAIL_PORT:587}
@@ -139,10 +149,16 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,prometheus
   endpoint:
     health:
       show-details: when_authorized
+  metrics:
+    tags:
+      application: ${spring.application.name}
+    distribution:
+      percentiles-histogram:
+        http.server.requests: true
   health:
     # Mail is optional/best-effort by design (see btrack.mail) — with no
     # MAIL_HOST configured, Actuator's mail indicator otherwise tries a real
