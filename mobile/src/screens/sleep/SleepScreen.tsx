@@ -3,6 +3,7 @@ import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
   RefreshControl, I18nManager } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { HealthNavigationProp } from '@/navigation/types';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Svg, { Circle } from 'react-native-svg';
@@ -158,7 +159,7 @@ function qualityLabelKey(q: SleepQuality): string {
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 
 export default function SleepScreen() {
-  const navigation = useNavigation();
+  const navigation = useNavigation<HealthNavigationProp>();
   const insets  = useSafeAreaInsets();
   const colors  = useColors();
   const qc      = useQueryClient();
@@ -339,6 +340,20 @@ export default function SleepScreen() {
             </>
           )}
         </View>
+
+        {/* Smart Alarm entry */}
+        <TouchableOpacity
+          style={{ flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, backgroundColor: colors.surface, borderRadius: Radius.lg, borderWidth: 1, borderColor: colors.surfaceBorder, padding: Spacing.base }}
+          onPress={() => navigation.navigate('SmartAlarm')}
+        >
+          <View style={{ width: 36, height: 36, borderRadius: 18, backgroundColor: SLEEP_COLOR + '20', alignItems: 'center', justifyContent: 'center' }}>
+            <Icon name="alarm" size={18} color={SLEEP_COLOR} />
+          </View>
+          <Text style={{ flex: 1, fontSize: Typography.base, fontWeight: Typography.semibold, color: colors.textPrimary }}>
+            {t('smartAlarm.title')}
+          </Text>
+          <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={20} color={colors.textTertiary} />
+        </TouchableOpacity>
 
         {/* Weekly chart */}
         {history.length > 0 && (

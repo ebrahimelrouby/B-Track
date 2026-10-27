@@ -11,6 +11,8 @@ import SleepScreen            from '@/screens/sleep/SleepScreen';
 import StepsScreen            from '@/screens/steps/StepsScreen';
 import HydrationScreen        from '@/screens/water/HydrationScreen';
 import CaloriesScreen         from '@/screens/calories/CaloriesScreen';
+import SmartAlarmScreen       from '@/screens/sleep/SmartAlarmScreen';
+import CreateAlarmScreen      from '@/screens/sleep/CreateAlarmScreen';
 
 const Stack = createNativeStackNavigator<HealthStackParamList>();
 
@@ -30,6 +32,12 @@ export default function HealthNavigator() {
       <Stack.Screen name="StepsScreen"      component={StepsScreen} />
       <Stack.Screen name="HydrationScreen"  component={HydrationScreen} />
       <Stack.Screen name="CaloriesScreen"   component={CaloriesScreen} />
+      <Stack.Screen name="SmartAlarm"       component={SmartAlarmScreen} />
+      <Stack.Screen
+        name="CreateAlarm"
+        component={CreateAlarmScreen}
+        options={{ presentation: 'formSheet', headerShown: false }}
+      />
     </Stack.Navigator>
   );
 }

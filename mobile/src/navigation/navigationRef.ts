@@ -18,3 +18,10 @@ export function navigateToActiveWorkout(workoutName: string): void {
     } as never
   );
 }
+
+// Takes over the screen when an alarm notification is pressed — root-level
+// so it works regardless of which tab/stack was open, including cold start.
+export function navigateToAlarmRinging(alarmId: string): void {
+  if (!navigationRef.isReady()) return;
+  navigationRef.navigate('AlarmRinging' as never, { alarmId } as never);
+}

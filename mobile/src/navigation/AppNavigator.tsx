@@ -6,9 +6,10 @@ import { useAuthStore } from '@/store/auth.store';
 import { useThemeStore } from '@/store/theme.store';
 import { RootStackParamList } from './types';
 import { useColors } from '@/theme';
-import { navigationRef } from './navigationRef';
+import { navigationRef, navigateToAlarmRinging } from './navigationRef';
 import { userApi } from '@/api/user.api';
 import { useHealthAutoSync } from '@/hooks/useHealthAutoSync';
+import { takePendingAlarmId } from '@/services/pendingAlarm';
 
 import AuthNavigator from './AuthNavigator';
 import OnboardingNavigator from './OnboardingNavigator';
@@ -17,6 +18,7 @@ import LockedFeatureScreen from '@/screens/premium/LockedFeatureScreen';
 import UpgradeScreen from '@/screens/premium/UpgradeScreen';
 import AiNavigator from './AiNavigator';
 import NotificationsScreen from '@/screens/notifications/NotificationsScreen';
+import AlarmRingingScreen from '@/screens/sleep/AlarmRingingScreen';
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -43,6 +45,13 @@ export default function AppNavigator() {
   return (
     <NavigationContainer
       ref={navigationRef}
+      onReady={() => {
+        // Picks up an alarm id stashed by index.js's background notification
+        // handler (app was backgrounded/killed when the alarm notification
+        // was pressed) — navigationRef wasn't ready yet at that point.
+        const alarmId = takePendingAlarmId();
+        if (alarmId) navigateToAlarmRinging(alarmId);
+      }}
       theme={{
         dark: isDark,
         colors: {
@@ -87,6 +96,11 @@ export default function AppNavigator() {
               name="Notifications"
               component={NotificationsScreen}
               options={{ presentation: 'modal' }}
+            />
+            <Stack.Screen
+              name="AlarmRinging"
+              component={AlarmRingingScreen}
+              options={{ presentation: 'fullScreenModal', headerShown: false, gestureEnabled: false }}
             />
           </>
         )}

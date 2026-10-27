@@ -151,7 +151,7 @@ export default function ExerciseDetailScreen() {
 
       {/* Muscle info */}
       <View style={styles.section}>
-        <Text style={styles.sectionTitle}>{t('exerciseDetail.muscleGroup')}</Text>
+        <Text style={[styles.sectionTitle, styles.sectionTitleSpaced]}>{t('exerciseDetail.muscleGroup')}</Text>
         <Card style={styles.muscleCard}>
           <View style={styles.muscleRow}>
             <View style={[styles.muscleIconWrap, { backgroundColor: muscleColor + '22' }]}>
@@ -232,8 +232,9 @@ function getStyles(c: ColorPalette) {
 
     section: { marginBottom: Spacing.xl },
     sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: Spacing.md },
-    sectionHeaderLeft: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+    sectionHeaderLeft: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, marginBottom: Spacing.md },
     sectionTitle: { fontSize: Typography.md, fontWeight: Typography.semibold, color: c.textPrimary },
+    sectionTitleSpaced: { marginBottom: Spacing.md },
     gifBadge: {
       flexDirection: 'row', alignItems: 'center', gap: 4,
       paddingHorizontal: Spacing.sm, paddingVertical: 3,

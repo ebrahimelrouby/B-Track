@@ -63,6 +63,8 @@ export type HealthStackParamList = {
   StepsScreen:       undefined;
   HydrationScreen:   undefined;
   CaloriesScreen:    undefined;
+  SmartAlarm:        undefined;
+  CreateAlarm:       { recommendedTime?: string; cycles?: number } | undefined;
 };
 
 // Root navigator
@@ -74,6 +76,7 @@ export type RootStackParamList = {
   Upgrade: undefined;
   AiStack: NavigatorScreenParams<AiStackParamList> | undefined;
   Notifications: undefined;
+  AlarmRinging: { alarmId: string };
 };
 
 // Navigation prop helpers

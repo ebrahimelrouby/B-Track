@@ -68,23 +68,35 @@ target 'BTrack' do
     patch_file(File.join(glog_src, 'logging.h')) { |c| hoist_nested_glog_includes(c) }
     patch_file(File.join(glog_src, 'raw_logging.h')) { |c| hoist_nested_glog_includes(c) }
 
-    # log_severity.h has no namespace of its own — wrap its whole body so
-    # the constants it declares still resolve as `google::GLOG_WARNING`
-    # etc. for code that references them, now that it's included at top
-    # level instead of from inside another header's namespace.
+    # log_severity.h has no namespace of its own on older vendored glog —
+    # wrap its whole body so the constants it declares still resolve as
+    # `google::GLOG_WARNING` etc. for code that references them, now that
+    # it's included at top level instead of from inside another header's
+    # namespace. Newer vendored glog copies already self-wrap this file, so
+    # guard against double-wrapping (`google::google::LogSeverity`) by
+    # skipping if a `namespace google {` is already present.
     patch_file(File.join(glog_src, 'log_severity.h')) do |content|
-      content
-        .sub("#define BASE_LOG_SEVERITY_H__\n", "#define BASE_LOG_SEVERITY_H__\n\nnamespace google {\n")
-        .sub("#endif  // BASE_LOG_SEVERITY_H__", "}  // namespace google\n\n#endif  // BASE_LOG_SEVERITY_H__")
+      if content.include?('namespace google {')
+        content
+      else
+        content
+          .sub("#define BASE_LOG_SEVERITY_H__\n", "#define BASE_LOG_SEVERITY_H__\n\nnamespace google {\n")
+          .sub("#endif  // BASE_LOG_SEVERITY_H__", "}  // namespace google\n\n#endif  // BASE_LOG_SEVERITY_H__")
+      end
     end
 
     # vlog_is_on.h has its own top-level `#include "glog/log_severity.h"`
     # (not nested — keep it there) followed by declarations that need
-    # wrapping in `namespace google {}` themselves.
+    # wrapping in `namespace google {}` themselves, unless (same as above)
+    # this vendored copy already self-wraps.
     patch_file(File.join(glog_src, 'vlog_is_on.h')) do |content|
-      content
-        .sub("#include \"glog/log_severity.h\"\n\n", "#include \"glog/log_severity.h\"\n\nnamespace google {\n\n")
-        .sub("#endif  // BASE_VLOG_IS_ON_H_", "}  // namespace google\n\n#endif  // BASE_VLOG_IS_ON_H_")
+      if content.include?('namespace google {')
+        content
+      else
+        content
+          .sub("#include \"glog/log_severity.h\"\n\n", "#include \"glog/log_severity.h\"\n\nnamespace google {\n\n")
+          .sub("#endif  // BASE_VLOG_IS_ON_H_", "}  // namespace google\n\n#endif  // BASE_VLOG_IS_ON_H_")
+      end
     end
   end
 end

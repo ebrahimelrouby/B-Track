@@ -3,11 +3,12 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { withIAPContext } from 'react-native-iap';
+import notifee, { EventType } from 'react-native-notify-kit';
 
 import '@/i18n';
 import AppNavigator from '@/navigation/AppNavigator';
 import { subscribeToWatchActions } from '@/native/watch';
-import { navigateToActiveWorkout } from '@/navigation/navigationRef';
+import { navigateToActiveWorkout, navigateToAlarmRinging } from '@/navigation/navigationRef';
 import { useActiveWorkoutStore } from '@/store/activeWorkout.store';
 
 const queryClient = new QueryClient({
@@ -33,6 +34,17 @@ function App() {
     if (useActiveWorkoutStore.getState().isWorkoutActive) return;
     useActiveWorkoutStore.getState().startWorkout({ name: 'Quick Workout' });
     navigateToActiveWorkout('Quick Workout');
+  }), []);
+
+  // Notification pressed while already foregrounded (app wasn't killed, so
+  // notifee delivers this here instead of through the background handler
+  // in index.js). The cold-start/backgrounded case is handled by
+  // AppNavigator's NavigationContainer `onReady`, which flushes whatever
+  // index.js stashed via pendingAlarm.ts.
+  useEffect(() => notifee.onForegroundEvent(({ type, detail }) => {
+    if (type !== EventType.PRESS) return;
+    const alarmId = detail.notification?.data?.alarmId;
+    if (typeof alarmId === 'string') navigateToAlarmRinging(alarmId);
   }), []);
 
   return (

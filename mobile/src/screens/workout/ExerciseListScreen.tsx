@@ -177,6 +177,16 @@ function CreateExerciseModal({
 }) {
   const insets = useSafeAreaInsets();
   const { t } = useTranslation();
+  // Numeric, not '90%'/'60%' — the sheet's immediate parent (the bare
+  // Pressable wrapping it, used only to swallow taps) sizes to its content,
+  // not the screen, so a percentage maxHeight here doesn't resolve against
+  // anything and gets ignored. That left the ScrollView's `flex: 1` with no
+  // definite space to size against, collapsing it to ~0 height — the form
+  // rendered as just the drag handle and footer with nothing in between.
+  const windowHeight = Dimensions.get('window').height;
+  // Footer: paddingTop (Spacing.md) + button (16 vertical padding * 2 + ~24
+  // for the icon/text row) + its own bottom safe-area padding.
+  const FOOTER_RESERVED_HEIGHT = Spacing.md + 16 * 2 + 24 + insets.bottom + Spacing.base;
   const [name, setName] = useState('');
   const [muscle, setMuscle] = useState<MuscleGroup>('CHEST');
   const [equipment, setEquipment] = useState<EquipmentType>('BARBELL');
@@ -256,18 +266,19 @@ function CreateExerciseModal({
     sheet: {
       backgroundColor: colors.surface,
       borderTopLeftRadius: 24, borderTopRightRadius: 24,
-      paddingHorizontal: Spacing.base,
-      paddingBottom: insets.bottom + Spacing.base,
-      maxHeight: '90%',
+      maxHeight: windowHeight * 0.9,
     },
     scrollArea: { flexShrink: 1 },
+    // Reserve room for the absolutely-positioned footer so scrolled content
+    // never ends up hidden behind it (see `footer` below).
+    scrollContent: { paddingHorizontal: Spacing.base, paddingBottom: FOOTER_RESERVED_HEIGHT },
     handle: {
       width: 36, height: 4, borderRadius: 2,
       backgroundColor: colors.surfaceBorder, alignSelf: 'center', marginVertical: Spacing.md,
     },
     title: {
       fontSize: Typography.lg, fontWeight: Typography.bold,
-      color: colors.textPrimary, marginBottom: Spacing.md,
+      color: colors.textPrimary, marginBottom: Spacing.lg,
     },
     label: {
       fontSize: Typography.xs, fontWeight: Typography.semibold,
@@ -278,24 +289,58 @@ function CreateExerciseModal({
       backgroundColor: colors.surfaceElevated, borderRadius: Radius.md,
       borderWidth: 1, borderColor: colors.surfaceBorder,
       paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm,
-      fontSize: Typography.base, color: colors.textPrimary, marginBottom: Spacing.md,
+      fontSize: Typography.base, color: colors.textPrimary,
     },
+    // Live preview — the visual anchor at the top of the form.
+    previewCard: {
+      alignItems: 'center', gap: Spacing.sm,
+      backgroundColor: colors.surfaceElevated, borderRadius: Radius.lg,
+      borderWidth: 1, borderColor: colors.surfaceBorder,
+      paddingVertical: Spacing.lg, paddingHorizontal: Spacing.base,
+      marginBottom: Spacing.lg,
+    },
+    previewIconBig: {
+      width: 64, height: 64, borderRadius: 32,
+      alignItems: 'center', justifyContent: 'center', borderWidth: 2,
+    },
+    previewNameBig: { fontSize: Typography.lg, fontWeight: Typography.bold, color: colors.textPrimary },
+    previewMetaRow: { flexDirection: 'row', gap: 8 },
+    previewChip: {
+      flexDirection: 'row', alignItems: 'center', gap: 4,
+      backgroundColor: colors.background, borderRadius: Radius.full,
+      paddingHorizontal: 10, paddingVertical: 4,
+    },
+    previewChipText: {
+      fontSize: Typography.xs, fontWeight: Typography.semibold,
+      color: colors.textSecondary, textTransform: 'capitalize',
+    },
+    // Section cards group related fields with a shared panel — fields inside
+    // use `colors.background` (a step darker than the card) so they read as
+    // recessed/inset against the card, same depth convention as the preview chips.
+    sectionCard: {
+      backgroundColor: colors.surfaceElevated, borderRadius: Radius.lg,
+      borderWidth: 1, borderColor: colors.surfaceBorder,
+      padding: Spacing.base, marginBottom: Spacing.lg,
+    },
+    sectionDivider: { height: 1, backgroundColor: colors.surfaceBorder, marginVertical: Spacing.md },
     picker: {
-      flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
-      backgroundColor: colors.surfaceElevated, borderRadius: Radius.md,
+      flexDirection: 'row', alignItems: 'center', gap: Spacing.sm,
+      backgroundColor: colors.background, borderRadius: Radius.md,
       borderWidth: 1, borderColor: colors.surfaceBorder,
       paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm,
     },
-    pickerActive: { borderColor: colors.primary, backgroundColor: colors.primaryDim },
+    pickerBadge: { width: 24, height: 24, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
     pickerText: { fontSize: Typography.base, color: colors.textPrimary, textTransform: 'capitalize', flex: 1 },
-    pickerTextActive: { color: colors.primary },
-    // Inline option list
-    optionList: {
-      borderRadius: Radius.md, borderWidth: 1,
-      borderColor: colors.primary + '55',
-      backgroundColor: colors.surfaceElevated,
-      marginTop: 4, marginBottom: Spacing.md,
-      maxHeight: 200, overflow: 'hidden',
+    // Picker option list — rendered inside its own overlay Modal (see
+    // pickerOverlay/pickerSheet below) rather than inline, so opening it
+    // doesn't shove the rest of the form down the screen.
+    pickerOverlay: { flex: 1, backgroundColor: 'rgba(0,0,0,0.65)', justifyContent: 'flex-end' },
+    pickerSheet: {
+      backgroundColor: colors.surface,
+      borderTopLeftRadius: 24, borderTopRightRadius: 24,
+      paddingHorizontal: Spacing.base,
+      paddingBottom: insets.bottom + Spacing.base,
+      maxHeight: windowHeight * 0.6,
     },
     optionRow: {
       paddingHorizontal: Spacing.md, paddingVertical: 12,
@@ -303,42 +348,42 @@ function CreateExerciseModal({
       flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
     },
     optionText: { fontSize: Typography.base, color: colors.textPrimary, textTransform: 'capitalize' },
-    pickerGap: { marginBottom: Spacing.md },
     otherInput: {
-      backgroundColor: colors.surfaceElevated, borderRadius: Radius.md,
+      backgroundColor: colors.background, borderRadius: Radius.md,
       borderWidth: 1, borderColor: colors.primary + '80',
       paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm,
       fontSize: Typography.base, color: colors.textPrimary,
-      marginTop: 6, marginBottom: Spacing.md,
+      marginTop: Spacing.sm,
+    },
+    // Absolutely positioned over the scroll area rather than a flex sibling
+    // of it — sidesteps flex-distribution inside a content-sized (not
+    // definite-height) sheet entirely. `scrollContent`'s paddingBottom above
+    // reserves room so scrolled content doesn't end up hidden underneath.
+    footer: {
+      position: 'absolute', left: 0, right: 0, bottom: 0,
+      backgroundColor: colors.surface,
+      borderTopWidth: 1, borderTopColor: colors.surfaceBorder,
+      paddingHorizontal: Spacing.base, paddingTop: Spacing.md,
+      paddingBottom: insets.bottom + Spacing.base,
     },
     createBtn: {
       backgroundColor: colors.primary, borderRadius: Radius.xl,
-      paddingVertical: 16, marginTop: Spacing.lg,
+      paddingVertical: 16,
       flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8,
     },
     createBtnText: { fontSize: Typography.lg, fontWeight: Typography.bold, color: '#000' },
     swatchRow: { flexDirection: 'row', flexWrap: 'wrap', gap: 10 },
     iconSwatch: {
-      width: 44, height: 44, borderRadius: Radius.md,
+      width: 48, height: 48, borderRadius: Radius.md,
       borderWidth: 2, alignItems: 'center', justifyContent: 'center',
-      backgroundColor: colors.surfaceElevated,
+      backgroundColor: colors.background,
     },
     colorSwatch: {
-      width: 36, height: 36, borderRadius: 18,
+      width: 40, height: 40, borderRadius: 20,
       alignItems: 'center', justifyContent: 'center',
-      borderWidth: 2, borderColor: 'transparent',
+      borderWidth: 3, borderColor: 'transparent',
     },
     colorSwatchSelected: { borderColor: colors.textPrimary },
-    previewRow: {
-      flexDirection: 'row', alignItems: 'center', gap: Spacing.sm,
-      marginTop: Spacing.lg, padding: Spacing.sm,
-      backgroundColor: colors.surfaceElevated, borderRadius: Radius.md,
-    },
-    previewIcon: {
-      width: 40, height: 40, borderRadius: Radius.md,
-      alignItems: 'center', justifyContent: 'center',
-    },
-    previewText: { fontSize: Typography.base, color: colors.textPrimary, flex: 1 },
   });
 
   return (
@@ -348,13 +393,38 @@ function CreateExerciseModal({
           <Pressable onPress={() => {}}>
             <View style={s.sheet}>
               <View style={s.handle} />
-              <ScrollView style={s.scrollArea} showsVerticalScrollIndicator={false} keyboardShouldPersistTaps="handled">
+              <ScrollView
+                style={s.scrollArea}
+                contentContainerStyle={s.scrollContent}
+                showsVerticalScrollIndicator={false}
+                keyboardShouldPersistTaps="handled"
+              >
                 <Text style={s.title}>{t('exerciseList.createTitle')}</Text>
+
+                {/* Live preview */}
+                <View style={s.previewCard}>
+                  <View style={[s.previewIconBig, { backgroundColor: iconColor + '22', borderColor: iconColor + '55' }]}>
+                    <Icon name={iconName} size={30} color={iconColor} />
+                  </View>
+                  <Text style={s.previewNameBig} numberOfLines={1}>
+                    {name.trim() || t('exerciseList.namePlaceholder')}
+                  </Text>
+                  <View style={s.previewMetaRow}>
+                    <View style={s.previewChip}>
+                      <Icon name={MUSCLE_ICONS[muscle]} size={12} color={MUSCLE_COLORS[muscle]} />
+                      <Text style={[s.previewChipText, { color: MUSCLE_COLORS[muscle] }]}>{muscleLabel}</Text>
+                    </View>
+                    <View style={s.previewChip}>
+                      <Icon name={EQUIPMENT_ICONS[equipment]} size={12} color={colors.textSecondary} />
+                      <Text style={s.previewChipText}>{equipLabel}</Text>
+                    </View>
+                  </View>
+                </View>
 
                 {/* Name */}
                 <Text style={s.label}>{t('exerciseList.exerciseName')}</Text>
                 <TextInput
-                  style={s.input}
+                  style={[s.input, { marginBottom: Spacing.lg }]}
                   value={name}
                   onChangeText={setName}
                   placeholder={t('exerciseList.namePlaceholder')}
@@ -363,157 +433,153 @@ function CreateExerciseModal({
                   onSubmitEditing={() => setExpanded('none')}
                 />
 
-                {/* Muscle group picker */}
-                <Text style={s.label}>{t('exerciseList.muscleGroupLabel')}</Text>
-                <TouchableOpacity
-                  style={[s.picker, expanded === 'muscle' && s.pickerActive]}
-                  onPress={() => setExpanded(expanded === 'muscle' ? 'none' : 'muscle')}
-                  activeOpacity={0.8}
-                >
-                  <Text style={[s.pickerText, expanded === 'muscle' && s.pickerTextActive]}>
-                    {muscleLabel}
-                  </Text>
-                  <Icon
-                    name={expanded === 'muscle' ? 'chevron-up' : 'chevron-down'}
-                    size={18}
-                    color={expanded === 'muscle' ? colors.primary : colors.textTertiary}
-                  />
-                </TouchableOpacity>
-                {expanded === 'muscle' && (
-                  <ScrollView style={s.optionList} nestedScrollEnabled>
-                    {MUSCLES.map((m, i) => (
-                      <TouchableOpacity
-                        key={m}
-                        style={[s.optionRow, i === MUSCLES.length - 1 && { borderBottomWidth: 0 }]}
-                        onPress={() => { setMuscle(m); setExpanded('none'); }}
-                      >
-                        <Text style={[s.optionText, m === muscle && { color: colors.primary, fontWeight: Typography.bold }]}>
-                          {m.replace(/_/g, ' ').toLowerCase()}
-                        </Text>
-                        {m === muscle && <Icon name="check" size={16} color={colors.primary} />}
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                )}
-                {muscle === 'OTHER' && (
-                  <TextInput
-                    style={s.otherInput}
-                    value={customMuscle}
-                    onChangeText={setCustomMuscle}
-                    placeholder={t('exerciseList.muscleGroupPlaceholder')}
-                    placeholderTextColor={colors.textTertiary}
-                    returnKeyType="done"
-                  />
-                )}
-                <View style={s.pickerGap} />
+                {/* Details: muscle group + equipment */}
+                <View style={s.sectionCard}>
+                  <Text style={s.label}>{t('exerciseList.muscleGroupLabel')}</Text>
+                  <TouchableOpacity style={s.picker} onPress={() => setExpanded('muscle')} activeOpacity={0.8}>
+                    <View style={[s.pickerBadge, { backgroundColor: MUSCLE_COLORS[muscle] + '22' }]}>
+                      <Icon name={MUSCLE_ICONS[muscle]} size={13} color={MUSCLE_COLORS[muscle]} />
+                    </View>
+                    <Text style={s.pickerText}>{muscleLabel}</Text>
+                    <Icon name="chevron-down" size={18} color={colors.textTertiary} />
+                  </TouchableOpacity>
+                  {muscle === 'OTHER' && (
+                    <TextInput
+                      style={s.otherInput}
+                      value={customMuscle}
+                      onChangeText={setCustomMuscle}
+                      placeholder={t('exerciseList.muscleGroupPlaceholder')}
+                      placeholderTextColor={colors.textTertiary}
+                      returnKeyType="done"
+                    />
+                  )}
 
-                {/* Equipment picker */}
-                <Text style={s.label}>{t('exerciseList.equipmentLabel')}</Text>
-                <TouchableOpacity
-                  style={[s.picker, expanded === 'equip' && s.pickerActive]}
-                  onPress={() => setExpanded(expanded === 'equip' ? 'none' : 'equip')}
-                  activeOpacity={0.8}
-                >
-                  <Text style={[s.pickerText, expanded === 'equip' && s.pickerTextActive]}>
-                    {equipLabel}
-                  </Text>
-                  <Icon
-                    name={expanded === 'equip' ? 'chevron-up' : 'chevron-down'}
-                    size={18}
-                    color={expanded === 'equip' ? colors.primary : colors.textTertiary}
-                  />
-                </TouchableOpacity>
-                {expanded === 'equip' && (
-                  <ScrollView style={s.optionList} nestedScrollEnabled>
-                    {EQUIPS.map((e, i) => (
-                      <TouchableOpacity
-                        key={e}
-                        style={[s.optionRow, i === EQUIPS.length - 1 && { borderBottomWidth: 0 }]}
-                        onPress={() => { setEquipment(e); setExpanded('none'); }}
-                      >
-                        <Text style={[s.optionText, e === equipment && { color: colors.primary, fontWeight: Typography.bold }]}>
-                          {e.replace(/_/g, ' ').toLowerCase()}
-                        </Text>
-                        {e === equipment && <Icon name="check" size={16} color={colors.primary} />}
-                      </TouchableOpacity>
-                    ))}
-                  </ScrollView>
-                )}
-                {equipment === 'OTHER' && (
-                  <TextInput
-                    style={s.otherInput}
-                    value={customEquip}
-                    onChangeText={setCustomEquip}
-                    placeholder={t('exerciseList.equipmentPlaceholder')}
-                    placeholderTextColor={colors.textTertiary}
-                    returnKeyType="done"
-                  />
-                )}
+                  <View style={s.sectionDivider} />
 
-                {/* Icon */}
-                <Text style={s.label}>{t('exerciseList.iconLabel')}</Text>
-                <View style={s.swatchRow}>
-                  {ICON_OPTIONS.map((ic) => (
-                    <TouchableOpacity
-                      key={ic}
-                      style={[
-                        s.iconSwatch,
-                        { borderColor: ic === iconName ? iconColor : colors.surfaceBorder },
-                      ]}
-                      onPress={() => setIconName(ic)}
-                    >
-                      <Icon name={ic} size={20} color={ic === iconName ? iconColor : colors.textSecondary} />
-                    </TouchableOpacity>
-                  ))}
-                </View>
-                <View style={s.pickerGap} />
-
-                {/* Color */}
-                <Text style={s.label}>{t('exerciseList.colorLabel')}</Text>
-                <View style={s.swatchRow}>
-                  {COLOR_OPTIONS.map((c) => (
-                    <TouchableOpacity
-                      key={c}
-                      style={[
-                        s.colorSwatch,
-                        { backgroundColor: c },
-                        c === iconColor && s.colorSwatchSelected,
-                      ]}
-                      onPress={() => setIconColor(c)}
-                    >
-                      {c === iconColor && <Icon name="check" size={16} color="#000" />}
-                    </TouchableOpacity>
-                  ))}
+                  <Text style={s.label}>{t('exerciseList.equipmentLabel')}</Text>
+                  <TouchableOpacity style={s.picker} onPress={() => setExpanded('equip')} activeOpacity={0.8}>
+                    <View style={[s.pickerBadge, { backgroundColor: colors.surfaceBorder }]}>
+                      <Icon name={EQUIPMENT_ICONS[equipment]} size={13} color={colors.textSecondary} />
+                    </View>
+                    <Text style={s.pickerText}>{equipLabel}</Text>
+                    <Icon name="chevron-down" size={18} color={colors.textTertiary} />
+                  </TouchableOpacity>
+                  {equipment === 'OTHER' && (
+                    <TextInput
+                      style={s.otherInput}
+                      value={customEquip}
+                      onChangeText={setCustomEquip}
+                      placeholder={t('exerciseList.equipmentPlaceholder')}
+                      placeholderTextColor={colors.textTertiary}
+                      returnKeyType="done"
+                    />
+                  )}
                 </View>
 
-                {/* Preview */}
-                <View style={s.previewRow}>
-                  <View style={[s.previewIcon, { backgroundColor: iconColor + '22' }]}>
-                    <Icon name={iconName} size={22} color={iconColor} />
+                {/* Appearance: icon + color */}
+                <View style={s.sectionCard}>
+                  <Text style={s.label}>{t('exerciseList.iconLabel')}</Text>
+                  <View style={s.swatchRow}>
+                    {ICON_OPTIONS.map((ic) => (
+                      <TouchableOpacity
+                        key={ic}
+                        style={[
+                          s.iconSwatch,
+                          { borderColor: ic === iconName ? iconColor : colors.surfaceBorder },
+                          ic === iconName && { backgroundColor: iconColor + '1A' },
+                        ]}
+                        onPress={() => setIconName(ic)}
+                      >
+                        <Icon name={ic} size={20} color={ic === iconName ? iconColor : colors.textSecondary} />
+                      </TouchableOpacity>
+                    ))}
                   </View>
-                  <Text style={s.previewText} numberOfLines={1}>
-                    {name.trim() || t('exerciseList.namePlaceholder')}
-                  </Text>
+
+                  <View style={s.sectionDivider} />
+
+                  <Text style={s.label}>{t('exerciseList.colorLabel')}</Text>
+                  <View style={s.swatchRow}>
+                    {COLOR_OPTIONS.map((c) => (
+                      <TouchableOpacity
+                        key={c}
+                        style={[
+                          s.colorSwatch,
+                          { backgroundColor: c },
+                          c === iconColor && s.colorSwatchSelected,
+                        ]}
+                        onPress={() => setIconColor(c)}
+                      >
+                        {c === iconColor && <Icon name="check" size={16} color="#000" />}
+                      </TouchableOpacity>
+                    ))}
+                  </View>
                 </View>
               </ScrollView>
 
-              {/* Sticky footer — kept outside the ScrollView so it's always reachable
-                  without scrolling, regardless of form height or keyboard state. */}
-              <TouchableOpacity
-                style={[s.createBtn, isSubmitting && { opacity: 0.6 }]}
-                onPress={handleCreate}
-                activeOpacity={0.85}
-                disabled={isSubmitting}
-              >
-                {!isSubmitting && <Icon name="check-bold" size={18} color="#000" />}
-                <Text style={s.createBtnText}>
-                  {isSubmitting ? t('exerciseList.creatingBtn') : t('exerciseList.createBtn')}
-                </Text>
-              </TouchableOpacity>
+              {/* Footer — its own panel below the scroll area, not inline
+                  padding, so the sheet's bottom edge is unambiguous. */}
+              <View style={s.footer}>
+                <TouchableOpacity
+                  style={[s.createBtn, isSubmitting && { opacity: 0.6 }]}
+                  onPress={handleCreate}
+                  activeOpacity={0.85}
+                  disabled={isSubmitting}
+                >
+                  {!isSubmitting && <Icon name="check-bold" size={18} color="#000" />}
+                  <Text style={s.createBtnText}>
+                    {isSubmitting ? t('exerciseList.creatingBtn') : t('exerciseList.createBtn')}
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </Pressable>
         </Pressable>
       </KeyboardAvoidingView>
+
+      {/* Muscle group / equipment option list — its own overlay so opening
+          it doesn't push the form content below it down the screen. */}
+      <Modal
+        visible={expanded !== 'none'}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setExpanded('none')}
+      >
+        <Pressable style={s.pickerOverlay} onPress={() => setExpanded('none')}>
+          <Pressable onPress={() => {}} style={s.pickerSheet}>
+            <View style={s.handle} />
+            <Text style={s.title}>
+              {expanded === 'muscle' ? t('exerciseList.muscleGroupLabel') : t('exerciseList.equipmentLabel')}
+            </Text>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              {expanded === 'muscle'
+                ? MUSCLES.map((m, i) => (
+                    <TouchableOpacity
+                      key={m}
+                      style={[s.optionRow, i === MUSCLES.length - 1 && { borderBottomWidth: 0 }]}
+                      onPress={() => { setMuscle(m); setExpanded('none'); }}
+                    >
+                      <Text style={[s.optionText, m === muscle && { color: colors.primary, fontWeight: Typography.bold }]}>
+                        {m.replace(/_/g, ' ').toLowerCase()}
+                      </Text>
+                      {m === muscle && <Icon name="check" size={16} color={colors.primary} />}
+                    </TouchableOpacity>
+                  ))
+                : EQUIPS.map((e, i) => (
+                    <TouchableOpacity
+                      key={e}
+                      style={[s.optionRow, i === EQUIPS.length - 1 && { borderBottomWidth: 0 }]}
+                      onPress={() => { setEquipment(e); setExpanded('none'); }}
+                    >
+                      <Text style={[s.optionText, e === equipment && { color: colors.primary, fontWeight: Typography.bold }]}>
+                        {e.replace(/_/g, ' ').toLowerCase()}
+                      </Text>
+                      {e === equipment && <Icon name="check" size={16} color={colors.primary} />}
+                    </TouchableOpacity>
+                  ))}
+            </ScrollView>
+          </Pressable>
+        </Pressable>
+      </Modal>
     </Modal>
   );
 }
@@ -548,7 +614,7 @@ export default function ExerciseListScreen() {
   const { addExercise } = useActiveWorkoutStore();
   const isSelectMode = params.mode === 'select';
 
-  const { data: rawData, isLoading } = useQuery({
+  const { data: rawData, isLoading, isError, refetch, isRefetching } = useQuery({
     queryKey: ['exercises'],
     queryFn: async (): Promise<Exercise[]> => {
       if (USE_MOCK_API) return EXERCISE_SEED;
@@ -831,13 +897,31 @@ export default function ExerciseListScreen() {
         ItemSeparatorComponent={() => <View style={styles.separator} />}
         ListEmptyComponent={
           !isLoading ? (
-            <View style={styles.empty}>
-              <View style={[styles.emptyIconBox, { backgroundColor: colors.primaryDim }]}>
-                <Icon name="dumbbell" size={36} color={colors.primary} />
+            isError ? (
+              <View style={styles.empty}>
+                <View style={[styles.emptyIconBox, { backgroundColor: colors.error + '20' }]}>
+                  <Icon name="wifi-off" size={36} color={colors.error} />
+                </View>
+                <Text style={styles.emptyTitle}>{t('exerciseList.loadErrorTitle')}</Text>
+                <Text style={styles.emptySub}>{t('exerciseList.loadErrorDesc')}</Text>
+                <TouchableOpacity
+                  style={[styles.retryBtn, { backgroundColor: colors.primary, opacity: isRefetching ? 0.6 : 1 }]}
+                  onPress={() => refetch()}
+                  disabled={isRefetching}
+                >
+                  <Icon name="refresh" size={16} color="#000" />
+                  <Text style={styles.retryBtnText}>{t('exerciseList.retry')}</Text>
+                </TouchableOpacity>
               </View>
-              <Text style={styles.emptyTitle}>{t('exerciseList.emptyTitle')}</Text>
-              <Text style={styles.emptySub}>{t('exerciseList.emptyDesc')}</Text>
-            </View>
+            ) : (
+              <View style={styles.empty}>
+                <View style={[styles.emptyIconBox, { backgroundColor: colors.primaryDim }]}>
+                  <Icon name="dumbbell" size={36} color={colors.primary} />
+                </View>
+                <Text style={styles.emptyTitle}>{t('exerciseList.emptyTitle')}</Text>
+                <Text style={styles.emptySub}>{t('exerciseList.emptyDesc')}</Text>
+              </View>
+            )
           ) : null
         }
 
@@ -966,6 +1050,12 @@ function getStyles(c: ColorPalette) {
     },
     emptyTitle: { fontSize: Typography.lg, fontWeight: Typography.semibold, color: c.textSecondary },
     emptySub: { fontSize: Typography.sm, color: c.textTertiary },
+    retryBtn: {
+      flexDirection: 'row', alignItems: 'center', gap: 6,
+      borderRadius: Radius.full, paddingHorizontal: Spacing.lg, paddingVertical: Spacing.sm,
+      marginTop: Spacing.sm,
+    },
+    retryBtnText: { fontSize: Typography.sm, fontWeight: Typography.bold, color: '#000' },
 
     confirmPanel: {
       position: 'absolute', bottom: 0, left: 0, right: 0,

@@ -11,7 +11,7 @@ export const USE_MOCK_API = false;
 // iOS too; it works for both the Simulator and a physical device on the same
 // Wi-Fi network. Update this if your machine's LAN IP changes (check with
 // `ipconfig getifaddr en0`).
-const DEV_LAN_IP = '192.168.100.27';
+const DEV_LAN_IP = '192.168.1.2';
 
 export const API_BASE_URL = __DEV__
   ? Platform.OS === 'android'

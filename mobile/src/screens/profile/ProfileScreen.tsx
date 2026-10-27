@@ -23,7 +23,7 @@ const THEMES = [
   { id: 'coral',  label: 'Coral',  bg: '#120E0F', accent: '#E8677D', text: '#FDF4F5' },
   { id: 'gold',   label: 'Gold',   bg: '#0A0A0A', accent: '#E8B923', text: '#FBF3E0' },
   { id: 'teal',   label: 'Teal',   bg: '#14161D', accent: '#2DD4BF', text: '#F1F5F9' },
-  { id: 'azure',  label: 'Azure',  bg: '#070B14', accent: '#2563EB', text: '#F0F4FF' },
+  { id: 'azure',  label: 'Azure',  bg: '#080A12', accent: '#4F6FFA', text: '#F0F4FF' },
   { id: 'light',  label: 'Light',  bg: '#F4F6F8', accent: '#7ACC00', text: '#111827' },
 ] as const;
 
@@ -51,6 +51,15 @@ const GOAL_LABELS: Record<string, string> = {
 const ACTIVITY_LABELS: Record<string, string> = {
   SEDENTARY: 'Sedentary', LIGHTLY_ACTIVE: 'Lightly Active',
   MODERATELY_ACTIVE: 'Moderately Active', VERY_ACTIVE: 'Very Active', EXTRA_ACTIVE: 'Extra Active',
+};
+// Full label for the pill badge (room to breathe) vs. a short one for the
+// narrow 1/3-width stat column, which otherwise wraps "PREMIUM_ANNUAL" onto
+// two lines while its "22" / "Jun 2025" neighbors stay on one.
+const PLAN_LABELS: Record<string, string> = {
+  FREE: 'Free', PREMIUM_MONTHLY: 'Premium Monthly', PREMIUM_ANNUAL: 'Premium Annual',
+};
+const PLAN_LABELS_SHORT: Record<string, string> = {
+  FREE: 'Free', PREMIUM_MONTHLY: 'Monthly', PREMIUM_ANNUAL: 'Annual',
 };
 
 export default function ProfileScreen() {
@@ -149,7 +158,7 @@ export default function ProfileScreen() {
           <Text style={styles.fullName}>{user?.firstName} {user?.lastName}</Text>
           <Text style={styles.email}>{user?.email}</Text>
           <View style={styles.planBadge}>
-            <Text style={styles.planBadgeText}>{entitlements?.plan ?? 'FREE'}</Text>
+            <Text style={styles.planBadgeText}>{PLAN_LABELS[entitlements?.plan ?? 'FREE']}</Text>
           </View>
         </View>
 
@@ -158,10 +167,10 @@ export default function ProfileScreen() {
           {[
             { num: String(history?.totalElements ?? 0), lbl: t('profile.workouts') },
             { num: 'Jun 2025', lbl: t('profile.memberSince') },
-            { num: entitlements?.plan ?? 'FREE', lbl: t('profile.plan') },
+            { num: PLAN_LABELS_SHORT[entitlements?.plan ?? 'FREE'], lbl: t('profile.plan') },
           ].map((s, i) => (
             <View key={i} style={[styles.statBox, i > 0 && styles.statBoxBorder]}>
-              <Text style={styles.statNum}>{s.num}</Text>
+              <Text style={styles.statNum} numberOfLines={1}>{s.num}</Text>
               <Text style={styles.statLbl}>{s.lbl}</Text>
             </View>
           ))}

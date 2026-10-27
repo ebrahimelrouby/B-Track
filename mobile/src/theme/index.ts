@@ -143,25 +143,25 @@ export const goldColors = {
 // ─── Azure — deep navy dark palette ────────────────────────────────────────
 
 export const azureColors = {
-  background: '#070B14',
-  surface: '#141414',
-  surfaceElevated: '#161C2C',
-  surfaceBorder: '#212A3D',
+  background: '#080A12',
+  surface: '#12141F',
+  surfaceElevated: '#1A1F30',
+  surfaceBorder: '#262D42',
 
-  primary: '#2563EB',
-  primaryDim: 'rgba(37,99,235,0.15)',
-  primaryHover: '#3B82F6',
+  primary: '#4F6FFA',
+  primaryDim: 'rgba(79,111,250,0.15)',
+  primaryHover: '#7490FB',
 
   success: '#22C55E',
   warning: '#F59E0B',
   error: '#EF4444',
-  info: '#3B82F6',
+  info: '#1D7AFB',
 
   textPrimary: '#F0F4FF',
   textSecondary: '#8A93B8',
-  textTertiary: '#4A5578',
+  textTertiary: '#6C78A6',
   textDisabled: '#2A3350',
-  textInverse: '#070B14',
+  textInverse: '#080A12',
 
   chest: '#EF4444', back: '#3B82F6', shoulders: '#8B5CF6',
   biceps: '#06B6D4', triceps: '#F59E0B', legs: '#22C55E',

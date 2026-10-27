@@ -18,7 +18,6 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useTranslation } from 'react-i18next';
 
 import { useColors, ColorPalette, Spacing, Typography, Radius, Shadows, TAB_BAR_PADDING } from '@/theme';
-import { useThemeStore, ThemeId } from '@/store/theme.store';
 import { useAuthStore } from '@/store/auth.store';
 import { useLangStore } from '@/store/language.store';
 import PremiumTag from '@/components/common/PremiumTag';
@@ -31,19 +30,9 @@ import { DashboardNavigationProp } from '@/navigation/types';
 import { WorkoutSession } from '@/types';
 import { refreshHomeScreenWidgets } from '@/native/widgets';
 
-// The scan artwork is themed raster art (not tinted at runtime) — themes not
-// listed here fall back to the default (Lime-colored) image.
+// The scan artwork is a fixed image for both tiles, not tinted per theme.
 const FOOD_SCAN_ICON = require('@/assets/images/food-scan-icon.png');
-const FOOD_SCAN_ICON_BY_THEME: Partial<Record<ThemeId, ReturnType<typeof require>>> = {
-  orange: require('@/assets/images/food-scan-icon-ember.png'),
-  azure: require('@/assets/images/food-scan-icon-azure.png'),
-};
-
 const BODY_SCAN_ICON = require('@/assets/images/body-scan-icon.png');
-const BODY_SCAN_ICON_BY_THEME: Partial<Record<ThemeId, ReturnType<typeof require>>> = {
-  orange: require('@/assets/images/body-scan-icon-ember.png'),
-  azure: require('@/assets/images/body-scan-icon-azure.png'),
-};
 
 const W = Dimensions.get('window').width;
 const today = () => new Date().toISOString().split('T')[0];
@@ -349,9 +338,6 @@ export default function DashboardScreen() {
   const { lang } = useLangStore();
   const colors = useColors();
   const styles = React.useMemo(() => getStyles(colors), [colors]);
-  const theme = useThemeStore(s => s.theme);
-  const foodScanIcon = FOOD_SCAN_ICON_BY_THEME[theme] ?? FOOD_SCAN_ICON;
-  const bodyScanIcon = BODY_SCAN_ICON_BY_THEME[theme] ?? BODY_SCAN_ICON;
 
   const [localAvatar, setLocalAvatar] = useState<string | null>(null);
 
@@ -817,22 +803,22 @@ export default function DashboardScreen() {
           >
             <View style={[styles.aiGridHero, { backgroundColor: colors.primaryDim, overflow: 'hidden' }]}>
               <ScanFrame accent="#00E5FF" />
-              <Image source={foodScanIcon} style={styles.aiGridHeroIcon} resizeMode="contain" />
+              <Image source={FOOD_SCAN_ICON} style={styles.aiGridHeroIcon} resizeMode="contain" />
               <View style={[styles.aiGridTopBadge, { backgroundColor: colors.primaryDim, borderColor: colors.primary + '50' }]}>
                 <Icon name="camera-outline" size={8} color={colors.primary} />
                 <Text style={[styles.aiGridTopBadgeText, { color: colors.primary }]}>{t('dashboard.photo')}</Text>
               </View>
             </View>
             <View style={styles.aiGridBody}>
-              <Text style={styles.aiGridTitle}>{t('dashboard.calorieScan')}</Text>
+              <Text style={styles.aiGridTitle} numberOfLines={1}>{t('dashboard.calorieScan')}</Text>
               <View style={styles.aiGridStats}>
                 <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '18', borderColor: colors.primary + '35' }]}>
-                  <Icon name="lightning-bolt" size={9} color={colors.primary} />
-                  <Text style={[styles.aiGridStatText, { color: colors.primary }]}>{t('dashboard.lessThan5sec')}</Text>
+                  <Icon name="lightning-bolt" size={7} color={colors.primary} />
+                  <Text style={[styles.aiGridStatText, { color: colors.primary }]} numberOfLines={1}>{t('dashboard.lessThan5sec')}</Text>
                 </View>
                 <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '0C', borderColor: colors.primary + '20' }]}>
-                  <Icon name="food-apple" size={9} color={colors.primary + '88'} />
-                  <Text style={[styles.aiGridStatText, { color: colors.primary + '88' }]}>{t('dashboard.calMacros')}</Text>
+                  <Icon name="food-apple" size={7} color={colors.primary + '88'} />
+                  <Text style={[styles.aiGridStatText, { color: colors.primary + '88' }]} numberOfLines={1}>{t('dashboard.calMacros')}</Text>
                 </View>
               </View>
             </View>
@@ -851,22 +837,22 @@ export default function DashboardScreen() {
           >
             <View style={[styles.aiGridHero, { backgroundColor: colors.primaryDim, overflow: 'hidden' }]}>
               <ScanFrame accent="#00E5FF" />
-              <Image source={bodyScanIcon} style={styles.aiGridHeroIcon} resizeMode="contain" />
+              <Image source={BODY_SCAN_ICON} style={styles.aiGridHeroIcon} resizeMode="contain" />
               <View style={[styles.aiGridTopBadge, { backgroundColor: colors.primaryDim, borderColor: colors.primary + '50' }]}>
                 <Icon name="human-male-board" size={8} color={colors.primary} />
                 <Text style={[styles.aiGridTopBadgeText, { color: colors.primary }]}>{t('dashboard.scan')}</Text>
               </View>
             </View>
             <View style={styles.aiGridBody}>
-              <Text style={styles.aiGridTitle}>{t('dashboard.bodyFatScan')}</Text>
+              <Text style={styles.aiGridTitle} numberOfLines={1}>{t('dashboard.bodyFatScan')}</Text>
               <View style={styles.aiGridStats}>
                 <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '18', borderColor: colors.primary + '35' }]}>
-                  <Icon name="shield-check-outline" size={9} color={colors.primary} />
-                  <Text style={[styles.aiGridStatText, { color: colors.primary }]}>{t('dashboard.private')}</Text>
+                  <Icon name="shield-check-outline" size={7} color={colors.primary} />
+                  <Text style={[styles.aiGridStatText, { color: colors.primary }]} numberOfLines={1}>{t('dashboard.private')}</Text>
                 </View>
                 <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '0C', borderColor: colors.primary + '20' }]}>
-                  <Icon name="chart-donut" size={9} color={colors.primary + '88'} />
-                  <Text style={[styles.aiGridStatText, { color: colors.primary + '88' }]}>{t('dashboard.visual3D')}</Text>
+                  <Icon name="chart-donut" size={7} color={colors.primary + '88'} />
+                  <Text style={[styles.aiGridStatText, { color: colors.primary + '88' }]} numberOfLines={1}>{t('dashboard.visual3D')}</Text>
                 </View>
               </View>
             </View>
@@ -907,7 +893,7 @@ export default function DashboardScreen() {
                     cal: Math.round(lastNutrition.confirmedCalories ?? lastNutrition.estimatedCalories ?? 0),
                     time: relTime(lastNutrition.createdAt),
                   })
-                : t('dashboard.noScanYet')}
+                : t('dashboard.noFoodScanYet')}
             </Text>
             <Icon name="chevron-right" size={12} color={lastNutrition ? '#FB923C' : colors.textTertiary} />
           </TouchableOpacity>
@@ -938,7 +924,7 @@ export default function DashboardScreen() {
                     max: lastBodyFat.maxBodyFatPct,
                     time: relTime(lastBodyFat.createdAt),
                   })
-                : t('dashboard.noScanYet')}
+                : t('dashboard.noBodyScanYet')}
             </Text>
             <Icon name="chevron-right" size={12} color={lastBodyFat ? colors.primary : colors.textTertiary} />
           </TouchableOpacity>
@@ -1459,13 +1445,16 @@ function getStyles(c: ColorPalette) {
       fontSize: Typography.sm, fontWeight: Typography.bold,
       color: c.textPrimary,
     },
-    aiGridStats: { flexDirection: 'row', gap: 6, flexWrap: 'wrap', marginTop: 2 },
+    // nowrap — these two chips must always sit on one line per tile; sized
+    // down (padding/font/icon) specifically so they fit without wrapping.
+    aiGridStats: { flexDirection: 'row', gap: 4, flexWrap: 'nowrap' },
     aiGridStat: {
-      flexDirection: 'row', alignItems: 'center', gap: 4,
-      paddingHorizontal: 7, paddingVertical: 4,
+      flexDirection: 'row', alignItems: 'center', gap: 3,
+      paddingHorizontal: 5, paddingVertical: 3,
       borderRadius: Radius.sm, borderWidth: 1,
+      flexShrink: 1,
     },
-    aiGridStatText: { fontSize: 9.5, fontWeight: Typography.bold },
+    aiGridStatText: { fontSize: 8, fontWeight: Typography.bold, flexShrink: 1 },
     aiGridCta: {
       flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
       paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm, borderTopWidth: 1,

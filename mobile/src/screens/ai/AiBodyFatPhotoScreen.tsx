@@ -24,8 +24,11 @@ interface PhotoSlot {
 }
 
 const PHOTO_SLOTS: PhotoSlot[] = [
-  { angle: 'FRONT', label: 'Front', description: 'Face the camera, arms relaxed at sides', icon: 'human-greeting-variant' },
-  { angle: 'SIDE',  label: 'Side',  description: 'Stand sideways, arms relaxed',           icon: 'human-handsdown' },
+  { angle: 'FRONT', label: 'Front', description: 'Face the camera, arms relaxed at sides', icon: 'human-handsdown' },
+  // 'walk' is a genuine side-profile silhouette — the clearest available
+  // match for "stand sideways" (the previous icon was just another
+  // front-facing figure, not actually a side view).
+  { angle: 'SIDE',  label: 'Side',  description: 'Stand sideways, arms relaxed',           icon: 'walk' },
   { angle: 'BACK',  label: 'Back',  description: 'Back to camera, arms relaxed at sides',  icon: 'human' },
 ];
 
