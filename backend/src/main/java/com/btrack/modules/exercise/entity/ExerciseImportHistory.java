@@ -1,6 +1,7 @@
 package com.btrack.modules.exercise.entity;
 
 import com.btrack.modules.user.entity.User;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.hypersistence.utils.hibernate.type.json.JsonType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -77,6 +78,10 @@ public class ExerciseImportHistory {
     @Column(columnDefinition = "jsonb")
     private Map<String, Object> report;
 
+    // Lazy FK, only needed for the DB audit trail — a raw Hibernate proxy
+    // here breaks Jackson serialization since the controller returns this
+    // entity directly rather than through a response DTO.
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "imported_by")
     private User importedBy;

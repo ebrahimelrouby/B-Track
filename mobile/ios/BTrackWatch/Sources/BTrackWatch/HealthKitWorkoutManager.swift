@@ -59,8 +59,19 @@ class HealthKitWorkoutManager: NSObject, ObservableObject {
         }
     }
 
-    func endSession() {
-        guard let session, let builder else { return }
+    /// Ends the session and hands back the workout's final avg/max heart
+    /// rate and total active calories — captured off the still-live builder
+    /// before collection ends, since HealthKit computes average/max natively
+    /// for discrete quantity types like heart rate (no manual accumulation).
+    func endSession(completion: @escaping (_ avgHeartRate: Double, _ maxHeartRate: Double, _ activeCalories: Double) -> Void = { _, _, _ in }) {
+        guard let session, let builder else { completion(0, 0, 0); return }
+
+        let hrStats = builder.statistics(for: HKQuantityType(.heartRate))
+        let bpmUnit = HKUnit.count().unitDivided(by: .minute())
+        let finalAvgHR = hrStats?.averageQuantity()?.doubleValue(for: bpmUnit) ?? 0
+        let finalMaxHR = hrStats?.maximumQuantity()?.doubleValue(for: bpmUnit) ?? 0
+        let finalCalories = activeCalories
+
         session.end()
         builder.endCollection(withEnd: Date()) { [weak self] _, _ in
             builder.finishWorkout { _, _ in
@@ -70,6 +81,7 @@ class HealthKitWorkoutManager: NSObject, ObservableObject {
                     self?.activeCalories = 0
                     self?.session = nil
                     self?.builder = nil
+                    completion(finalAvgHR, finalMaxHR, finalCalories)
                 }
             }
         }

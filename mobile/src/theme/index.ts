@@ -115,25 +115,25 @@ export const pinkColors = {
 // ─── Gold palette — inspired by the black/gold body-fat-analysis mockup ──────
 
 export const goldColors = {
-  background: '#0A0A0A',       // pure black, matches the mockup's gym backdrop
-  surface: '#151210',
-  surfaceElevated: '#1F1B17',
-  surfaceBorder: '#2B251E',
+  background: '#0B0B0D',       // near-black, neutral — matches the thermostat mockup's backdrop
+  surface: '#18181B',          // neutral charcoal cards, not warm-tinted — matches the Cooling/Heating/Airwave tiles
+  surfaceElevated: '#222226',
+  surfaceBorder: '#2C2C31',
 
-  primary: '#E8B923',          // rich amber-gold, lifted from the mockup's logo/labels
-  primaryDim: 'rgba(232,185,35,0.15)',
-  primaryHover: '#F5CC4D',     // lighter gold, matches the "Start Detecting" button
+  primary: '#F0A93B',          // warm amber-gold, lifted from the mockup's ring/selected-card border
+  primaryDim: 'rgba(240,169,59,0.15)',
+  primaryHover: '#FFC567',
 
   success: '#22C55E',
   warning: '#F59E0B',
   error: '#EF4444',
   info: '#3B82F6',
 
-  textPrimary: '#FBF3E0',      // warm cream-white
-  textSecondary: '#A89873',    // muted gold-gray
-  textTertiary: '#6B5F49',
-  textDisabled: '#3A3226',
-  textInverse: '#0A0A0A',
+  textPrimary: '#F5F5F7',      // crisp neutral white, matches the mockup's card labels
+  textSecondary: '#9A9AA2',    // neutral gray, not gold-tinted — matches unselected tile text
+  textTertiary: '#5E5E66',
+  textDisabled: '#333338',
+  textInverse: '#0B0B0D',
 
   chest: '#EF4444', back: '#3B82F6', shoulders: '#8B5CF6',
   biceps: '#06B6D4', triceps: '#F59E0B', legs: '#22C55E',
@@ -143,25 +143,25 @@ export const goldColors = {
 // ─── Azure — deep navy dark palette ────────────────────────────────────────
 
 export const azureColors = {
-  background: '#080A12',
-  surface: '#12141F',
-  surfaceElevated: '#1A1F30',
-  surfaceBorder: '#262D42',
+  background: '#090C16',
+  surface: '#11141F',
+  surfaceElevated: '#1A2030',
+  surfaceBorder: '#1F2438',
 
-  primary: '#4F6FFA',
-  primaryDim: 'rgba(79,111,250,0.15)',
-  primaryHover: '#7490FB',
+  primary: '#3E6FFC',
+  primaryDim: 'rgba(62,111,252,0.15)',
+  primaryHover: '#6B8FFF',
 
-  success: '#22C55E',
+  success: '#2ECC71',
   warning: '#F59E0B',
-  error: '#EF4444',
-  info: '#1D7AFB',
+  error: '#FF5C5C',
+  info: '#3E6FFC',
 
-  textPrimary: '#F0F4FF',
-  textSecondary: '#8A93B8',
-  textTertiary: '#6C78A6',
-  textDisabled: '#2A3350',
-  textInverse: '#080A12',
+  textPrimary: '#F5F7FF',
+  textSecondary: '#8E97B8',
+  textTertiary: '#5B6480',
+  textDisabled: '#272C42',
+  textInverse: '#090C16',
 
   chest: '#EF4444', back: '#3B82F6', shoulders: '#8B5CF6',
   biceps: '#06B6D4', triceps: '#F59E0B', legs: '#22C55E',

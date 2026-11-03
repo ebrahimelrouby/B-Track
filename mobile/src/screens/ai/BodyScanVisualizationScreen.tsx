@@ -509,7 +509,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#1C1C1C', overflow: 'hidden',
   },
   regionFill: { height: 6, borderRadius: 3 },
-  regionPct:  { fontSize: Typography.xs, fontWeight: Typography.bold, width: 30, textAlign: 'right' },
+  regionPct:  { fontSize: Typography.xs, fontWeight: Typography.bold, width: 30, textAlign: I18nManager.isRTL ? 'left' : 'right' },
   regionLblChip: {
     paddingHorizontal: 6, paddingVertical: 2,
     borderRadius: Radius.sm,

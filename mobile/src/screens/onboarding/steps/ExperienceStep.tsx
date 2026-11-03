@@ -68,7 +68,7 @@ function getStyles(c: ColorPalette) {
       backgroundColor: c.surfaceElevated,
       alignItems: 'center',
       justifyContent: 'center',
-      marginRight: Spacing.base,
+      marginEnd: Spacing.base,
     },
     iconWrapSelected: { backgroundColor: c.primaryDim },
     textGroup: { flex: 1 },

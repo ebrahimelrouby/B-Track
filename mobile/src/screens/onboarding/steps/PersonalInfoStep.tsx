@@ -168,7 +168,7 @@ function getStyles(c: ColorPalette) {
       borderColor: c.primary,
     },
     dateIcon: {
-      marginRight: Spacing.sm,
+      marginEnd: Spacing.sm,
     },
     dateText: {
       flex: 1,

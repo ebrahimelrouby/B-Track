@@ -44,8 +44,14 @@ public class ExerciseController {
             @RequestParam(defaultValue = "30") int size) {
 
         UUID userId = principal != null ? principal.getUserId() : null;
-        Exercise.MuscleGroup mg = muscleGroup != null ? Exercise.MuscleGroup.valueOf(muscleGroup) : null;
-        Exercise.EquipmentType eq = equipment != null ? Exercise.EquipmentType.valueOf(equipment) : null;
+        // Validate against the real enum (clean 400 on bad input) but pass the
+        // query a plain String — binding the Java enum directly as a JPQL
+        // parameter against a native Postgres enum column leaves Postgres
+        // unable to infer the parameter's type ("could not determine data
+        // type of parameter"), since CAST(e.col AS string) = :enumParam mixes
+        // a string-typed column expression with an enum-typed bind variable.
+        String mg = muscleGroup != null ? Exercise.MuscleGroup.valueOf(muscleGroup).name() : null;
+        String eq = equipment != null ? Exercise.EquipmentType.valueOf(equipment).name() : null;
 
         var result = exerciseRepository.searchExercises(
                 userId, search, mg, eq,

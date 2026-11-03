@@ -12,7 +12,11 @@
     "loading": "جاري التحميل...",
     "error": "خطأ",
     "ok": "حسنًا",
-    "add": "إضافة"
+    "add": "إضافة",
+    "restartRequiredTitle": "إعادة التشغيل مطلوبة",
+    "restartRequiredMsg": "أعد تشغيل التطبيق الآن لتطبيق اتجاه التخطيط الجديد بالكامل.",
+    "restartNow": "إعادة التشغيل الآن",
+    "restartLater": "لاحقًا"
   },
   "auth": {
     "login": {
@@ -25,7 +29,9 @@
       "forgotPassword": "نسيت كلمة المرور؟",
       "loginBtn": "تسجيل الدخول",
       "noAccount": "ليس لديك حساب؟",
-      "signUp": "إنشاء حساب"
+      "signUp": "إنشاء حساب",
+      "failedTitle": "فشل تسجيل الدخول",
+      "failedMsg": "فشل تسجيل الدخول. حاول مرة أخرى."
     },
     "register": {
       "title": "إنشاء حسابك",
@@ -46,7 +52,8 @@
       "createBtn": "إنشاء الحساب",
       "haveAccount": "لديك حساب بالفعل؟",
       "logIn": "تسجيل الدخول",
-      "terms": "بإنشاء حساب، فإنك توافق على شروط الخدمة وسياسة الخصوصية."
+      "terms": "بإنشاء حساب، فإنك توافق على شروط الخدمة وسياسة الخصوصية.",
+      "failedMsg": "فشل إنشاء الحساب. حاول مرة أخرى."
     }
   },
   "nav": {
@@ -102,6 +109,10 @@
     "noVolume": "لا حجم بعد",
     "aiAnalysis": "تحليل الذكاء الاصطناعي",
     "instantResults": "نتائج فورية من صورك",
+    "aiScansThisWeek": "هذا الأسبوع",
+    "aiScansTotal": "الإجمالي",
+    "lastMealKcal": "آخر وجبة",
+    "lastBodyFatPct": "نسبة الدهون",
     "lastFoodScan": "آخر مسح: {{cal}} سعرة · {{time}}",
     "lastBodyScan": "آخر فحص: {{min}}–{{max}}% دهون · {{time}}",
     "noFoodScanYet": "لم تمسح وجبة بعد",
@@ -168,7 +179,27 @@
     "title": "الإشعارات",
     "today": "اليوم",
     "earlier": "سابقاً",
-    "markAllRead": "تعليم الكل كمقروء"
+    "markAllRead": "تعليم الكل كمقروء",
+    "emptyTitle": "لا توجد إشعارات",
+    "emptySub": "لقد أنجزت كل شيء!",
+    "minAgo": "منذ {{n}} دقيقة",
+    "hrAgo": "منذ {{n}} ساعة",
+    "yesterday": "أمس",
+    "daysAgo": "منذ {{n}} أيام",
+    "mock1Title": "حان وقت شرب الماء!",
+    "mock1Body": "لقد سجّلت 1.2 لتر فقط اليوم. اشرب كوب ماء للبقاء على المسار الصحيح.",
+    "mock2Title": "سلسلة تمارين: 3 أيام 🔥",
+    "mock2Body": "واصل التقدم! لقد تمرّنت 3 أيام متتالية. يوم واحد آخر لتحقيق هدفك الأسبوعي.",
+    "mock3Title": "اقتربت من هدف السعرات",
+    "mock3Body": "تبقّى لديك 320 سعرة حرارية اليوم. فكّر في وجبة خفيفة غنية بالبروتين.",
+    "mock4Title": "فحص الجسم بالذكاء الاصطناعي جاهز",
+    "mock4Body": "تمت معالجة تقدير نسبة الدهون في جسمك. اضغط لعرض النتائج.",
+    "mock5Title": "تحقق هدف الخطوات الأسبوعي! 🎉",
+    "mock5Body": "أكملت 70,000 خطوة هذا الأسبوع. استمرارية رائعة!",
+    "mock6Title": "تذكير بيوم الراحة",
+    "mock6Body": "تقترح خطتك الراحة اليوم. التعافي جزء من العملية.",
+    "mock7Title": "تحديث B-Track إلى الإصدار 1.2",
+    "mock7Body": "جديد: تحسينات مسح السعرات بالذكاء الاصطناعي، تحسينات تتبع النوم، وإصلاح أخطاء."
   },
   "lang": {
     "english": "English",
@@ -259,7 +290,23 @@
     "addToMyPlans": "أضف إلى خططي",
     "viewPlan": "عرض الخطة",
     "startWorkout": "بدء التمرين",
-    "deletePlan": "حذف الخطة"
+    "deletePlan": "حذف الخطة",
+    "navTitle": "التمارين",
+    "muscleForearms": "الساعد",
+    "muscleOther": "أخرى"
+  },
+  "templateDetail": {
+    "notFound": "القالب غير موجود",
+    "statDifficulty": "الصعوبة",
+    "statDaysWeek": "أيام/أسبوع",
+    "statExercises": "التمارين",
+    "exercisesLower": "تمارين",
+    "sets": "مجموعات",
+    "reps": "تكرارات",
+    "restAbbrev": "ث راحة",
+    "adding": "جارٍ الإضافة...",
+    "addedTitle": "تمت الإضافة!",
+    "addedMsg": "تمت إضافة \"{{name}}\" إلى خططي."
   },
   "activeWorkout": {
     "colSet": "المجموعة",
@@ -305,7 +352,8 @@
     "cancelBtn": "إلغاء",
     "errorTitle": "خطأ",
     "errorDefault": "فشل إنشاء الخطة",
-    "nameRequired": "الاسم مطلوب"
+    "nameRequired": "الاسم مطلوب",
+    "navTitle": "خطة جديدة"
   },
   "exerciseDetail": {
     "notFound": "لم يتم العثور على التمرين",
@@ -339,6 +387,10 @@
     "equipmentLabel": "المعدات",
     "muscleGroupPlaceholder": "حدد مجموعة العضلات…",
     "equipmentPlaceholder": "حدد المعدات…",
+    "photoLabel": "الصورة",
+    "choosePhoto": "اختر صورة",
+    "changePhoto": "تغيير",
+    "removePhoto": "إزالة",
     "iconLabel": "الأيقونة",
     "colorLabel": "اللون",
     "createBtn": "إنشاء التمرين",
@@ -352,13 +404,16 @@
     "createErrorTitle": "تعذر إنشاء التمرين",
     "createErrorMsg": "حدث خطأ ما. يرجى المحاولة مرة أخرى.",
     "addErrorTitle": "خطأ",
-    "addErrorMsg": "تعذر إضافة التمارين. يرجى المحاولة مرة أخرى."
+    "addErrorMsg": "تعذر إضافة التمارين. يرجى المحاولة مرة أخرى.",
+    "navTitle": "التمارين"
   },
   "sessionDetail": {
     "notFound": "لم يتم العثور على الجلسة",
     "statDuration": "المدة",
     "statVolume": "الحجم",
     "statSets": "المجموعات",
+    "statAvgHeartRate": "متوسط معدل ضربات القلب",
+    "statActiveCalories": "السعرات المحروقة",
     "colSet": "المجموعة",
     "colWeight": "الوزن",
     "colReps": "التكرارات"
@@ -381,7 +436,8 @@
     "emptyTitle": "لا يوجد سجل تمارين بعد",
     "emptyDesc": "أكمل تمرينًا لرؤيته هنا.",
     "loadMore": "تحميل المزيد",
-    "exerciseCount": "{{n}} تمارين"
+    "exerciseCount": "{{n}} تمارين",
+    "navTitle": "السجل"
   },
   "workoutPlanDetail": {
     "statDays": "الأيام",
@@ -405,8 +461,32 @@
     "volume": "الحجم",
     "sets": "المجموعات",
     "exercises": "التمارين",
+    "avgHeartRate": "متوسط معدل ضربات القلب",
+    "peakHeartRate": "أعلى معدل ضربات القلب",
+    "activeCalories": "السعرات المحروقة",
     "backToHome": "العودة للرئيسية",
-    "viewSession": "عرض الجلسة"
+    "viewSession": "عرض الجلسة",
+    "exerciseBreakdown": "تفاصيل التمارين",
+    "navTitle": "الملخص"
+  },
+  "workoutVitals": {
+    "title": "مؤشرات التمرين",
+    "emptyTitle": "لا توجد بيانات لمعدل ضربات القلب بعد",
+    "emptyBody": "أنهِ تمرينًا من ساعة Apple Watch لبدء تتبع معدل ضربات القلب والسعرات المحروقة هنا.",
+    "overviewTitle": "نظرة عامة",
+    "avgHrTitle": "متوسط النبض",
+    "avgHrMeta": "{{pct}}% من الذروة",
+    "peakHrTitle": "أعلى نبض",
+    "totalCaloriesTitle": "إجمالي المحروق",
+    "totalCaloriesMeta": "{{n}} سعرة بالمتوسط",
+    "totalCaloriesCount": "{{n}} تمارين",
+    "hrChartTitle": "متوسط معدل ضربات القلب لكل تمرين",
+    "hrChartSubtitle": "مدى شدة كل تمرين عبر الوقت",
+    "calChartTitle": "السعرات المحروقة لكل تمرين",
+    "calChartSubtitle": "الطاقة النشطة المحروقة في كل جلسة",
+    "chartSubtitle": "آخر {{n}} تمارين متتبعة بالساعة",
+    "recentSessions": "الجلسات الأخيرة",
+    "recentSessionsSubtitle": "اضغط على جلسة في السجل لمعرفة تفاصيل التمارين الكاملة"
   },
   "nutrition": {
     "title": "التغذية",
@@ -432,7 +512,7 @@
     "searchFoods": "ابحث عن أطعمة…",
     "backToSearch": "العودة للبحث",
     "calories": "السعرات",
-    "servings": "الأجزاء",
+    "servings": "الكمية (جم)",
     "removeTitle": "إزالة",
     "removeMsg": "إزالة هذا العنصر؟",
     "cancelBtn": "إلغاء",
@@ -570,7 +650,8 @@
     "cancelBtn": "إلغاء",
     "deleteBtn": "حذف",
     "errorTitle": "خطأ",
-    "errorMsg": "فشل حذف الإدخال."
+    "errorMsg": "فشل حذف الإدخال.",
+    "calLabel": "سعرات"
   },
   "bodyScanViz": {
     "title": "مسح تركيبة الجسم",
@@ -883,7 +964,13 @@
     "hydrationTips": "نصائح الترطيب",
     "tip1": "اشرب 500 مل من الماء أول شيء في الصباح.",
     "tip2": "لون البول هو أفضل مؤشر للترطيب — استهدف الأصفر الفاتح.",
-    "tip3": "زد الكمية بـ500 مل لكل ساعة تمرين."
+    "tip3": "زد الكمية بـ500 مل لكل ساعة تمرين.",
+    "remindersTitle": "التذكيرات",
+    "remindersOnSub": "تذكيرك كل {{n}} ساعة",
+    "remindersOffSub": "احصل على إشعار لشرب الماء بانتظام",
+    "reminderEvery": "{{n}} س",
+    "reminderPermissionTitle": "الإشعارات معطّلة",
+    "reminderPermissionMsg": "فعّل إشعارات B-Track من الإعدادات لتصلك تذكيرات شرب الماء."
   },
   "calories": {
     "title": "السعرات",
@@ -925,7 +1012,14 @@
     "recentSessions": "الجلسات الأخيرة",
     "noSessionsTitle": "لا توجد جلسات بعد",
     "noSessionsDesc": "أكمل تمرينًا لرؤية تقدمك هنا.",
-    "weightHistory": "سجل الوزن"
+    "weightHistory": "سجل الوزن",
+    "shareTitle": "تقدمي في B-Track 💪",
+    "shareSessions": "{{n}} جلسة تمرين مسجّلة",
+    "shareVolume": "{{t}} طن إجمالي الحجم المرفوع",
+    "shareAvgDuration": "{{n}} دقيقة متوسط مدة الجلسة",
+    "shareWeightChange": "{{n}} كغ {{dir}} منذ بدء التتبع",
+    "shareWeightDown": "نقصان",
+    "shareWeightUp": "زيادة"
   },
   "onboarding": {
     "stepPersonalTitle": "دعنا نتعرف عليك",
@@ -1040,6 +1134,19 @@
     "purchaseTitle": "الشراء",
     "purchaseSuccessMsg": "أنت الآن مشترك في الخطة المميزة. استمتع بالميزات الجديدة!",
     "restoreTitle": "الاستعادة",
-    "restoreMsg": "تمت استعادة المشتريات السابقة."
+    "restoreMsg": "تمت استعادة المشتريات السابقة.",
+    "proBadge": "برو",
+    "goProBadge": "اشترك الآن"
+  },
+  "equipment": {
+    "barbell": "بار",
+    "dumbbell": "دمبل",
+    "machine": "جهاز",
+    "cable": "كابل",
+    "bodyweight": "وزن الجسم",
+    "kettlebell": "كيتل بل",
+    "resistanceBand": "شريط مقاومة",
+    "smithMachine": "سميث ماشين",
+    "other": "أخرى"
   }
 }

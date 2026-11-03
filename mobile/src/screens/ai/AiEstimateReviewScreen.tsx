@@ -311,7 +311,7 @@ function getStyles(c: ColorPalette) {
       borderWidth: 1, borderColor: c.surfaceBorder, paddingHorizontal: Spacing.sm,
     },
     macroInput: { flex: 1, paddingVertical: Spacing.sm, color: c.textPrimary, fontSize: Typography.base },
-    macroUnit: { fontSize: Typography.xs, color: c.textTertiary, paddingLeft: 4 },
+    macroUnit: { fontSize: Typography.xs, color: c.textTertiary, paddingStart: 4 },
 
     mealTypeRow: { flexDirection: 'row', gap: Spacing.sm },
     mealTypeChip: {

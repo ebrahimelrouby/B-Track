@@ -12,7 +12,11 @@
     "loading": "Loading...",
     "error": "Error",
     "ok": "OK",
-    "add": "Add"
+    "add": "Add",
+    "restartRequiredTitle": "Restart Required",
+    "restartRequiredMsg": "Restart the app now to fully apply the new layout direction.",
+    "restartNow": "Restart Now",
+    "restartLater": "Later"
   },
   "auth": {
     "login": {
@@ -25,7 +29,9 @@
       "forgotPassword": "Forgot password?",
       "loginBtn": "Log In",
       "noAccount": "Don't have an account?",
-      "signUp": "Sign up"
+      "signUp": "Sign up",
+      "failedTitle": "Login Failed",
+      "failedMsg": "Login failed. Please try again."
     },
     "register": {
       "title": "Create your account",
@@ -46,7 +52,8 @@
       "createBtn": "Create Account",
       "haveAccount": "Already have an account?",
       "logIn": "Log in",
-      "terms": "By creating an account you agree to our Terms of Service and Privacy Policy."
+      "terms": "By creating an account you agree to our Terms of Service and Privacy Policy.",
+      "failedMsg": "Registration failed. Please try again."
     }
   },
   "nav": {
@@ -102,6 +109,10 @@
     "noVolume": "No volume yet",
     "aiAnalysis": "AI Analysis",
     "instantResults": "Instant results from your photos",
+    "aiScansThisWeek": "This week",
+    "aiScansTotal": "All time",
+    "lastMealKcal": "Last meal",
+    "lastBodyFatPct": "Body fat",
     "lastFoodScan": "Last scan: {{cal}} kcal · {{time}}",
     "lastBodyScan": "Last check: {{min}}–{{max}}% BF · {{time}}",
     "noFoodScanYet": "No meal scanned yet",
@@ -168,7 +179,27 @@
     "title": "Notifications",
     "today": "Today",
     "earlier": "Earlier",
-    "markAllRead": "Mark all read"
+    "markAllRead": "Mark all read",
+    "emptyTitle": "No notifications",
+    "emptySub": "You're all caught up!",
+    "minAgo": "{{n}} min ago",
+    "hrAgo": "{{n}} hr ago",
+    "yesterday": "Yesterday",
+    "daysAgo": "{{n}} days ago",
+    "mock1Title": "Time to hydrate!",
+    "mock1Body": "You've only logged 1.2L today. Drink a glass of water to stay on track.",
+    "mock2Title": "Workout streak: 3 days 🔥",
+    "mock2Body": "Keep it up! You've worked out 3 days in a row. One more day to hit your weekly goal.",
+    "mock3Title": "Calorie goal almost reached",
+    "mock3Body": "You have 320 kcal remaining for today. Consider a protein-rich snack.",
+    "mock4Title": "AI Body Scan ready",
+    "mock4Body": "Your body fat estimate has been processed. Tap to view your results.",
+    "mock5Title": "Weekly steps goal hit! 🎉",
+    "mock5Body": "You completed 70,000 steps this week. Amazing consistency!",
+    "mock6Title": "Rest day reminder",
+    "mock6Body": "Your plan suggests rest today. Recovery is part of the process.",
+    "mock7Title": "B-Track updated to v1.2",
+    "mock7Body": "New: AI Calorie Scan improvements, sleep tracking enhancements, and bug fixes."
   },
   "lang": {
     "english": "English",
@@ -259,7 +290,23 @@
     "addToMyPlans": "Add to My Plans",
     "viewPlan": "View Plan",
     "startWorkout": "Start Workout",
-    "deletePlan": "Delete Plan"
+    "deletePlan": "Delete Plan",
+    "navTitle": "Workouts",
+    "muscleForearms": "Forearms",
+    "muscleOther": "Other"
+  },
+  "templateDetail": {
+    "notFound": "Template not found",
+    "statDifficulty": "Difficulty",
+    "statDaysWeek": "Days/Week",
+    "statExercises": "Exercises",
+    "exercisesLower": "exercises",
+    "sets": "sets",
+    "reps": "reps",
+    "restAbbrev": "s rest",
+    "adding": "Adding...",
+    "addedTitle": "Added!",
+    "addedMsg": "\"{{name}}\" was added to My Plans."
   },
   "activeWorkout": {
     "colSet": "SET",
@@ -305,7 +352,8 @@
     "cancelBtn": "Cancel",
     "errorTitle": "Error",
     "errorDefault": "Failed to create plan",
-    "nameRequired": "Name is required"
+    "nameRequired": "Name is required",
+    "navTitle": "New Plan"
   },
   "exerciseDetail": {
     "notFound": "Exercise not found",
@@ -339,6 +387,10 @@
     "equipmentLabel": "Equipment",
     "muscleGroupPlaceholder": "Specify muscle group…",
     "equipmentPlaceholder": "Specify equipment…",
+    "photoLabel": "Photo",
+    "choosePhoto": "Choose a photo",
+    "changePhoto": "Change",
+    "removePhoto": "Remove",
     "iconLabel": "Icon",
     "colorLabel": "Color",
     "createBtn": "Create Exercise",
@@ -352,13 +404,16 @@
     "createErrorTitle": "Couldn't create exercise",
     "createErrorMsg": "Something went wrong. Please try again.",
     "addErrorTitle": "Error",
-    "addErrorMsg": "Could not add exercises. Please try again."
+    "addErrorMsg": "Could not add exercises. Please try again.",
+    "navTitle": "Exercises"
   },
   "sessionDetail": {
     "notFound": "Session not found",
     "statDuration": "Duration",
     "statVolume": "Volume",
     "statSets": "Sets",
+    "statAvgHeartRate": "Avg Heart Rate",
+    "statActiveCalories": "Calories Burned",
     "colSet": "Set",
     "colWeight": "Weight",
     "colReps": "Reps"
@@ -381,7 +436,8 @@
     "emptyTitle": "No workout history yet",
     "emptyDesc": "Complete a workout to see it here.",
     "loadMore": "Load more",
-    "exerciseCount": "{{n}} exercises"
+    "exerciseCount": "{{n}} exercises",
+    "navTitle": "History"
   },
   "workoutPlanDetail": {
     "statDays": "Days",
@@ -405,8 +461,32 @@
     "volume": "Volume",
     "sets": "Sets",
     "exercises": "Exercises",
+    "avgHeartRate": "Avg Heart Rate",
+    "peakHeartRate": "Peak Heart Rate",
+    "activeCalories": "Calories Burned",
     "backToHome": "Back to Home",
-    "viewSession": "View Session"
+    "viewSession": "View Session",
+    "exerciseBreakdown": "Exercise Breakdown",
+    "navTitle": "Summary"
+  },
+  "workoutVitals": {
+    "title": "Workout Vitals",
+    "emptyTitle": "No heart rate data yet",
+    "emptyBody": "Finish a workout from your Apple Watch to start tracking heart rate and calories burned here.",
+    "overviewTitle": "Overview",
+    "avgHrTitle": "Average HR",
+    "avgHrMeta": "{{pct}}% of peak",
+    "peakHrTitle": "Peak HR",
+    "totalCaloriesTitle": "Total Burned",
+    "totalCaloriesMeta": "{{n}} kcal avg",
+    "totalCaloriesCount": "{{n}} workouts",
+    "hrChartTitle": "Avg Heart Rate per Workout",
+    "hrChartSubtitle": "How hard each workout pushed you, over time",
+    "calChartTitle": "Calories Burned per Workout",
+    "calChartSubtitle": "Active energy burned, per session",
+    "chartSubtitle": "Last {{n}} watch-tracked workouts",
+    "recentSessions": "Recent Sessions",
+    "recentSessionsSubtitle": "Tap a session in History for full exercise detail"
   },
   "nutrition": {
     "title": "Nutrition",
@@ -432,7 +512,7 @@
     "searchFoods": "Search foods…",
     "backToSearch": "Back to search",
     "calories": "Calories",
-    "servings": "Servings",
+    "servings": "Amount (g)",
     "removeTitle": "Remove",
     "removeMsg": "Remove this entry?",
     "cancelBtn": "Cancel",
@@ -570,7 +650,8 @@
     "cancelBtn": "Cancel",
     "deleteBtn": "Delete",
     "errorTitle": "Error",
-    "errorMsg": "Failed to delete entry."
+    "errorMsg": "Failed to delete entry.",
+    "calLabel": "Cal"
   },
   "bodyScanViz": {
     "title": "Body Composition Scan",
@@ -883,7 +964,13 @@
     "hydrationTips": "Hydration Tips",
     "tip1": "Drink 500ml of water first thing in the morning.",
     "tip2": "Your urine color is the best hydration indicator — aim for pale yellow.",
-    "tip3": "Increase intake by 500ml for every hour of exercise."
+    "tip3": "Increase intake by 500ml for every hour of exercise.",
+    "remindersTitle": "Reminders",
+    "remindersOnSub": "Reminding you every {{n}}h",
+    "remindersOffSub": "Get notified to drink water regularly",
+    "reminderEvery": "{{n}}h",
+    "reminderPermissionTitle": "Notifications disabled",
+    "reminderPermissionMsg": "Enable notifications for B-Track in Settings to get water reminders."
   },
   "calories": {
     "title": "Calories",
@@ -925,7 +1012,14 @@
     "recentSessions": "Recent Sessions",
     "noSessionsTitle": "No sessions yet",
     "noSessionsDesc": "Complete a workout to see your progress here.",
-    "weightHistory": "Weight History"
+    "weightHistory": "Weight History",
+    "shareTitle": "My B-Track progress 💪",
+    "shareSessions": "{{n}} workout sessions logged",
+    "shareVolume": "{{t}}t total volume lifted",
+    "shareAvgDuration": "{{n}} min average session",
+    "shareWeightChange": "{{n}} kg {{dir}} since I started tracking",
+    "shareWeightDown": "down",
+    "shareWeightUp": "up"
   },
   "onboarding": {
     "stepPersonalTitle": "Let's get to know you",
@@ -1040,6 +1134,19 @@
     "purchaseTitle": "Purchase",
     "purchaseSuccessMsg": "You're now Premium. Enjoy your new features!",
     "restoreTitle": "Restore",
-    "restoreMsg": "Previous purchases have been restored."
+    "restoreMsg": "Previous purchases have been restored.",
+    "proBadge": "PRO",
+    "goProBadge": "Go Pro"
+  },
+  "equipment": {
+    "barbell": "Barbell",
+    "dumbbell": "Dumbbell",
+    "machine": "Machine",
+    "cable": "Cable",
+    "bodyweight": "Bodyweight",
+    "kettlebell": "Kettlebell",
+    "resistanceBand": "Resistance Band",
+    "smithMachine": "Smith Machine",
+    "other": "Other"
   }
 }

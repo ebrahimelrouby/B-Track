@@ -15,6 +15,9 @@ public record WorkoutSessionResponse(
         Instant completedAt,
         Integer durationSeconds,
         BigDecimal totalVolumeKg,
+        Integer avgHeartRate,
+        Integer maxHeartRate,
+        BigDecimal activeCalories,
         List<SessionExerciseResponse> exercises,
         String notes
 ) {
@@ -27,6 +30,9 @@ public record WorkoutSessionResponse(
                 session.getCompletedAt(),
                 session.getDurationSeconds(),
                 session.getTotalVolumeKg(),
+                session.getAvgHeartRate(),
+                session.getMaxHeartRate(),
+                session.getActiveCalories(),
                 session.getExercises().stream().map(SessionExerciseResponse::from).toList(),
                 session.getNotes()
         );

@@ -1,6 +1,6 @@
 import { NavLink } from "react-router-dom";
 import {
-  LayoutDashboard, Dumbbell, Upload, History, Image, Languages,
+  LayoutDashboard, Users, Dumbbell, Upload, History, Image, Languages,
   GitMerge, FileCheck, ClipboardList, LogOut, ChevronRight,
 } from "lucide-react";
 import { useAuthStore } from "@/auth/authStore";
@@ -9,6 +9,7 @@ import ThemeToggle from "@/components/theme/ThemeToggle";
 
 const NAV = [
   { to: "/", icon: LayoutDashboard, label: "Dashboard" },
+  { to: "/users", icon: Users, label: "Users" },
   { to: "/exercises", icon: Dumbbell, label: "Exercises" },
   { to: "/exercises/quality", icon: FileCheck, label: "Quality Review" },
   { to: "/exercises/duplicates", icon: GitMerge, label: "Duplicates" },

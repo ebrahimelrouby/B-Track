@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, TouchableOpacity,
+  View, Text, StyleSheet, ScrollView, TouchableOpacity, Image,
 } from 'react-native';
 import { useRoute, RouteProp } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -11,6 +11,10 @@ import { MuscleGroup, ExerciseDifficulty } from '@/types';
 import { WorkoutStackParamList } from '@/navigation/types';
 import Card from '@/components/common/Card';
 import ExerciseMediaView from '@/media/ExerciseMediaView';
+import { exerciseIcon } from '@/utils/exerciseIcon';
+import { exercisePictogram } from '@/utils/exercisePictogram';
+import { muscleAnatomyIcon } from '@/utils/muscleAnatomyIcon';
+import { muscleGroupLabel, equipmentLabel, difficultyLabel } from '@/utils/enumLabels';
 import { useTranslation } from 'react-i18next';
 
 type RouteProps = RouteProp<WorkoutStackParamList, 'ExerciseDetail'>;
@@ -21,14 +25,6 @@ const MUSCLE_COLORS: Record<MuscleGroup, string> = {
   CORE: '#EC4899', GLUTES: '#22C55E', QUADRICEPS: '#22C55E',
   HAMSTRINGS: '#22C55E', CALVES: '#22C55E', FULL_BODY: '#AAFF00',
   CARDIO: '#F97316', OTHER: '#6B6B6B',
-};
-
-const MUSCLE_ICONS: Record<MuscleGroup, string> = {
-  CHEST: 'weight-lifter', BACK: 'human-handsup', SHOULDERS: 'arm-flex',
-  BICEPS: 'arm-flex', TRICEPS: 'arm-flex', FOREARMS: 'arm-flex',
-  CORE: 'yoga', GLUTES: 'run', QUADRICEPS: 'run',
-  HAMSTRINGS: 'run', CALVES: 'run-fast', FULL_BODY: 'human',
-  CARDIO: 'heart-pulse', OTHER: 'dumbbell',
 };
 
 const DIFFICULTY_COLORS: Record<ExerciseDifficulty, string> = {
@@ -68,7 +64,8 @@ export default function ExerciseDetailScreen() {
 
   const muscleColor = exercise.iconColor ?? MUSCLE_COLORS[exercise.muscleGroup];
   const difficultyColor = DIFFICULTY_COLORS[exercise.difficulty];
-  const muscleIcon = exercise.iconName ?? MUSCLE_ICONS[exercise.muscleGroup];
+  const muscleIcon = exercise.iconName ?? exerciseIcon(exercise.name, exercise.muscleGroup);
+  const pictogram = exercise.iconName ? null : (exercisePictogram(exercise.name) ?? muscleAnatomyIcon(exercise.muscleGroup));
   const tips = MUSCLE_TIPS[exercise.muscleGroup] ?? DEFAULT_TIPS;
 
   const steps = exercise.instructions
@@ -87,16 +84,16 @@ export default function ExerciseDetailScreen() {
         <View style={styles.badgeRow}>
           <View style={[styles.chip, { backgroundColor: muscleColor + '22' }]}>
             <Text style={[styles.chipText, { color: muscleColor }]}>
-              {exercise.muscleGroup.replace(/_/g, ' ')}
+              {muscleGroupLabel(exercise.muscleGroup, t)}
             </Text>
           </View>
           <View style={styles.badge}>
             <Icon name="dumbbell" size={12} color={colors.textSecondary} />
-            <Text style={styles.badgeText}>{exercise.equipment.replace(/_/g, ' ')}</Text>
+            <Text style={styles.badgeText}>{equipmentLabel(exercise.equipment, t)}</Text>
           </View>
           <View style={[styles.badge, { borderColor: difficultyColor + '55' }]}>
             <View style={[styles.difficultyDot, { backgroundColor: difficultyColor }]} />
-            <Text style={[styles.badgeText, { color: difficultyColor }]}>{exercise.difficulty}</Text>
+            <Text style={[styles.badgeText, { color: difficultyColor }]}>{difficultyLabel(exercise.difficulty, t)}</Text>
           </View>
         </View>
       </View>
@@ -155,21 +152,25 @@ export default function ExerciseDetailScreen() {
         <Card style={styles.muscleCard}>
           <View style={styles.muscleRow}>
             <View style={[styles.muscleIconWrap, { backgroundColor: muscleColor + '22' }]}>
-              <Icon name={muscleIcon} size={28} color={muscleColor} />
+              {pictogram ? (
+                <Image source={pictogram} style={{ width: 36, height: 36, tintColor: muscleColor }} />
+              ) : (
+                <Icon name={muscleIcon} size={28} color={muscleColor} />
+              )}
             </View>
             <View style={styles.muscleInfo}>
-              <Text style={styles.muscleName}>{exercise.muscleGroup.replace(/_/g, ' ')}</Text>
+              <Text style={styles.muscleName}>{muscleGroupLabel(exercise.muscleGroup, t)}</Text>
               <Text style={styles.muscleSubtitle}>{t('exerciseDetail.primaryMuscle')}</Text>
             </View>
           </View>
           <View style={styles.muscleMetaRow}>
             <View style={styles.muscleMeta}>
               <Icon name="weight" size={14} color={colors.textTertiary} />
-              <Text style={styles.muscleMetaText}>{exercise.equipment.replace(/_/g, ' ')}</Text>
+              <Text style={styles.muscleMetaText}>{equipmentLabel(exercise.equipment, t)}</Text>
             </View>
             <View style={styles.muscleMeta}>
               <Icon name="signal" size={14} color={difficultyColor} />
-              <Text style={[styles.muscleMetaText, { color: difficultyColor }]}>{exercise.difficulty}</Text>
+              <Text style={[styles.muscleMetaText, { color: difficultyColor }]}>{difficultyLabel(exercise.difficulty, t)}</Text>
             </View>
           </View>
         </Card>

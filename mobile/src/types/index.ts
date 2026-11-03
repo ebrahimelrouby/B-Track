@@ -185,6 +185,9 @@ export interface WorkoutSession {
   completedAt?: string;
   durationSeconds?: number;
   totalVolumeKg?: number;
+  avgHeartRate?: number;
+  maxHeartRate?: number;
+  activeCalories?: number;
   exercises: SessionExercise[];
   notes?: string;
 }

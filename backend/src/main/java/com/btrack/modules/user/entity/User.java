@@ -51,6 +51,11 @@ public class User extends BaseEntity {
     @Column(name = "deleted_at")
     private Instant deletedAt;
 
+    // Touched (throttled) on every authenticated request by
+    // UserActivityService — used by the admin portal to show who's online.
+    @Column(name = "last_active_at")
+    private Instant lastActiveAt;
+
     @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private UserProfile profile;
 

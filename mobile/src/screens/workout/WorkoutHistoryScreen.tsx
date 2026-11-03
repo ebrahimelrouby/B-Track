@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity, ActivityIndicator, RefreshControl,
+  I18nManager,
 } from 'react-native';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -100,7 +101,7 @@ export default function WorkoutHistoryScreen() {
           ) : null}
         </View>
       </View>
-      <Icon name="chevron-right" size={20} color={colors.textTertiary} />
+      <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={20} color={colors.textTertiary} />
     </TouchableOpacity>
   );
 

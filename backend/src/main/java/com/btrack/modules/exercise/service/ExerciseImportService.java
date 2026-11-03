@@ -41,7 +41,16 @@ public class ExerciseImportService {
                 .toList();
     }
 
-    @Transactional
+    // Deliberately NOT @Transactional: this method saves up to hundreds of
+    // records in a loop with per-record error isolation (try/catch below).
+    // Wrapping the whole batch in one transaction defeats that isolation —
+    // once any single record hits a DB constraint violation, Hibernate's
+    // persistence context is poisoned for the rest of the transaction, and
+    // the method fails with UnexpectedRollbackException at the end even
+    // though each iteration's try/catch appears to have handled its error.
+    // Without @Transactional, each exerciseRepository.save() call commits
+    // independently, so one bad record is correctly skipped/erred without
+    // taking down the rest of the import.
     public ExerciseImportHistory startImport(ImportRequest req, UUID adminUserId) {
         ExerciseImportProvider provider = findProvider(req.provider());
 

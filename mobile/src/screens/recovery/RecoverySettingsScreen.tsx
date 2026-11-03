@@ -25,7 +25,7 @@ function SettingRow({ icon, label, value, onPress, colors }: {
       <Text style={[rowS.label, { color: colors.textPrimary }]}>{label}</Text>
       <View style={{ flex: 1 }} />
       {value && <Text style={[rowS.value, { color: colors.textTertiary }]}>{value}</Text>}
-      <Icon name="chevron-right" size={16} color={colors.textTertiary} />
+      <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={colors.textTertiary} />
     </TouchableOpacity>
   );
 }
@@ -156,7 +156,7 @@ export default function RecoverySettingsScreen() {
                 ) : (
                   <Text style={{ fontSize: Typography.xs, color: statusColor, fontWeight: p.connectable && healthAuthorized ? Typography.semibold : Typography.regular }}>{status}</Text>
                 )}
-                {p.connectable && !healthAuthorized && <Icon name="chevron-right" size={16} color={colors.textTertiary} />}
+                {p.connectable && !healthAuthorized && <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={colors.textTertiary} />}
               </View>
             );
             return p.connectable && !healthAuthorized ? (

@@ -144,8 +144,15 @@ struct ActiveWorkoutView: View {
                 }
 
                 Button(action: {
-                    manager.sendAction("finishWorkout")
-                    healthKit.endSession()
+                    healthKit.endSession { avgHR, maxHR, cal in
+                        // Omit HR keys entirely when there was no real reading (0),
+                        // rather than sending a fabricated zero heart rate.
+                        var extra: [String: Any] = [:]
+                        if avgHR > 0 { extra["avgHeartRate"] = Int(avgHR.rounded()) }
+                        if maxHR > 0 { extra["maxHeartRate"] = Int(maxHR.rounded()) }
+                        if cal > 0 { extra["activeCalories"] = cal }
+                        manager.sendAction("finishWorkout", extra: extra)
+                    }
                 }) {
                     Text("Finish Workout")
                         .font(.system(size: 12, weight: .semibold))

@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, Platform, I18nManager } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -280,7 +280,7 @@ function getStyles(c: ColorPalette) {
     root: { flex: 1, backgroundColor: c.background },
     scroll: { padding: Spacing['2xl'] },
 
-    closeButton: { alignSelf: 'flex-end', marginBottom: Spacing.base },
+    closeButton: { alignSelf: I18nManager.isRTL ? 'flex-start' : 'flex-end', marginBottom: Spacing.base },
 
     badge: {
       alignSelf: 'center',
@@ -325,11 +325,11 @@ function getStyles(c: ColorPalette) {
     planBadge: {
       position: 'absolute',
       top: 0,
-      right: 0,
+      end: 0,
       backgroundColor: c.primary,
       paddingHorizontal: Spacing.sm,
       paddingVertical: 3,
-      borderBottomLeftRadius: Radius.sm,
+      borderEndStartRadius: Radius.sm,
     },
     planBadgeText: { fontSize: Typography.xs, fontWeight: Typography.bold, color: c.textInverse },
     planLabel: { fontSize: Typography.sm, color: c.textSecondary, fontWeight: Typography.medium, marginBottom: Spacing.xs },
@@ -345,7 +345,7 @@ function getStyles(c: ColorPalette) {
       backgroundColor: c.primaryDim,
       alignItems: 'center',
       justifyContent: 'center',
-      marginRight: Spacing.md,
+      marginEnd: Spacing.md,
     },
     featureLabel: { fontSize: Typography.base, color: c.textPrimary },
 

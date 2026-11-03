@@ -24,14 +24,14 @@ public interface ExerciseRepository extends JpaRepository<Exercise, UUID> {
             OR (e.custom = true AND (:userId IS NULL OR e.createdBy.id = :userId))
         )
         AND (:search IS NULL OR LOWER(e.name) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
-        AND (:muscleGroup IS NULL OR CAST(e.muscleGroup AS string) = CAST(:muscleGroup AS string))
-        AND (:equipment IS NULL OR CAST(e.equipment AS string) = CAST(:equipment AS string))
+        AND (:muscleGroup IS NULL OR CAST(e.muscleGroup AS string) = :muscleGroup)
+        AND (:equipment IS NULL OR CAST(e.equipment AS string) = :equipment)
         """)
     Page<Exercise> searchExercises(
             @Param("userId") UUID userId,
             @Param("search") String search,
-            @Param("muscleGroup") Exercise.MuscleGroup muscleGroup,
-            @Param("equipment") Exercise.EquipmentType equipment,
+            @Param("muscleGroup") String muscleGroup,
+            @Param("equipment") String equipment,
             Pageable pageable
     );
 
@@ -40,16 +40,16 @@ public interface ExerciseRepository extends JpaRepository<Exercise, UUID> {
         SELECT e FROM Exercise e
         WHERE e.active = true
         AND (:search IS NULL OR LOWER(e.name) LIKE LOWER(CONCAT('%', CAST(:search AS string), '%')))
-        AND (:muscleGroup IS NULL OR CAST(e.muscleGroup AS string) = CAST(:muscleGroup AS string))
-        AND (:equipment IS NULL OR CAST(e.equipment AS string) = CAST(:equipment AS string))
-        AND (:status IS NULL OR CAST(e.status AS string) = CAST(:status AS string))
+        AND (:muscleGroup IS NULL OR CAST(e.muscleGroup AS string) = :muscleGroup)
+        AND (:equipment IS NULL OR CAST(e.equipment AS string) = :equipment)
+        AND (:status IS NULL OR CAST(e.status AS string) = :status)
         AND (:provider IS NULL OR e.sourceProvider = :provider)
         """)
     Page<Exercise> adminSearchExercises(
             @Param("search") String search,
-            @Param("muscleGroup") Exercise.MuscleGroup muscleGroup,
-            @Param("equipment") Exercise.EquipmentType equipment,
-            @Param("status") Exercise.ExerciseStatus status,
+            @Param("muscleGroup") String muscleGroup,
+            @Param("equipment") String equipment,
+            @Param("status") String status,
             @Param("provider") String provider,
             Pageable pageable
     );

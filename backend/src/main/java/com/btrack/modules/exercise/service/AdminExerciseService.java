@@ -38,9 +38,11 @@ public class AdminExerciseService {
             String search, String muscleGroup, String equipment,
             String status, String provider, int page, int size) {
 
-        Exercise.MuscleGroup mg = muscleGroup != null ? Exercise.MuscleGroup.valueOf(muscleGroup) : null;
-        Exercise.EquipmentType eq = equipment != null ? Exercise.EquipmentType.valueOf(equipment) : null;
-        Exercise.ExerciseStatus st = status != null ? Exercise.ExerciseStatus.valueOf(status) : null;
+        // See ExerciseController.search() for why these are passed as plain
+        // Strings rather than the validated enums.
+        String mg = muscleGroup != null ? Exercise.MuscleGroup.valueOf(muscleGroup).name() : null;
+        String eq = equipment != null ? Exercise.EquipmentType.valueOf(equipment).name() : null;
+        String st = status != null ? Exercise.ExerciseStatus.valueOf(status).name() : null;
 
         var result = exerciseRepository.adminSearchExercises(
                 search, mg, eq, st, provider,

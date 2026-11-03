@@ -484,7 +484,7 @@ function getStyles(c: ColorPalette) {
     fieldInput: {
       fontSize: Typography.sm, color: c.textPrimary,
       borderBottomWidth: 1, borderBottomColor: c.primary,
-      minWidth: 120, textAlign: 'right', paddingVertical: 2,
+      minWidth: 120, textAlign: I18nManager.isRTL ? 'left' : 'right', paddingVertical: 2,
     },
 
     settingsRow: { flexDirection: 'row', alignItems: 'center', padding: Spacing.base, gap: Spacing.md },

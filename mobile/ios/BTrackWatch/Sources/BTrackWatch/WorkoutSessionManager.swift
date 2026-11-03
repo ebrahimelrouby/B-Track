@@ -22,9 +22,11 @@ class WorkoutSessionManager: NSObject, ObservableObject {
         }
     }
 
-    func sendAction(_ action: String) {
+    func sendAction(_ action: String, extra: [String: Any] = [:]) {
         guard session?.isReachable == true else { return }
-        session?.sendMessage(["action": action], replyHandler: nil, errorHandler: nil)
+        var message = extra
+        message["action"] = action
+        session?.sendMessage(message, replyHandler: nil, errorHandler: nil)
     }
 }
 

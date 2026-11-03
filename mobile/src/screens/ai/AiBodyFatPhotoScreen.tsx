@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import {
-  View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator, I18nManager } from 'react-native';
+  View, Text, StyleSheet, ScrollView, TouchableOpacity, Alert, ActivityIndicator, I18nManager, Image, ImageSourcePropType } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -15,21 +15,24 @@ import { AiStackParamList } from '@/navigation/types';
 
 type RouteProps = RouteProp<AiStackParamList, 'AiBodyFatPhoto'>;
 
+// Real pose silhouettes for all three capture angles.
+const POSE_IMAGES: Record<'FRONT' | 'SIDE' | 'BACK', ImageSourcePropType> = {
+  FRONT: require('@/assets/images/body-scan/front_pose.png'),
+  SIDE: require('@/assets/images/body-scan/side_pose.png'),
+  BACK: require('@/assets/images/body-scan/back_pose.png'),
+};
+
 interface PhotoSlot {
   angle: 'FRONT' | 'SIDE' | 'BACK';
   label: string;
   description: string;
-  icon: string;
   uri?: string;
 }
 
 const PHOTO_SLOTS: PhotoSlot[] = [
-  { angle: 'FRONT', label: 'Front', description: 'Face the camera, arms relaxed at sides', icon: 'human-handsdown' },
-  // 'walk' is a genuine side-profile silhouette — the clearest available
-  // match for "stand sideways" (the previous icon was just another
-  // front-facing figure, not actually a side view).
-  { angle: 'SIDE',  label: 'Side',  description: 'Stand sideways, arms relaxed',           icon: 'walk' },
-  { angle: 'BACK',  label: 'Back',  description: 'Back to camera, arms relaxed at sides',  icon: 'human' },
+  { angle: 'FRONT', label: 'Front', description: 'Face the camera, arms relaxed at sides' },
+  { angle: 'SIDE',  label: 'Side',  description: 'Stand sideways, arms relaxed' },
+  { angle: 'BACK',  label: 'Back',  description: 'Back to camera, arms relaxed at sides' },
 ];
 
 export default function AiBodyFatPhotoScreen() {
@@ -113,11 +116,15 @@ export default function AiBodyFatPhotoScreen() {
         {slots.map((slot, i) => (
           <TouchableOpacity key={slot.angle} style={styles.photoCard} onPress={() => addPhoto(i)}>
             <View style={[styles.photoPreview, slot.uri && styles.photoPreviewSelected]}>
-              <Icon
-                name={slot.uri ? 'check-circle' : slot.icon}
-                size={slot.uri ? 32 : 40}
-                color={slot.uri ? colors.success : colors.textTertiary}
-              />
+              {slot.uri ? (
+                <Icon name="check-circle" size={32} color={colors.success} />
+              ) : (
+                <Image
+                  source={POSE_IMAGES[slot.angle]}
+                  resizeMode="contain"
+                  style={{ width: 56, height: 56, tintColor: colors.textTertiary }}
+                />
+              )}
               {slot.uri && <Text style={styles.photoSelectedText}>{t('aiBodyFatPhoto.photoSelected')}</Text>}
             </View>
             <View style={styles.photoInfo}>

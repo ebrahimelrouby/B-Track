@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, StyleSheet, ScrollView, ActivityIndicator } from 'react-native';
 import { useNavigation, useRoute, RouteProp, CommonActions } from '@react-navigation/native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -7,7 +7,11 @@ import { useTranslation } from 'react-i18next';
 
 import { useColors, ColorPalette, Spacing, Typography, Radius, TAB_BAR_PADDING } from '@/theme';
 import Button from '@/components/common/Button';
+import ExerciseBreakdown from '@/components/workout/ExerciseBreakdown';
+import { hrZone } from '@/utils/heartRateZone';
 import { WorkoutStackParamList } from '@/navigation/types';
+import { workoutApi } from '@/api/workout.api';
+import { WorkoutSession } from '@/types';
 
 type RouteProps = RouteProp<WorkoutStackParamList, 'WorkoutSummary'>;
 
@@ -25,11 +29,39 @@ export default function WorkoutSummaryScreen() {
   const styles = React.useMemo(() => getStyles(colors), [colors]);
   const { t } = useTranslation();
 
+  // Full per-exercise/set breakdown isn't in the navigation params (only
+  // aggregate totals are), so fetch the synced session once we have an id —
+  // gives this screen the exact same "whole session" detail as History.
+  const [session, setSession] = useState<WorkoutSession | null>(null);
+  const [loadingSession, setLoadingSession] = useState(!!params.sessionId);
+
+  useEffect(() => {
+    if (!params.sessionId) { setLoadingSession(false); return; }
+    let cancelled = false;
+    workoutApi.getHistory(0, 50).then((res) => {
+      if (cancelled) return;
+      setSession(res.content.find((s) => s.id === params.sessionId) ?? null);
+    }).finally(() => { if (!cancelled) setLoadingSession(false); });
+    return () => { cancelled = true; };
+  }, [params.sessionId]);
+
+  const zone = params.avgHeartRate != null ? hrZone(params.avgHeartRate) : undefined;
+
   const stats = [
     { icon: 'clock-outline',    label: t('workoutSummary.duration'),  value: formatDuration(params.durationSeconds) },
     { icon: 'weight-lifter',    label: t('workoutSummary.volume'),    value: `${params.totalVolumeKg}kg` },
     { icon: 'dumbbell',         label: t('workoutSummary.sets'),      value: String(params.totalSets) },
     { icon: 'arm-flex-outline', label: t('workoutSummary.exercises'), value: String(params.exerciseCount) },
+    // Only present when the workout was finished from the Apple Watch
+    ...(params.avgHeartRate != null
+      ? [{ icon: 'heart-pulse', label: t('workoutSummary.avgHeartRate'), value: `${params.avgHeartRate} bpm`, badge: zone }]
+      : []),
+    ...(params.maxHeartRate != null
+      ? [{ icon: 'heart-flash', label: t('workoutSummary.peakHeartRate'), value: `${params.maxHeartRate} bpm` }]
+      : []),
+    ...(params.activeCalories != null
+      ? [{ icon: 'fire', label: t('workoutSummary.activeCalories'), value: `${Math.round(params.activeCalories)} kcal` }]
+      : []),
   ];
 
   return (
@@ -51,6 +83,11 @@ export default function WorkoutSummaryScreen() {
           <View key={s.label} style={styles.statCard}>
             <Icon name={s.icon} size={22} color={colors.primary} />
             <Text style={styles.statValue}>{s.value}</Text>
+            {s.badge != null && (
+              <View style={{ backgroundColor: s.badge.color + '22', borderRadius: Radius.full, paddingHorizontal: 7, paddingVertical: 1 }}>
+                <Text style={{ fontSize: 10, fontWeight: Typography.bold, color: s.badge.color }}>{s.badge.label}</Text>
+              </View>
+            )}
             <Text style={styles.statLabel}>{s.label}</Text>
           </View>
         ))}
@@ -76,7 +113,17 @@ export default function WorkoutSummaryScreen() {
           variant="secondary"
           onPress={() => navigation.navigate('WorkoutHistory')}
           fullWidth
+          style={styles.secondaryBtn}
         />
+      ) : null}
+
+      {loadingSession ? (
+        <ActivityIndicator color={colors.primary} style={{ marginTop: Spacing.xl }} />
+      ) : session ? (
+        <>
+          <Text style={styles.sectionTitle}>{t('workoutSummary.exerciseBreakdown')}</Text>
+          <ExerciseBreakdown exercises={session.exercises} />
+        </>
       ) : null}
     </ScrollView>
   );
@@ -106,5 +153,10 @@ function getStyles(c: ColorPalette) {
     statValue: { fontSize: Typography.xl, fontWeight: Typography.bold, color: c.textPrimary, marginTop: Spacing.xs },
     statLabel: { fontSize: Typography.sm, color: c.textTertiary },
     primaryBtn: { marginBottom: Spacing.sm },
+    secondaryBtn: { marginBottom: Spacing.sm },
+    sectionTitle: {
+      fontSize: Typography.lg, fontWeight: Typography.bold, color: c.textPrimary,
+      marginTop: Spacing.xl, marginBottom: Spacing.base,
+    },
   });
 }

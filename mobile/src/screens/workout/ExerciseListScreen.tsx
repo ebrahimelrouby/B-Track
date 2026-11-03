@@ -1,10 +1,12 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity, TextInput,
-  Modal, Pressable, Alert, ScrollView, Dimensions, KeyboardAvoidingView, Platform,
+  Modal, Pressable, Alert, ScrollView, Dimensions, KeyboardAvoidingView, Platform, Image,
+  I18nManager,
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { launchImageLibrary } from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useTranslation } from 'react-i18next';
@@ -18,6 +20,10 @@ import { USE_MOCK_API } from '@/constants/config';
 import { EXERCISE_SEED } from '@/api/mock/exerciseSeed';
 import { localDb } from '@/api/mock/localDb';
 import apiClient from '@/api/client';
+import { exerciseIcon, MUSCLE_ICONS } from '@/utils/exerciseIcon';
+import { muscleGroupLabel, equipmentLabel } from '@/utils/enumLabels';
+import { exercisePictogram } from '@/utils/exercisePictogram';
+import { muscleAnatomyIcon } from '@/utils/muscleAnatomyIcon';
 
 const CUSTOM_KEY = 'exercises:custom';
 // Icon/color are cosmetic-only and the backend doesn't store them — persisted
@@ -47,13 +53,8 @@ const MUSCLE_COLORS: Record<MuscleGroup, string> = {
   CARDIO: '#F97316', OTHER: '#6B6B6B',
 };
 
-const MUSCLE_ICONS: Record<MuscleGroup, string> = {
-  CHEST: 'weight-lifter', BACK: 'human-handsup', SHOULDERS: 'arm-flex',
-  BICEPS: 'arm-flex', TRICEPS: 'arm-flex', FOREARMS: 'arm-flex',
-  CORE: 'yoga', GLUTES: 'run', QUADRICEPS: 'run',
-  HAMSTRINGS: 'run', CALVES: 'run-fast', FULL_BODY: 'human',
-  CARDIO: 'heart-pulse', OTHER: 'dumbbell',
-};
+// Per-exercise icon (keyword match → distinct muscle-group fallback), shared
+// with ExerciseDetailScreen via src/utils/exerciseIcon.ts.
 
 // Custom-exercise icon/color picker options (Create Custom Exercise sheet).
 const ICON_OPTIONS = [
@@ -194,6 +195,10 @@ function CreateExerciseModal({
   const [customEquip, setCustomEquip] = useState('');
   const [iconName, setIconName] = useState(ICON_OPTIONS[0]);
   const [iconColor, setIconColor] = useState(COLOR_OPTIONS[0]);
+  // A real photo replaces the icon+color entirely when set — mutually
+  // exclusive, not layered, since the icon is just a cosmetic stand-in for
+  // not having a photo.
+  const [photoUri, setPhotoUri] = useState<string | undefined>();
   // 'none' | 'muscle' | 'equip' — which inline list is expanded
   const [expanded, setExpanded] = useState<'none' | 'muscle' | 'equip'>('none');
 
@@ -207,11 +212,11 @@ function CreateExerciseModal({
 
   const muscleLabel = muscle === 'OTHER' && customMuscle.trim()
     ? customMuscle.trim()
-    : muscle.replace(/_/g, ' ').toLowerCase();
+    : muscleGroupLabel(muscle, t);
 
   const equipLabel = equipment === 'OTHER' && customEquip.trim()
     ? customEquip.trim()
-    : equipment.replace(/_/g, ' ').toLowerCase();
+    : equipmentLabel(equipment, t);
 
   const reset = () => {
     setName('');
@@ -221,8 +226,16 @@ function CreateExerciseModal({
     setCustomEquip('');
     setIconName(ICON_OPTIONS[0]);
     setIconColor(COLOR_OPTIONS[0]);
+    setPhotoUri(undefined);
     setExpanded('none');
   };
+
+  const pickPhoto = useCallback(() => {
+    launchImageLibrary({ mediaType: 'photo', quality: 0.8, selectionLimit: 1 }, (res) => {
+      const uri = res.assets?.[0]?.uri;
+      if (uri) setPhotoUri(uri);
+    });
+  }, []);
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -246,8 +259,11 @@ function CreateExerciseModal({
       difficulty: 'BEGINNER',
       instructions: notes || undefined,
       isCustom: true,
-      iconName,
-      iconColor,
+      imageUrl: photoUri,
+      // Only meaningful when there's no photo — the photo takes over the
+      // spot the icon would otherwise occupy, not layered on top of it.
+      iconName: photoUri ? undefined : iconName,
+      iconColor: photoUri ? undefined : iconColor,
     };
     setIsSubmitting(true);
     try {
@@ -302,6 +318,10 @@ function CreateExerciseModal({
     previewIconBig: {
       width: 64, height: 64, borderRadius: 32,
       alignItems: 'center', justifyContent: 'center', borderWidth: 2,
+    },
+    previewPhotoBig: {
+      width: 64, height: 64, borderRadius: 32,
+      borderWidth: 2, borderColor: colors.surfaceBorder,
     },
     previewNameBig: { fontSize: Typography.lg, fontWeight: Typography.bold, color: colors.textPrimary },
     previewMetaRow: { flexDirection: 'row', gap: 8 },
@@ -384,6 +404,17 @@ function CreateExerciseModal({
       borderWidth: 3, borderColor: 'transparent',
     },
     colorSwatchSelected: { borderColor: colors.textPrimary },
+    choosePhotoBtn: {
+      flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8,
+      borderWidth: 1, borderStyle: 'dashed', borderColor: colors.primary + '60',
+      backgroundColor: colors.primary + '10', borderRadius: Radius.md,
+      paddingVertical: Spacing.md,
+    },
+    choosePhotoText: { fontSize: Typography.sm, fontWeight: Typography.semibold, color: colors.primary },
+    photoRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
+    photoThumb: { width: 48, height: 48, borderRadius: Radius.md, borderWidth: 1, borderColor: colors.surfaceBorder },
+    photoActionBtn: { flexDirection: 'row', alignItems: 'center', gap: 4 },
+    photoActionText: { fontSize: Typography.xs, fontWeight: Typography.semibold, color: colors.textSecondary },
   });
 
   return (
@@ -403,9 +434,13 @@ function CreateExerciseModal({
 
                 {/* Live preview */}
                 <View style={s.previewCard}>
-                  <View style={[s.previewIconBig, { backgroundColor: iconColor + '22', borderColor: iconColor + '55' }]}>
-                    <Icon name={iconName} size={30} color={iconColor} />
-                  </View>
+                  {photoUri ? (
+                    <Image source={{ uri: photoUri }} style={s.previewPhotoBig} />
+                  ) : (
+                    <View style={[s.previewIconBig, { backgroundColor: iconColor + '22', borderColor: iconColor + '55' }]}>
+                      <Icon name={iconName} size={30} color={iconColor} />
+                    </View>
+                  )}
                   <Text style={s.previewNameBig} numberOfLines={1}>
                     {name.trim() || t('exerciseList.namePlaceholder')}
                   </Text>
@@ -476,43 +511,69 @@ function CreateExerciseModal({
                   )}
                 </View>
 
-                {/* Appearance: icon + color */}
+                {/* Appearance: photo, or icon + color */}
                 <View style={s.sectionCard}>
-                  <Text style={s.label}>{t('exerciseList.iconLabel')}</Text>
-                  <View style={s.swatchRow}>
-                    {ICON_OPTIONS.map((ic) => (
-                      <TouchableOpacity
-                        key={ic}
-                        style={[
-                          s.iconSwatch,
-                          { borderColor: ic === iconName ? iconColor : colors.surfaceBorder },
-                          ic === iconName && { backgroundColor: iconColor + '1A' },
-                        ]}
-                        onPress={() => setIconName(ic)}
-                      >
-                        <Icon name={ic} size={20} color={ic === iconName ? iconColor : colors.textSecondary} />
+                  <Text style={s.label}>{t('exerciseList.photoLabel')}</Text>
+                  {photoUri ? (
+                    <View style={s.photoRow}>
+                      <Image source={{ uri: photoUri }} style={s.photoThumb} />
+                      <TouchableOpacity style={s.photoActionBtn} onPress={pickPhoto}>
+                        <Icon name="image-edit-outline" size={16} color={colors.textSecondary} />
+                        <Text style={s.photoActionText}>{t('exerciseList.changePhoto')}</Text>
                       </TouchableOpacity>
-                    ))}
-                  </View>
-
-                  <View style={s.sectionDivider} />
-
-                  <Text style={s.label}>{t('exerciseList.colorLabel')}</Text>
-                  <View style={s.swatchRow}>
-                    {COLOR_OPTIONS.map((c) => (
-                      <TouchableOpacity
-                        key={c}
-                        style={[
-                          s.colorSwatch,
-                          { backgroundColor: c },
-                          c === iconColor && s.colorSwatchSelected,
-                        ]}
-                        onPress={() => setIconColor(c)}
-                      >
-                        {c === iconColor && <Icon name="check" size={16} color="#000" />}
+                      <TouchableOpacity style={s.photoActionBtn} onPress={() => setPhotoUri(undefined)}>
+                        <Icon name="close" size={16} color={colors.error} />
+                        <Text style={[s.photoActionText, { color: colors.error }]}>{t('exerciseList.removePhoto')}</Text>
                       </TouchableOpacity>
-                    ))}
-                  </View>
+                    </View>
+                  ) : (
+                    <TouchableOpacity style={s.choosePhotoBtn} onPress={pickPhoto}>
+                      <Icon name="image-plus" size={18} color={colors.primary} />
+                      <Text style={s.choosePhotoText}>{t('exerciseList.choosePhoto')}</Text>
+                    </TouchableOpacity>
+                  )}
+
+                  {!photoUri && (
+                    <>
+                      <View style={s.sectionDivider} />
+
+                      <Text style={s.label}>{t('exerciseList.iconLabel')}</Text>
+                      <View style={s.swatchRow}>
+                        {ICON_OPTIONS.map((ic) => (
+                          <TouchableOpacity
+                            key={ic}
+                            style={[
+                              s.iconSwatch,
+                              { borderColor: ic === iconName ? iconColor : colors.surfaceBorder },
+                              ic === iconName && { backgroundColor: iconColor + '1A' },
+                            ]}
+                            onPress={() => setIconName(ic)}
+                          >
+                            <Icon name={ic} size={20} color={ic === iconName ? iconColor : colors.textSecondary} />
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+
+                      <View style={s.sectionDivider} />
+
+                      <Text style={s.label}>{t('exerciseList.colorLabel')}</Text>
+                      <View style={s.swatchRow}>
+                        {COLOR_OPTIONS.map((c) => (
+                          <TouchableOpacity
+                            key={c}
+                            style={[
+                              s.colorSwatch,
+                              { backgroundColor: c },
+                              c === iconColor && s.colorSwatchSelected,
+                            ]}
+                            onPress={() => setIconColor(c)}
+                          >
+                            {c === iconColor && <Icon name="check" size={16} color="#000" />}
+                          </TouchableOpacity>
+                        ))}
+                      </View>
+                    </>
+                  )}
                 </View>
               </ScrollView>
 
@@ -559,7 +620,7 @@ function CreateExerciseModal({
                       onPress={() => { setMuscle(m); setExpanded('none'); }}
                     >
                       <Text style={[s.optionText, m === muscle && { color: colors.primary, fontWeight: Typography.bold }]}>
-                        {m.replace(/_/g, ' ').toLowerCase()}
+                        {muscleGroupLabel(m, t)}
                       </Text>
                       {m === muscle && <Icon name="check" size={16} color={colors.primary} />}
                     </TouchableOpacity>
@@ -571,7 +632,7 @@ function CreateExerciseModal({
                       onPress={() => { setEquipment(e); setExpanded('none'); }}
                     >
                       <Text style={[s.optionText, e === equipment && { color: colors.primary, fontWeight: Typography.bold }]}>
-                        {e.replace(/_/g, ' ').toLowerCase()}
+                        {equipmentLabel(e, t)}
                       </Text>
                       {e === equipment && <Icon name="check" size={16} color={colors.primary} />}
                     </TouchableOpacity>
@@ -601,7 +662,7 @@ export default function ExerciseListScreen() {
   const { t } = useTranslation();
 
   const [search, setSearch] = useState('');
-  const [selectedMuscle, setSelectedMuscle] = useState<MuscleGroup | undefined>();
+  const [selectedMuscle, setSelectedMuscle] = useState<MuscleGroup | undefined>(params.muscleGroup);
   const [selectedEquipment, setSelectedEquipment] = useState<EquipmentType | undefined>();
   const [sortBy, setSortBy] = useState<SortKey>('name');
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
@@ -618,7 +679,12 @@ export default function ExerciseListScreen() {
     queryKey: ['exercises'],
     queryFn: async (): Promise<Exercise[]> => {
       if (USE_MOCK_API) return EXERCISE_SEED;
-      const r = await apiClient.get('/exercises');
+      // No page/size here previously meant the backend's default page size
+      // (30) silently capped this screen's list — fine when the library had
+      // ~65 exercises, broken now that it has 900+. This screen's search/
+      // filter/sort all run client-side against rawData, so it needs the
+      // full list in one shot rather than real pagination.
+      const r = await apiClient.get('/exercises', { params: { size: 2000 } });
       return r.data.data?.content as Exercise[];
     },
     staleTime: Infinity,
@@ -641,14 +707,17 @@ export default function ExerciseListScreen() {
         equipment: ex.equipment,
         difficulty: ex.difficulty,
         instructions: ex.instructions,
+        imageUrl: ex.imageUrl,
       });
       // The backend issues the real id here — this is what fixes "add exercise"
       // failing with a fake custom_<timestamp> id the server can't resolve.
       const created = res.data.data as Exercise;
 
-      const overrides = localDb.get<IconOverrides>(ICON_OVERRIDES_KEY) ?? {};
-      overrides[created.id] = { iconName: ex.iconName, iconColor: ex.iconColor };
-      localDb.set(ICON_OVERRIDES_KEY, overrides);
+      if (ex.iconName) {
+        const overrides = localDb.get<IconOverrides>(ICON_OVERRIDES_KEY) ?? {};
+        overrides[created.id] = { iconName: ex.iconName, iconColor: ex.iconColor };
+        localDb.set(ICON_OVERRIDES_KEY, overrides);
+      }
 
       queryClient.setQueryData<Exercise[]>(['exercises'], (old: Exercise[] | undefined) => [
         ...(old ?? []),
@@ -728,8 +797,15 @@ export default function ExerciseListScreen() {
 
   const renderExercise = useCallback(({ item }: { item: Exercise }) => {
     const muscleColor = item.iconColor ?? MUSCLE_COLORS[item.muscleGroup];
-    const icon = item.iconName ?? MUSCLE_ICONS[item.muscleGroup];
+    const icon = item.iconName ?? exerciseIcon(item.name, item.muscleGroup);
+    const pictogram = item.iconName ? null : (exercisePictogram(item.name) ?? muscleAnatomyIcon(item.muscleGroup));
     const isSelected = selectedIds.has(item.id);
+    // Exercises with a stock photo use a single consistent muscle-group
+    // category icon instead — any exercise that's already rendering an icon
+    // (custom iconName, or no photo available) keeps what it has. Muscle
+    // groups without dedicated anatomy art (BICEPS, CARDIO, FOREARMS, OTHER)
+    // fall through unchanged since muscleAnatomyIcon returns null for them.
+    const categoryIcon = item.imageUrl ? muscleAnatomyIcon(item.muscleGroup) : null;
 
     return (
       <TouchableOpacity
@@ -743,20 +819,32 @@ export default function ExerciseListScreen() {
         }}
         activeOpacity={0.75}
       >
-        {/* Left: muscle icon */}
-        <View style={[styles.cardIcon, { backgroundColor: muscleColor + '18' }]}>
-          <Icon name={icon} size={20} color={muscleColor} />
-        </View>
+        {/* Left: category icon override > real photo > matched exercise pictogram > generic muscle/pattern icon */}
+        {categoryIcon ? (
+          <View style={[styles.cardIcon, { backgroundColor: muscleColor + '18' }]}>
+            <Image source={categoryIcon} style={[styles.cardPictogram, { tintColor: muscleColor }]} />
+          </View>
+        ) : item.imageUrl ? (
+          <Image source={{ uri: item.imageUrl }} style={styles.cardIcon} />
+        ) : pictogram ? (
+          <View style={[styles.cardIcon, { backgroundColor: muscleColor + '18' }]}>
+            <Image source={pictogram} style={[styles.cardPictogram, { tintColor: muscleColor }]} />
+          </View>
+        ) : (
+          <View style={[styles.cardIcon, { backgroundColor: muscleColor + '18' }]}>
+            <Icon name={icon} size={20} color={muscleColor} />
+          </View>
+        )}
 
         {/* Content */}
         <View style={styles.cardContent}>
           <Text style={styles.cardName} numberOfLines={1}>{item.name}</Text>
           <View style={styles.cardMeta}>
             <Text style={[styles.cardMuscle, { color: muscleColor }]}>
-              {item.muscleGroup.replace(/_/g, ' ')}
+              {muscleGroupLabel(item.muscleGroup, t)}
             </Text>
             <Text style={styles.cardDot}>·</Text>
-            <Text style={styles.cardEquip}>{item.equipment.replace(/_/g, ' ')}</Text>
+            <Text style={styles.cardEquip}>{equipmentLabel(item.equipment, t)}</Text>
           </View>
         </View>
 
@@ -789,7 +877,7 @@ export default function ExerciseListScreen() {
               >
                 <Icon name="information-outline" size={20} color={colors.textTertiary} />
               </TouchableOpacity>
-              <Icon name="chevron-right" size={20} color={colors.textTertiary} />
+              <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={20} color={colors.textTertiary} />
             </>
           )}
         </View>
@@ -830,7 +918,7 @@ export default function ExerciseListScreen() {
             icon="arm-flex-outline"
             value={selectedMuscle}
             options={MUSCLE_GROUPS}
-            formatLabel={v => v.replace(/_/g, ' ')}
+            formatLabel={v => muscleGroupLabel(v, t)}
             accentColor={v => MUSCLE_COLORS[v]}
             onSelect={setSelectedMuscle}
             colors={colors}
@@ -840,7 +928,7 @@ export default function ExerciseListScreen() {
             icon="dumbbell"
             value={selectedEquipment}
             options={EQUIPMENT_TYPES}
-            formatLabel={v => v.replace(/_/g, ' ')}
+            formatLabel={v => equipmentLabel(v, t)}
             onSelect={setSelectedEquipment}
             colors={colors}
           />
@@ -1026,13 +1114,14 @@ function getStyles(c: ColorPalette) {
       alignItems: 'center', justifyContent: 'center',
       marginHorizontal: Spacing.md, flexShrink: 0,
     },
+    cardPictogram: { width: 26, height: 26 },
     cardContent: { flex: 1, paddingVertical: Spacing.md },
     cardName: { fontSize: Typography.base, fontWeight: Typography.semibold, color: c.textPrimary },
     cardMeta: { flexDirection: 'row', alignItems: 'center', gap: 4, marginTop: 3 },
     cardMuscle: { fontSize: Typography.xs, fontWeight: Typography.medium, textTransform: 'capitalize' },
     cardDot: { fontSize: Typography.xs, color: c.textTertiary },
     cardEquip: { fontSize: Typography.xs, color: c.textTertiary, textTransform: 'capitalize' },
-    cardActions: { flexDirection: 'row', alignItems: 'center', paddingRight: Spacing.md, gap: Spacing.xs },
+    cardActions: { flexDirection: 'row', alignItems: 'center', paddingEnd: Spacing.md, gap: Spacing.xs },
     infoBtn: { padding: Spacing.xs },
 
     // Selection circle

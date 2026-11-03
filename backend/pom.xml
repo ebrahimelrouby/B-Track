@@ -34,6 +34,14 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
+        <!-- Apache HttpClient5 — the default RestTemplate (plain HttpURLConnection)
+             fails the TLS handshake against raw.githubusercontent.com from inside
+             this container; HttpClient5 negotiates it correctly. Used by
+             AppConfig's RestTemplate bean, which the exercise importers rely on. -->
+        <dependency>
+            <groupId>org.apache.httpcomponents.client5</groupId>
+            <artifactId>httpclient5</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>

@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, RefreshControl,
+  I18nManager,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -147,7 +148,7 @@ const cbStyles = StyleSheet.create({
   iconBox: { width: 24, height: 24, borderRadius: 6, alignItems: 'center', justifyContent: 'center' },
   label:   { fontSize: Typography.sm, fontWeight: Typography.medium },
   weight:  { fontSize: Typography.xs },
-  score:   { fontSize: Typography.sm, fontWeight: Typography.bold, minWidth: 24, textAlign: 'right' },
+  score:   { fontSize: Typography.sm, fontWeight: Typography.bold, minWidth: 24, textAlign: I18nManager.isRTL ? 'left' : 'right' },
   track:   { height: 6, borderRadius: 3, overflow: 'hidden' },
   fill:    { height: 6, borderRadius: 3 },
 });
@@ -272,7 +273,7 @@ export default function RecoveryDashboardScreen() {
                 <Text style={styles.recTitle}>{score.recommendations[0].title}</Text>
                 <Text style={styles.recDesc} numberOfLines={2}>{score.recommendations[0].description}</Text>
               </View>
-              <Icon name="chevron-right" size={18} color={colors.textTertiary} />
+              <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={colors.textTertiary} />
             </TouchableOpacity>
           )}
 
@@ -284,7 +285,7 @@ export default function RecoveryDashboardScreen() {
           >
             <View style={styles.cardHeader}>
               <Text style={styles.cardTitle}>{t('recoveryDashboard.componentBreakdown')}</Text>
-              <Icon name="chevron-right" size={16} color={colors.textTertiary} />
+              <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={colors.textTertiary} />
             </View>
             <View style={{ gap: Spacing.base }}>
               {COMPONENT_META.map(meta => (
@@ -370,7 +371,7 @@ export default function RecoveryDashboardScreen() {
                 <Text style={styles.premiumTitle}>{t('recoveryDashboard.unlockAiTitle')}</Text>
                 <Text style={styles.premiumSub}>{t('recoveryDashboard.unlockAiDesc')}</Text>
               </View>
-              <Icon name="chevron-right" size={16} color="#F59E0B" />
+              <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color="#F59E0B" />
             </TouchableOpacity>
           )}
 

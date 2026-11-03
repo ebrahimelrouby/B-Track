@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   View, Text, StyleSheet, FlatList, TouchableOpacity,
   TextInput, Modal, Image, Animated,
+  I18nManager,
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { useMutation } from '@tanstack/react-query';
@@ -15,10 +16,11 @@ import { useTranslation } from 'react-i18next';
 import { useColors, ColorPalette, Spacing, Typography, Radius, TAB_BAR_PADDING } from '@/theme';
 import { useActiveWorkoutStore } from '@/store/activeWorkout.store';
 import { workoutApi } from '@/api/workout.api';
-import { ActiveExercise, ActiveSet, MuscleGroup, SetType, WorkoutSet } from '@/types';
+import { ActiveExercise, ActiveSet, ActiveWorkout, MuscleGroup, SetType, WorkoutSet } from '@/types';
 import { WorkoutStackParamList, WorkoutNavigationProp } from '@/navigation/types';
-import { pushWorkoutStateToWatch, subscribeToWatchActions } from '@/native/watch';
+import { pushWorkoutStateToWatch, subscribeToWatchActions, WatchFinishPayload } from '@/native/watch';
 import { startAppleWatchWorkout } from '@/native/appleWatchWorkout';
+import { muscleGroupLabel } from '@/utils/enumLabels';
 
 type RouteProps = RouteProp<WorkoutStackParamList, 'ActiveWorkout'>;
 
@@ -187,7 +189,7 @@ const ExerciseCard = React.memo(function ExerciseCard({
           )}
           <View style={{ flex: 1 }}>
             <Text style={styles.exName} numberOfLines={1}>{exercise.exercise.name}</Text>
-            <Text style={styles.exMuscle}>{exercise.exercise.muscleGroup.replace(/_/g, ' ')}</Text>
+            <Text style={styles.exMuscle}>{muscleGroupLabel(exercise.exercise.muscleGroup, t)}</Text>
           </View>
           <TouchableOpacity onPress={onOpenOptions} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
             <Icon name="dots-horizontal" size={20} color={colors.textTertiary} />
@@ -221,11 +223,11 @@ const ExerciseCard = React.memo(function ExerciseCard({
         {/* Column headers */}
         {total > 0 && (
           <View style={styles.colHeader}>
-            <Text style={[styles.colHeaderText, { width: 34 }]}>SET</Text>
-            <Text style={[styles.colHeaderText, styles.prevCol]}>PREV</Text>
-            <Text style={[styles.colHeaderText, styles.inputCol]}>KG</Text>
-            <Text style={[styles.colHeaderText, styles.inputCol]}>REPS</Text>
-            <Text style={[styles.colHeaderText, styles.rpeCol]}>RPE</Text>
+            <Text style={[styles.colHeaderText, { width: 34 }]}>{t('activeWorkout.colSet')}</Text>
+            <Text style={[styles.colHeaderText, styles.prevCol]}>{t('activeWorkout.colPrev')}</Text>
+            <Text style={[styles.colHeaderText, styles.inputCol]}>{t('activeWorkout.colKg')}</Text>
+            <Text style={[styles.colHeaderText, styles.inputCol]}>{t('activeWorkout.colReps')}</Text>
+            <Text style={[styles.colHeaderText, styles.rpeCol]}>{t('activeWorkout.colRpe')}</Text>
             <View style={{ width: 38 }} />
           </View>
         )}
@@ -329,7 +331,7 @@ function RestBanner({
         </TouchableOpacity>
 
         <TouchableOpacity
-          style={{ marginLeft: Spacing.sm, padding: Spacing.sm, borderRadius: Radius.sm, backgroundColor: colors.primaryDim }}
+          style={{ marginStart: Spacing.sm, padding: Spacing.sm, borderRadius: Radius.sm, backgroundColor: colors.primaryDim }}
           onPress={onSkip}
         >
           <Icon name="skip-next" size={20} color={colors.primary} />
@@ -468,7 +470,7 @@ function ExerciseOptionsModal({
               <Text style={{ flex: 1, fontSize: Typography.base, color: r.danger ? colors.error : colors.textPrimary, fontWeight: Typography.medium }}>
                 {r.label}
               </Text>
-              <Icon name="chevron-right" size={16} color={colors.textTertiary} />
+              <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={colors.textTertiary} />
             </TouchableOpacity>
           ))}
           <TouchableOpacity
@@ -509,7 +511,13 @@ export default function ActiveWorkoutScreen() {
   const [showFinish, setShowFinish]          = useState(false);
 
   const loadedIds    = useRef<Set<string>>(new Set());
-  const syncMutation = useMutation({ mutationFn: workoutApi.syncSession });
+  // Set right before doFinish() when the watch itself ends the workout —
+  // that's the one path where the watch has final HR/calories in hand.
+  const watchVitalsRef = useRef<WatchFinishPayload | undefined>(undefined);
+  const syncMutation = useMutation({
+    mutationFn: (vars: { session: ActiveWorkout; vitals?: WatchFinishPayload }) =>
+      workoutApi.syncSession(vars.session, vars.vitals),
+  });
 
   // Pulsing "recording" dot next to the live timer.
   const pulseAnim = useRef(new Animated.Value(1)).current;
@@ -611,12 +619,17 @@ export default function ActiveWorkoutScreen() {
     const totalVolumeKg = completed.exercises.reduce(
       (v, ex) => v + ex.sets.reduce((s, set) => s + (set.isCompleted && set.weightKg && set.reps ? set.weightKg * set.reps : 0), 0), 0,
     );
+    const vitals = watchVitalsRef.current;
+    watchVitalsRef.current = undefined;
     const summaryBase = {
       name: completed.name,
       durationSeconds: elapsedSeconds,
       totalVolumeKg: Math.round(totalVolumeKg * 10) / 10,
       totalSets,
       exerciseCount: completed.exercises.length,
+      avgHeartRate: vitals?.avgHeartRate,
+      maxHeartRate: vitals?.maxHeartRate,
+      activeCalories: vitals?.activeCalories,
     };
     const goToSummary = (sessionId: string) => {
       navigation.reset({
@@ -629,7 +642,7 @@ export default function ActiveWorkoutScreen() {
     };
     const netState = await NetInfo.fetch();
     if (netState.isConnected) {
-      syncMutation.mutate(completed, {
+      syncMutation.mutate({ session: completed, vitals }, {
         onSuccess: (s) => goToSummary(s.id),
         onError:   ()  => goToSummary(''),
       });
@@ -670,8 +683,9 @@ export default function ActiveWorkoutScreen() {
   }, [activeWorkout, currentExerciseLocalId, restState, restPaused]);
 
   // ── Handle actions triggered from the watch ──────────────────────────────────
-  useEffect(() => subscribeToWatchActions((action) => {
+  useEffect(() => subscribeToWatchActions((action, payload) => {
     if (action === 'finishWorkout') {
+      watchVitalsRef.current = payload;
       doFinish();
       return;
     }
@@ -1004,7 +1018,7 @@ function getStyles(c: ColorPalette) {
       backgroundColor: c.surfaceElevated,
       borderWidth: 1.5, borderColor: c.surfaceBorder,
       alignItems: 'center', justifyContent: 'center',
-      marginLeft: 2, flexShrink: 0,
+      marginStart: 2, flexShrink: 0,
     },
     completeBtnDone: { backgroundColor: c.primary, borderColor: c.primary },
 

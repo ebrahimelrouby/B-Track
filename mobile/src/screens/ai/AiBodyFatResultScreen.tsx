@@ -148,7 +148,7 @@ export default function AiBodyFatResultScreen() {
           >
             <Icon name="human-male-board" size={18} color={colors.primary} />
             <Text style={[styles.scanBtnText, { color: colors.primary }]}>{t('aiBodyFatResult.viewScan')}</Text>
-            <Icon name="chevron-right" size={16} color={colors.primary} />
+            <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={colors.primary} />
           </TouchableOpacity>
         </View>
 

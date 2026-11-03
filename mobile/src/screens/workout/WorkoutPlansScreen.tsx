@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import {
-  View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, ScrollView, Modal, Dimensions,
+  View, Text, StyleSheet, FlatList, TouchableOpacity, Alert, ScrollView, Modal, Dimensions, Image,
+  I18nManager,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -10,11 +11,13 @@ import { useTranslation } from 'react-i18next';
 
 import { useColors, ColorPalette, Spacing, Typography, Radius, TAB_BAR_PADDING } from '@/theme';
 import { workoutApi } from '@/api/workout.api';
-import { WorkoutPlan, WorkoutSession } from '@/types';
+import { Exercise, WorkoutPlan, WorkoutSession, MuscleGroup } from '@/types';
 import { WorkoutNavigationProp } from '@/navigation/types';
 import { useAuthStore } from '@/store/auth.store';
 import { useActiveWorkoutStore } from '@/store/activeWorkout.store';
 import { WORKOUT_TEMPLATES, WorkoutTemplate, EXERCISE_SEED } from '@/api/mock/exerciseSeed';
+import { USE_MOCK_API } from '@/constants/config';
+import apiClient from '@/api/client';
 
 type Tab = 'my-plans' | 'templates' | 'library';
 
@@ -25,18 +28,33 @@ const DIFF_LABEL: Record<string, string> = {
   BEGINNER: 'Beginner', INTERMEDIATE: 'Intermediate', ADVANCED: 'Advanced',
 };
 
+// Real anatomy icons for Chest/Back/Shoulders/Triceps/Core/Quads/Hamstrings/
+// Glutes/Calves/Full Body (muscle silhouettes) instead of the generic
+// weight-lifter/rowing/handsup/arm-flex/yoga/run/walk/kettlebell/run-fast/
+// human glyphs — tinted the same per-group color as every other card.
+const CHEST_ANATOMY_ICON = require('@/assets/images/exercise-icons/chest_anatomy.png');
+const BACK_ANATOMY_ICON = require('@/assets/images/exercise-icons/upper_back_anatomy.png');
+const SHOULDER_ANATOMY_ICON = require('@/assets/images/exercise-icons/shoulder_anatomy.png');
+const TRICEPS_ANATOMY_ICON = require('@/assets/images/exercise-icons/triceps_anatomy.png');
+const CORE_ANATOMY_ICON = require('@/assets/images/exercise-icons/core_anatomy.png');
+const QUADS_ANATOMY_ICON = require('@/assets/images/exercise-icons/quads_anatomy.png');
+const HAMSTRINGS_ANATOMY_ICON = require('@/assets/images/exercise-icons/hamstrings_anatomy.png');
+const GLUTES_ANATOMY_ICON = require('@/assets/images/exercise-icons/glutes_anatomy.png');
+const CALVES_ANATOMY_ICON = require('@/assets/images/exercise-icons/calves_anatomy.png');
+const FULLBODY_ANATOMY_ICON = require('@/assets/images/exercise-icons/fullbody_anatomy.png');
+
 const MUSCLE_META = [
-  { key: 'CHEST',      label: 'Chest',      icon: 'weight-lifter', color: '#EF4444' },
-  { key: 'BACK',       label: 'Back',        icon: 'human-handsup', color: '#3B82F6' },
-  { key: 'SHOULDERS',  label: 'Shoulders',   icon: 'arm-flex',      color: '#8B5CF6' },
-  { key: 'BICEPS',     label: 'Biceps',      icon: 'arm-flex',      color: '#06B6D4' },
-  { key: 'TRICEPS',    label: 'Triceps',     icon: 'arm-flex',      color: '#F59E0B' },
-  { key: 'CORE',       label: 'Core',        icon: 'yoga',          color: '#EC4899' },
-  { key: 'QUADRICEPS', label: 'Quads',       icon: 'run',           color: '#22C55E' },
-  { key: 'HAMSTRINGS', label: 'Hamstrings',  icon: 'run',           color: '#10B981' },
-  { key: 'GLUTES',     label: 'Glutes',      icon: 'run',           color: '#14B8A6' },
-  { key: 'CALVES',     label: 'Calves',      icon: 'run-fast',      color: '#F97316' },
-  { key: 'FULL_BODY',  label: 'Full Body',   icon: 'human',         color: '#AAFF00' },
+  { key: 'CHEST',      label: 'Chest',      icon: 'weight-lifter',    color: '#EF4444', image: CHEST_ANATOMY_ICON },
+  { key: 'BACK',       label: 'Back',        icon: 'rowing',          color: '#3B82F6', image: BACK_ANATOMY_ICON },
+  { key: 'SHOULDERS',  label: 'Shoulders',   icon: 'human-handsup',   color: '#8B5CF6', image: SHOULDER_ANATOMY_ICON },
+  { key: 'BICEPS',     label: 'Biceps',      icon: 'arm-flex',        color: '#06B6D4' },
+  { key: 'TRICEPS',    label: 'Triceps',     icon: 'arm-flex-outline', color: '#F59E0B', image: TRICEPS_ANATOMY_ICON },
+  { key: 'CORE',       label: 'Core',        icon: 'yoga',            color: '#EC4899', image: CORE_ANATOMY_ICON },
+  { key: 'QUADRICEPS', label: 'Quads',       icon: 'run',             color: '#22C55E', image: QUADS_ANATOMY_ICON },
+  { key: 'HAMSTRINGS', label: 'Hamstrings',  icon: 'walk',            color: '#10B981', image: HAMSTRINGS_ANATOMY_ICON },
+  { key: 'GLUTES',     label: 'Glutes',      icon: 'kettlebell',      color: '#14B8A6', image: GLUTES_ANATOMY_ICON },
+  { key: 'CALVES',     label: 'Calves',      icon: 'run-fast',        color: '#F97316', image: CALVES_ANATOMY_ICON },
+  { key: 'FULL_BODY',  label: 'Full Body',   icon: 'human',           color: '#AAFF00', image: FULLBODY_ANATOMY_ICON },
   { key: 'CARDIO',     label: 'Cardio',      icon: 'heart-pulse',   color: '#FB923C' },
 ];
 
@@ -96,7 +114,7 @@ export default function WorkoutPlansScreen() {
   });
 
   const importMutation = useMutation({
-    mutationFn: workoutApi.importTemplate,
+    mutationFn: (tpl: WorkoutTemplate) => workoutApi.importTemplate(tpl.id, allExercises ?? []),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['workout-plans'] });
       setActiveTab('my-plans');
@@ -106,11 +124,28 @@ export default function WorkoutPlansScreen() {
   const canCreateMore =
     !entitlements || entitlements.isPremium || (plans?.length ?? 0) < (entitlements?.maxWorkoutPlans ?? 3);
 
+  // Same query key as ExerciseListScreen's exercise list — shares its React
+  // Query cache instead of counting from the local mock seed, which was out
+  // of sync with the real backend data the list screen actually shows.
+  const { data: allExercises } = useQuery<Exercise[]>({
+    queryKey: ['exercises'],
+    queryFn: async (): Promise<Exercise[]> => {
+      if (USE_MOCK_API) return EXERCISE_SEED;
+      // Must match ExerciseListScreen's fetch for this same ['exercises']
+      // query key — whichever screen's queryFn runs first seeds the shared
+      // cache, so a smaller size here would silently cap both screens.
+      const r = await apiClient.get('/exercises', { params: { size: 2000 } });
+      return r.data.data?.content as Exercise[];
+    },
+    staleTime: Infinity,
+  });
+
   const muscleCounts = useMemo(() => {
     const counts: Record<string, number> = {};
-    EXERCISE_SEED.forEach((ex) => { counts[ex.muscleGroup] = (counts[ex.muscleGroup] ?? 0) + 1; });
+    const list: Exercise[] = allExercises ?? [];
+    list.forEach((ex) => { counts[ex.muscleGroup] = (counts[ex.muscleGroup] ?? 0) + 1; });
     return counts;
-  }, []);
+  }, [allExercises]);
 
   const confirmDelete = useCallback((plan: WorkoutPlan) => {
     setMenuPlan(null);
@@ -127,7 +162,7 @@ export default function WorkoutPlansScreen() {
       t('workoutPlans.addTemplateMsg', { n: tpl.daysPerWeek }),
       [
         { text: t('common.cancel'), style: 'cancel' },
-        { text: t('workoutPlans.addToMyPlans'), onPress: () => importMutation.mutate(tpl.id) },
+        { text: t('workoutPlans.addToMyPlans'), onPress: () => importMutation.mutate(tpl) },
       ],
     );
   };
@@ -242,7 +277,7 @@ export default function WorkoutPlansScreen() {
               <Icon name="eye-outline" size={18} color={colors.primary} />
             </View>
             <Text style={styles.sheetRowText}>{t('workoutPlans.viewPlan')}</Text>
-            <Icon name="chevron-right" size={18} color={colors.textTertiary} />
+            <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={colors.textTertiary} />
           </TouchableOpacity>
 
           {menuPlan?.days?.[0] && (
@@ -262,7 +297,7 @@ export default function WorkoutPlansScreen() {
                 <Icon name="play-circle-outline" size={18} color={colors.primary} />
               </View>
               <Text style={styles.sheetRowText}>{t('workoutPlans.startWorkout')}</Text>
-              <Icon name="chevron-right" size={18} color={colors.textTertiary} />
+              <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={colors.textTertiary} />
             </TouchableOpacity>
           )}
 
@@ -274,7 +309,7 @@ export default function WorkoutPlansScreen() {
               <Icon name="trash-can-outline" size={18} color="#EF4444" />
             </View>
             <Text style={[styles.sheetRowText, { color: '#EF4444' }]}>{t('workoutPlans.deletePlan')}</Text>
-            <Icon name="chevron-right" size={18} color={colors.textTertiary} />
+            <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={colors.textTertiary} />
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -287,7 +322,12 @@ export default function WorkoutPlansScreen() {
     const col = DIFF_COLOR[tpl.difficulty] ?? colors.primary;
     const totalExercises = tpl.days.reduce((sum, d) => sum + d.exercises.length, 0);
     return (
-      <View key={tpl.id} style={styles.tplCard}>
+      <TouchableOpacity
+        key={tpl.id}
+        style={styles.tplCard}
+        activeOpacity={0.8}
+        onPress={() => navigation.navigate('TemplateDetail', { templateId: tpl.id })}
+      >
         <View style={styles.tplInner}>
           <View style={styles.tplIconBox}>
             <Icon name={tpl.icon} size={20} color={colors.primary} />
@@ -307,7 +347,7 @@ export default function WorkoutPlansScreen() {
             <Icon name="plus" size={16} color="#000" />
           </TouchableOpacity>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   };
 
@@ -415,7 +455,7 @@ export default function WorkoutPlansScreen() {
           </View>
           <View style={styles.calendarViewAll}>
             <Text style={styles.calendarViewAllText}>{t('workoutPlans.calViewHistory')}</Text>
-            <Icon name="chevron-right" size={13} color={colors.textTertiary} />
+            <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={13} color={colors.textTertiary} />
           </View>
         </View>
       </TouchableOpacity>
@@ -540,9 +580,9 @@ export default function WorkoutPlansScreen() {
             </View>
             <View style={styles.browseAllInfo}>
               <Text style={styles.browseAllTitle}>{t('workoutPlans.browseExercises')}</Text>
-              <Text style={styles.browseAllSub}>{t('workoutPlans.exerciseCount', { n: EXERCISE_SEED.length })}</Text>
+              <Text style={styles.browseAllSub}>{t('workoutPlans.exerciseCount', { n: allExercises?.length ?? 0 })}</Text>
             </View>
-            <Icon name="chevron-right" size={20} color={colors.textTertiary} />
+            <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={20} color={colors.textTertiary} />
           </TouchableOpacity>
           <Text style={styles.libSectionLabel}>{t('workoutPlans.byMuscleGroup')}</Text>
           <View style={styles.muscleGrid}>
@@ -550,11 +590,15 @@ export default function WorkoutPlansScreen() {
               <TouchableOpacity
                 key={m.key}
                 style={styles.muscleCard}
-                onPress={() => navigation.navigate('ExerciseList', { mode: 'browse' })}
+                onPress={() => navigation.navigate('ExerciseList', { mode: 'browse', muscleGroup: m.key as MuscleGroup })}
                 activeOpacity={0.75}
               >
                 <View style={[styles.muscleIconBox, { backgroundColor: m.color + '18' }]}>
-                  <Icon name={m.icon} size={22} color={m.color} />
+                  {m.image ? (
+                    <Image source={m.image} resizeMode="contain" style={{ width: 32, height: 32, tintColor: m.color }} />
+                  ) : (
+                    <Icon name={m.icon} size={24} color={m.color} />
+                  )}
                 </View>
                 <Text style={styles.muscleLabel}>{getMuscleLabel(m.key)}</Text>
                 {(muscleCounts[m.key] ?? 0) > 0 && (
@@ -652,7 +696,7 @@ function getStyles(c: ColorPalette) {
     },
     calendarLegend: { flexDirection: 'row', alignItems: 'center', gap: 5 },
     legendDot: { width: 10, height: 10, borderRadius: 2 },
-    legendText: { fontSize: 10, color: c.textTertiary, marginRight: 4 },
+    legendText: { fontSize: 10, color: c.textTertiary, marginEnd: 4 },
     calendarViewAll: { flexDirection: 'row', alignItems: 'center', gap: 2 },
     calendarViewAllText: { fontSize: Typography.xs, color: c.textTertiary, fontWeight: Typography.medium },
 

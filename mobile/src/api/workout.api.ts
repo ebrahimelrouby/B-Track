@@ -1,11 +1,48 @@
 import { USE_MOCK_API } from '@/constants/config';
-import { WorkoutPlan, WorkoutDay, WorkoutDayExercise, WorkoutSession, WorkoutSet, ApiResponse, PagedResponse, ActiveWorkout } from '@/types';
+import { WorkoutPlan, WorkoutDay, WorkoutDayExercise, WorkoutSession, WorkoutSet, Exercise, ApiResponse, PagedResponse, ActiveWorkout } from '@/types';
+import { WatchFinishPayload } from '@/native/watch';
 import { mockWorkoutApi } from './mock/workout.mock';
+import { WORKOUT_TEMPLATES } from './mock/exerciseSeed';
 import { useAuthStore } from '@/store/auth.store';
 import apiClient from './client';
 
 function uid(): string {
   return useAuthStore.getState().user?.userId ?? '';
+}
+
+// There's no backend "import a template" endpoint — templates are a
+// mobile-only concept (mock/exerciseSeed.ts). Importing one just means
+// replaying it through the plan/day/exercise endpoints that already exist,
+// matching each template exercise to a real backend exercise by name.
+async function importTemplateReal(templateId: string, knownExercises: Exercise[]): Promise<WorkoutPlan> {
+  const tpl = WORKOUT_TEMPLATES.find((t) => t.id === templateId);
+  if (!tpl) throw new Error('Template not found');
+
+  let pool = knownExercises;
+  if (!pool || pool.length === 0) {
+    const r = await apiClient.get('/exercises', { params: { size: 2000 } });
+    pool = (r.data.data?.content as Exercise[]) ?? [];
+  }
+  const byName = new Map(pool.map((e) => [e.name.toLowerCase(), e]));
+
+  const plan = await workoutApi.createPlan({ name: tpl.name, description: tpl.description });
+
+  for (const day of tpl.days) {
+    const createdDay = await workoutApi.addDay(plan.id, { name: day.name });
+    for (const ex of day.exercises) {
+      const match = byName.get(ex.exerciseName.toLowerCase());
+      if (!match) continue;
+      await workoutApi.addExercise(createdDay.id, {
+        exerciseId: match.id,
+        targetSets: ex.targetSets,
+        targetRepsMin: ex.targetRepsMin,
+        targetRepsMax: ex.targetRepsMax,
+        restSeconds: ex.restSeconds,
+      });
+    }
+  }
+
+  return workoutApi.getPlan(plan.id);
 }
 
 export const workoutApi = {
@@ -71,7 +108,7 @@ export const workoutApi = {
       ? mockWorkoutApi.finishSession(uid(), sessionId, notes)
       : apiClient.post<ApiResponse<WorkoutSession>>(`/sessions/${sessionId}/finish`, { notes }).then((r) => r.data.data!),
 
-  syncSession: (session: ActiveWorkout): Promise<WorkoutSession> =>
+  syncSession: (session: ActiveWorkout, vitals?: WatchFinishPayload): Promise<WorkoutSession> =>
     USE_MOCK_API
       ? mockWorkoutApi.syncSession(uid(), session)
       : apiClient.post<ApiResponse<WorkoutSession>>('/sessions/sync', {
@@ -83,6 +120,9 @@ export const workoutApi = {
           completedAt: new Date().toISOString(),
           durationSeconds: Math.round((Date.now() - new Date(session.startedAt).getTime()) / 1000),
           notes: session.notes,
+          avgHeartRate: vitals?.avgHeartRate,
+          maxHeartRate: vitals?.maxHeartRate,
+          activeCalories: vitals?.activeCalories,
           exercises: session.exercises.map((ex, i) => ({
             exerciseId: ex.exercise.id,
             sortOrder: i,
@@ -111,8 +151,8 @@ export const workoutApi = {
       ? mockWorkoutApi.getLastSetsForExercise(uid(), exerciseId)
       : apiClient.get<ApiResponse<WorkoutSet[]>>(`/sessions/exercises/${exerciseId}/last-sets`).then((r) => r.data.data ?? []),
 
-  importTemplate: (templateId: string): Promise<WorkoutPlan> =>
+  importTemplate: (templateId: string, knownExercises: Exercise[] = []): Promise<WorkoutPlan> =>
     USE_MOCK_API
       ? mockWorkoutApi.importTemplate(uid(), templateId)
-      : apiClient.post<ApiResponse<WorkoutPlan>>(`/workout-plans/templates/${templateId}/import`).then((r) => r.data.data!),
+      : importTemplateReal(templateId, knownExercises),
 };

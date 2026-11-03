@@ -1,6 +1,7 @@
 import React, { useState, useCallback, useMemo, useRef, useEffect } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, ActivityIndicator,
+  I18nManager,
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -16,6 +17,7 @@ import { WorkoutDayExercise, MuscleGroup } from '@/types';
 import { WorkoutStackParamList, WorkoutNavigationProp } from '@/navigation/types';
 import { workoutApi } from '@/api/workout.api';
 import { localDb } from '@/api/mock/localDb';
+import { muscleGroupLabel, equipmentLabel } from '@/utils/enumLabels';
 
 function starKey(dayId: string) { return `workout:starred:${dayId}`; }
 
@@ -35,14 +37,6 @@ const MUSCLE_COLORS: Partial<Record<MuscleGroup, string>> = {
   CORE: '#EC4899', GLUTES: '#22C55E', QUADRICEPS: '#22C55E',
   HAMSTRINGS: '#10B981', CALVES: '#34D399', FULL_BODY: '#AAFF00',
   CARDIO: '#F97316', OTHER: '#6B7280',
-};
-
-const MUSCLE_LABELS: Partial<Record<MuscleGroup, string>> = {
-  CHEST: 'Chest', BACK: 'Back', SHOULDERS: 'Shoulders',
-  BICEPS: 'Biceps', TRICEPS: 'Triceps', FOREARMS: 'Forearms',
-  CORE: 'Core', GLUTES: 'Glutes', QUADRICEPS: 'Quads',
-  HAMSTRINGS: 'Hams', CALVES: 'Calves', FULL_BODY: 'Full Body',
-  CARDIO: 'Cardio', OTHER: 'Other',
 };
 
 export default function WorkoutDayScreen() {
@@ -125,7 +119,7 @@ export default function WorkoutDayScreen() {
   const summaryStats = useMemo(() => {
     const totalSets = exercises.reduce((s, ex) => s + (ex.targetSets ?? 0), 0);
     const muscles = [...new Set(exercises.map((ex) => ex.exercise.muscleGroup))];
-    const muscleLabels = muscles.map((m) => MUSCLE_LABELS[m] ?? m).slice(0, 3);
+    const muscleLabels = muscles.map((m) => muscleGroupLabel(m, t)).slice(0, 3);
     return { totalSets, muscleLabels, muscleCount: muscles.length };
   }, [exercises]);
 
@@ -136,8 +130,7 @@ export default function WorkoutDayScreen() {
   }: RenderItemParams<WorkoutDayExercise>) => {
     const index       = getIndex() ?? 0;
     const isStarred   = starredRef.current.has(item.exercise.id);
-    const muscleLabel = MUSCLE_LABELS[item.exercise.muscleGroup]
-      ?? item.exercise.muscleGroup.replace(/_/g, ' ');
+    const muscleLabel = muscleGroupLabel(item.exercise.muscleGroup, t);
 
     const setsReps =
       item.targetSets && item.targetRepsMin != null
@@ -187,7 +180,7 @@ export default function WorkoutDayScreen() {
                 <View style={styles.cardTitleCol}>
                   <Text style={styles.exerciseName} numberOfLines={1}>{item.exercise.name}</Text>
                   <Text style={styles.equipment}>
-                    {item.exercise.equipment.replace(/_/g, ' ').toLowerCase()}
+                    {equipmentLabel(item.exercise.equipment, t)}
                   </Text>
                 </View>
 
@@ -320,7 +313,7 @@ export default function WorkoutDayScreen() {
           <Text style={[styles.addExerciseTitle, { color: colors.textPrimary }]}>{t('workoutDay.addExercise')}</Text>
           <Text style={[styles.addExerciseSub, { color: colors.textTertiary }]}>{t('workoutDay.addExerciseDesc')}</Text>
         </View>
-        <Icon name="chevron-right" size={20} color={colors.textTertiary} />
+        <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={20} color={colors.textTertiary} />
       </TouchableOpacity>
 
       {/* Drag hint — only visible when there are exercises to reorder */}

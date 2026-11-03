@@ -310,7 +310,7 @@ export default function SleepScreen() {
                   <Text style={{ fontSize: Typography.xs, color: colors.textTertiary }}>{t('sleep.bedtimeLabel')}</Text>
                 </View>
                 <View style={{ justifyContent: 'center', alignItems: 'center' }}>
-                  <Icon name="arrow-right" size={18} color={colors.textTertiary} />
+                  <Icon name={I18nManager.isRTL ? 'arrow-left' : 'arrow-right'} size={18} color={colors.textTertiary} />
                 </View>
                 <View style={{ flex: 1, backgroundColor: colors.surfaceElevated, borderRadius: Radius.md, padding: Spacing.sm, alignItems: 'center', gap: 3 }}>
                   <Icon name="weather-sunny" size={18} color="#F59E0B" />

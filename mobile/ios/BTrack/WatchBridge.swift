@@ -43,7 +43,7 @@ extension WatchBridge: WCSessionDelegate {
     func sessionDidDeactivate(_ session: WCSession) { session.activate() }
 
     func session(_ session: WCSession, didReceiveMessage message: [String: Any]) {
-        guard hasListeners, let action = message["action"] as? String else { return }
-        sendEvent(withName: "WatchAction", body: ["action": action])
+        guard hasListeners, message["action"] is String else { return }
+        sendEvent(withName: "WatchAction", body: message)
     }
 }

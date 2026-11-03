@@ -119,6 +119,9 @@ public class WorkoutSessionService {
                 .durationSeconds(request.durationSeconds())
                 .status(WorkoutSession.SessionStatus.COMPLETED)
                 .notes(request.notes())
+                .avgHeartRate(request.avgHeartRate())
+                .maxHeartRate(request.maxHeartRate())
+                .activeCalories(request.activeCalories())
                 .synced(true)
                 .build();
 

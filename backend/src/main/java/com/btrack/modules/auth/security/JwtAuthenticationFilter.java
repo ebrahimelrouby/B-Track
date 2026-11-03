@@ -1,5 +1,6 @@
 package com.btrack.modules.auth.security;
 
+import com.btrack.modules.user.service.UserActivityService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,6 +25,7 @@ import java.util.UUID;
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService jwtService;
+    private final UserActivityService userActivityService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request,
@@ -43,6 +45,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                             principal, null, List.of(new SimpleGrantedAuthority("ROLE_" + role)));
                     auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(auth);
+                    userActivityService.touch(userId);
                 }
             } catch (Exception ex) {
                 log.debug("JWT authentication failed: {}", ex.getMessage());

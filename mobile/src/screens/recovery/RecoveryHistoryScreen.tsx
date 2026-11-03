@@ -140,19 +140,19 @@ function HistoryRow({ item, colors, onPress, starred, onToggleStar }: {
         />
       </TouchableOpacity>
 
-      <Icon name="chevron-right" size={16} color={colors.textTertiary} />
+      <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={colors.textTertiary} />
     </TouchableOpacity>
   );
 }
 
 const rowStyles = StyleSheet.create({
-  row:        { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, paddingVertical: Spacing.md, borderBottomWidth: 1, paddingRight: Spacing.sm },
+  row:        { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm, paddingVertical: Spacing.md, borderBottomWidth: 1, paddingEnd: Spacing.sm },
   accent:     { width: 3, height: 38, borderRadius: 2, flexShrink: 0 },
   date:       { fontSize: Typography.sm, fontWeight: Typography.medium },
   todayBadge: { paddingHorizontal: 6, paddingVertical: 1, borderRadius: 4 },
   todayText:  { fontSize: 9, fontWeight: Typography.bold },
   level:      { fontSize: Typography.xs, marginTop: 2 },
-  score:      { fontSize: Typography.xl, fontWeight: Typography.bold, minWidth: 30, textAlign: 'right' },
+  score:      { fontSize: Typography.xl, fontWeight: Typography.bold, minWidth: 30, textAlign: I18nManager.isRTL ? 'left' : 'right' },
   starBtn:    { width: 32, height: 32, borderRadius: 16, alignItems: 'center', justifyContent: 'center' },
 });
 

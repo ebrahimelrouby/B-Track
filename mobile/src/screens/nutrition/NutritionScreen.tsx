@@ -83,7 +83,7 @@ export default function NutritionScreen() {
   const [showSearch, setShowSearch] = useState(false);
   const [activeMeal, setActiveMeal] = useState<MealName>('breakfast');
   const [selectedFood, setSelectedFood] = useState<Food | null>(null);
-  const [servings, setServings] = useState('1');
+  const [grams, setGrams] = useState('');
 
   const loadDiary = useCallback(async () => {
     const [entries, water] = await Promise.all([
@@ -120,17 +120,18 @@ export default function NutritionScreen() {
     setSearchQuery('');
     setSearchResults([]);
     setSelectedFood(null);
-    setServings('1');
+    setGrams('');
     setShowSearch(true);
     nutritionApi.searchFoods('').then(setSearchResults);
   };
 
-  const selectFood = (food: Food) => { setSelectedFood(food); setServings('1'); };
+  const selectFood = (food: Food) => { setSelectedFood(food); setGrams(String(Math.round(food.servingSizeG))); };
 
   const logEntry = async () => {
     if (!selectedFood) return;
-    const sv = parseFloat(servings);
-    if (isNaN(sv) || sv <= 0) return;
+    const g = parseFloat(grams);
+    if (isNaN(g) || g <= 0) return;
+    const sv = g / selectedFood.servingSizeG;
     await nutritionApi.logFood({ foodId: selectedFood.id, servings: sv, meal: activeMeal, date });
     setShowSearch(false);
     loadDiary();
@@ -221,7 +222,7 @@ export default function NutritionScreen() {
             <Text style={styles.aiBannerSub}>{t('nutrition.aiScanSubtitle')}</Text>
           </View>
           <View style={styles.aiBannerArrow}>
-            <Icon name="arrow-right" size={16} color="#000" />
+            <Icon name={I18nManager.isRTL ? 'arrow-left' : 'arrow-right'} size={16} color="#000" />
           </View>
         </TouchableOpacity>
       </View>
@@ -452,14 +453,23 @@ export default function NutritionScreen() {
               <Text style={styles.foodDetailSub}>{selectedFood.servingLabel} · {selectedFood.category}</Text>
 
               <View style={styles.macroGrid}>
-                {[
-                  { label: t('nutrition.calories'), value: Math.round(selectedFood.calories  * parseFloat(servings || '1')), unit: 'kcal', color: colors.primary },
-                  { label: t('nutrition.protein'),  value: Math.round(selectedFood.proteinG  * parseFloat(servings || '1')), unit: 'g',    color: colors.info },
-                  { label: t('nutrition.carbs'),    value: Math.round(selectedFood.carbsG    * parseFloat(servings || '1')), unit: 'g',    color: colors.warning },
-                  { label: t('nutrition.fat'),      value: Math.round(selectedFood.fatG      * parseFloat(servings || '1')), unit: 'g',    color: '#F472B6' },
-                ].map(m => (
-                  <View key={m.label} style={[styles.macroBox, { borderColor: m.color + '30' }]}>
-                    <Text style={[styles.macroBoxVal, { color: m.color }]}>{m.value}{m.unit}</Text>
+                {(() => {
+                  const g = parseFloat(grams);
+                  const ratio = !isNaN(g) && g > 0 ? g / selectedFood.servingSizeG : 1;
+                  return [
+                    { label: t('nutrition.calories'), value: Math.round(selectedFood.calories  * ratio), unit: 'kcal', color: colors.primary, icon: 'fire' },
+                    { label: t('nutrition.protein'),  value: Math.round(selectedFood.proteinG  * ratio), unit: 'g',    color: colors.info,    icon: 'food-drumstick-outline' },
+                    { label: t('nutrition.carbs'),    value: Math.round(selectedFood.carbsG    * ratio), unit: 'g',    color: colors.warning, icon: 'barley' },
+                    { label: t('nutrition.fat'),      value: Math.round(selectedFood.fatG      * ratio), unit: 'g',    color: '#F472B6',      icon: 'water-outline' },
+                  ];
+                })().map(m => (
+                  <View key={m.label} style={[styles.macroBox, { borderColor: m.color + '33', backgroundColor: m.color + '12' }]}>
+                    <View style={[styles.macroIconWrap, { backgroundColor: m.color + '22' }]}>
+                      <Icon name={m.icon} size={14} color={m.color} />
+                    </View>
+                    <Text style={[styles.macroBoxVal, { color: m.color }]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.75}>
+                      {m.value}<Text style={styles.macroBoxUnit}> {m.unit}</Text>
+                    </Text>
                     <Text style={styles.macroBoxLbl}>{m.label}</Text>
                   </View>
                 ))}
@@ -467,17 +477,20 @@ export default function NutritionScreen() {
 
               <Text style={styles.servingsLabel}>{t('nutrition.servings')}</Text>
               <View style={styles.servingsRow}>
-                <TouchableOpacity style={styles.servBtn} onPress={() => setServings(v => String(Math.max(0.5, parseFloat(v || '1') - 0.5)))}>
+                <TouchableOpacity style={styles.servBtn} onPress={() => setGrams(v => String(Math.max(1, Math.round(parseFloat(v || '0') - 5))))}>
                   <Icon name="minus" size={18} color={colors.textPrimary} />
                 </TouchableOpacity>
-                <TextInput
-                  style={styles.servInput}
-                  value={servings}
-                  onChangeText={setServings}
-                  keyboardType="numeric"
-                  textAlign="center"
-                />
-                <TouchableOpacity style={styles.servBtn} onPress={() => setServings(v => String(parseFloat(v || '1') + 0.5))}>
+                <View style={styles.servInputWrap}>
+                  <TextInput
+                    style={styles.servInput}
+                    value={grams}
+                    onChangeText={setGrams}
+                    keyboardType="numeric"
+                    textAlign="center"
+                  />
+                  <Text style={styles.servInputUnit}>g</Text>
+                </View>
+                <TouchableOpacity style={styles.servBtn} onPress={() => setGrams(v => String(Math.round(parseFloat(v || '0') + 5)))}>
                   <Icon name="plus" size={18} color={colors.textPrimary} />
                 </TouchableOpacity>
               </View>
@@ -566,7 +579,7 @@ function getStyles(c: ColorPalette) {
     waterIconBox: { width: 36, height: 36, borderRadius: 10, alignItems: 'center', justifyContent: 'center' },
     waterTitle: { fontSize: Typography.sm, fontWeight: Typography.bold, color: c.textPrimary },
     waterSub:   { fontSize: 10, color: c.textTertiary },
-    waterAmountBox: { alignItems: 'flex-end' },
+    waterAmountBox: { alignItems: I18nManager.isRTL ? 'flex-start' : 'flex-end' },
     waterAmount: { fontSize: Typography.base, fontWeight: Typography.bold },
     waterAmountUnit: { fontSize: Typography.sm, fontWeight: Typography.regular as any },
     waterPct: { fontSize: 10, marginTop: 1 },
@@ -610,7 +623,7 @@ function getStyles(c: ColorPalette) {
     entryInfo: { flex: 1 },
     entryName: { fontSize: Typography.sm, fontWeight: Typography.medium, color: c.textPrimary },
     entrySub:  { fontSize: Typography.xs, color: c.textTertiary, marginTop: 2 },
-    entryMacros: { alignItems: 'flex-end' },
+    entryMacros: { alignItems: I18nManager.isRTL ? 'flex-start' : 'flex-end' },
     entryCal: { fontSize: Typography.sm, fontWeight: Typography.semibold, color: c.textPrimary },
     entryPro: { fontSize: Typography.xs, marginTop: 2 },
     entryRemove: {
@@ -642,7 +655,7 @@ function getStyles(c: ColorPalette) {
     foodInfo: { flex: 1 },
     foodName: { fontSize: Typography.base, fontWeight: Typography.medium, color: c.textPrimary },
     foodSub:  { fontSize: Typography.xs, color: c.textTertiary, marginTop: 2 },
-    foodMacros: { alignItems: 'flex-end' },
+    foodMacros: { alignItems: I18nManager.isRTL ? 'flex-start' : 'flex-end' },
     foodCal: { fontSize: Typography.sm, fontWeight: Typography.semibold, color: c.primary },
     foodPro: { fontSize: Typography.xs, color: c.info, marginTop: 2 },
 
@@ -653,11 +666,17 @@ function getStyles(c: ColorPalette) {
     foodDetailSub:  { fontSize: Typography.sm, color: c.textTertiary },
     macroGrid: { flexDirection: 'row', gap: Spacing.sm },
     macroBox: {
-      flex: 1, backgroundColor: c.surface, borderRadius: Radius.md,
-      borderWidth: 1, padding: Spacing.md, alignItems: 'center',
+      flex: 1, borderRadius: Radius.lg,
+      borderWidth: 1, paddingVertical: Spacing.md, paddingHorizontal: Spacing.xs,
+      alignItems: 'center', gap: 6,
     },
-    macroBoxVal: { fontSize: Typography.md, fontWeight: Typography.bold },
-    macroBoxLbl: { fontSize: Typography.xs, color: c.textTertiary, marginTop: 2 },
+    macroIconWrap: {
+      width: 26, height: 26, borderRadius: 13,
+      alignItems: 'center', justifyContent: 'center',
+    },
+    macroBoxVal: { fontSize: Typography.lg, fontWeight: Typography.bold },
+    macroBoxUnit: { fontSize: Typography.xs, fontWeight: Typography.medium, color: c.textTertiary },
+    macroBoxLbl: { fontSize: Typography.xs, color: c.textTertiary, marginTop: 1 },
 
     servingsLabel: { fontSize: Typography.sm, fontWeight: Typography.semibold, color: c.textSecondary },
     servingsRow: { flexDirection: 'row', alignItems: 'center', gap: Spacing.md },
@@ -666,12 +685,17 @@ function getStyles(c: ColorPalette) {
       backgroundColor: c.surface, borderWidth: 1, borderColor: c.surfaceBorder,
       alignItems: 'center', justifyContent: 'center',
     },
-    servInput: {
-      flex: 1, fontSize: Typography.xl, fontWeight: Typography.bold, color: c.textPrimary,
+    servInputWrap: {
+      flex: 1, flexDirection: 'row', alignItems: 'center', justifyContent: 'center',
       backgroundColor: c.surface, borderRadius: Radius.md,
       borderWidth: 1, borderColor: c.surfaceBorder,
-      paddingVertical: Spacing.sm,
+      paddingVertical: Spacing.sm, gap: 4,
     },
+    servInput: {
+      fontSize: Typography.xl, fontWeight: Typography.bold, color: c.textPrimary,
+      width: 60, padding: 0,
+    },
+    servInputUnit: { fontSize: Typography.base, fontWeight: Typography.semibold, color: c.textTertiary },
     logFoodBtn: {
       borderRadius: Radius.lg, paddingVertical: Spacing.base,
       alignItems: 'center', justifyContent: 'center',

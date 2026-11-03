@@ -14,6 +14,9 @@ public record SyncSessionRequest(
         Instant completedAt,
         Integer durationSeconds,
         String notes,
+        Integer avgHeartRate,
+        Integer maxHeartRate,
+        BigDecimal activeCalories,
         List<SyncExercise> exercises
 ) {
     public record SyncExercise(

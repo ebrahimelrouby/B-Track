@@ -194,7 +194,7 @@ export const mockWorkoutApi = {
           name: d.name,
           sortOrder: 0,
           exercises: d.exercises.map((e, i) => {
-            const exercise = EXERCISE_SEED.find((ex) => ex.id === e.exerciseId);
+            const exercise = EXERCISE_SEED.find((ex) => ex.name.toLowerCase() === e.exerciseName.toLowerCase());
             if (!exercise) return null;
             return {
               id: newId(),

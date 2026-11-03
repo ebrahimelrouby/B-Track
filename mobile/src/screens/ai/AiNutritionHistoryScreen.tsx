@@ -12,6 +12,16 @@ import { useColors, ColorPalette, Spacing, Typography, Radius } from '@/theme';
 import { aiApi } from '@/api/ai.api';
 import { AiNutritionEstimate } from '@/types';
 
+function getMealTypeLabel(mealType: string, t: (key: string) => string): string {
+  const key = {
+    BREAKFAST: 'dashboard.mealBreakfast',
+    LUNCH: 'dashboard.mealLunch',
+    DINNER: 'dashboard.mealDinner',
+    SNACK: 'dashboard.mealSnack',
+  }[mealType];
+  return key ? t(key) : mealType.replace('_', ' ');
+}
+
 export default function AiNutritionHistoryScreen() {
   const navigation = useNavigation<any>();
   const insets = useSafeAreaInsets();
@@ -48,10 +58,10 @@ export default function AiNutritionHistoryScreen() {
         <Text style={styles.foodName} numberOfLines={1}>{item.foodName ?? '—'}</Text>
         <Text style={styles.dateText}>
           {item.loggedDate ?? (item.createdAt ? item.createdAt.split('T')[0] : '—')}
-          {item.mealType ? ` · ${item.mealType.replace('_', ' ')}` : ''}
+          {item.mealType ? ` · ${getMealTypeLabel(item.mealType, t)}` : ''}
         </Text>
         <View style={styles.macroRow}>
-          <MacroBadge label="Cal" value={item.confirmedCalories ?? item.estimatedCalories} unit="kcal" colors={colors} />
+          <MacroBadge label={t('aiNutritionHistory.calLabel')} value={item.confirmedCalories ?? item.estimatedCalories} unit="kcal" colors={colors} />
           <MacroBadge label="P" value={item.confirmedProteinG ?? item.estimatedProteinG} unit="g" colors={colors} />
           <MacroBadge label="C" value={item.confirmedCarbsG ?? item.estimatedCarbsG} unit="g" colors={colors} />
           <MacroBadge label="F" value={item.confirmedFatG ?? item.estimatedFatG} unit="g" colors={colors} />

@@ -2,7 +2,6 @@ package com.btrack.modules.exercise.entity;
 
 import com.btrack.common.BaseEntity;
 import com.btrack.modules.user.entity.User;
-import io.hypersistence.utils.hibernate.type.array.EnumArrayType;
 import io.hypersistence.utils.hibernate.type.array.ListArrayType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -34,7 +33,11 @@ public class Exercise extends BaseEntity {
     @Column(name = "muscle_group", nullable = false, columnDefinition = "muscle_group")
     private MuscleGroup muscleGroup;
 
-    @Type(value = EnumArrayType.class, parameters = @Parameter(name = EnumArrayType.SQL_ARRAY_TYPE, value = "muscle_group"))
+    // ListArrayType (not EnumArrayType) — EnumArrayType expects a raw Java
+    // array (SomeEnum[]); this field is List<MuscleGroup>, which is what
+    // ListArrayType actually supports (same type class the `tags` field
+    // below uses successfully for List<String>).
+    @Type(value = ListArrayType.class, parameters = @Parameter(name = ListArrayType.SQL_ARRAY_TYPE, value = "muscle_group"))
     @Column(name = "secondary_muscles", columnDefinition = "muscle_group[]")
     private List<MuscleGroup> secondaryMuscles;
 

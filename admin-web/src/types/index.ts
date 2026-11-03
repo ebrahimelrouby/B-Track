@@ -140,6 +140,26 @@ export interface ApiResponse<T> {
   errorCode?: string;
 }
 
+export interface AdminUser {
+  id: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+  emailVerified: boolean;
+  onboardingComplete: boolean;
+  createdAt: string;
+  lastActiveAt?: string;
+  online: boolean;
+}
+
+export interface AdminUserStats {
+  totalUsers: number;
+  onlineNow: number;
+  newToday: number;
+  newThisWeek: number;
+}
+
 export interface AuthState {
   token: string | null;
   refreshToken: string | null;

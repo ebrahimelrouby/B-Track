@@ -3,6 +3,7 @@ import PrivateRoute from "./auth/PrivateRoute";
 import AppLayout from "./components/layout/AppLayout";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
+import UsersList from "./pages/users/UsersList";
 import ExerciseList from "./pages/exercises/ExerciseList";
 import ExerciseDetail from "./pages/exercises/ExerciseDetail";
 import ExerciseCreate from "./pages/exercises/ExerciseCreate";
@@ -34,6 +35,7 @@ export default function App() {
         <Route element={<PrivateRoute />}>
           <Route element={<AppLayout />}>
             <Route path="/" element={<Dashboard />} />
+            <Route path="/users" element={<UsersList />} />
             <Route path="/exercises" element={<ExerciseList />} />
             <Route path="/exercises/create" element={<ExerciseCreate />} />
             <Route path="/exercises/quality" element={<QualityReview />} />

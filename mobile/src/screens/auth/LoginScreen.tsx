@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, KeyboardAvoidingView,
-  Platform, ScrollView, Alert,
+  Platform, ScrollView, Alert, I18nManager,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useForm, Controller } from 'react-hook-form';
@@ -44,12 +44,12 @@ export default function LoginScreen() {
       const user = await authApi.login(data);
       setAuth(user);
     } catch (err: any) {
-      const message = err.response?.data?.message ?? 'Login failed. Please try again.';
+      const message = err.response?.data?.message ?? t('auth.login.failedMsg');
       // Alongside the alert, mark the form invalid so the failure is still visible
       // once the dialog is dismissed. The server doesn't say which field was wrong,
       // so the password field (not email) carries the message.
       setError('password', { type: 'server', message });
-      Alert.alert('Login Failed', message);
+      Alert.alert(t('auth.login.failedTitle'), message);
     }
   };
 
@@ -175,7 +175,7 @@ function getStyles(c: ColorPalette) {
       color: c.textSecondary,
       marginBottom: Spacing['2xl'],
     },
-    forgotRow: { alignItems: 'flex-end', marginTop: -Spacing.sm, marginBottom: Spacing.base },
+    forgotRow: { alignItems: I18nManager.isRTL ? 'flex-start' : 'flex-end', marginTop: -Spacing.sm, marginBottom: Spacing.base },
     forgotText: { fontSize: Typography.sm, color: c.primary },
     loginButton: { marginTop: Spacing.md },
     divider: { flexDirection: 'row', alignItems: 'center', marginVertical: Spacing.xl },

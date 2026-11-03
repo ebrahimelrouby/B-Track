@@ -64,8 +64,8 @@ export default function RegisterScreen() {
       });
       setAuth(user);
     } catch (err: any) {
-      const message = err.response?.data?.message ?? 'Registration failed. Please try again.';
-      Alert.alert('Error', message);
+      const message = err.response?.data?.message ?? t('auth.register.failedMsg');
+      Alert.alert(t('common.error'), message);
     }
   };
 
@@ -101,7 +101,7 @@ export default function RegisterScreen() {
               )}
             />
           </View>
-          <View style={[styles.half, { marginLeft: Spacing.sm }]}>
+          <View style={[styles.half, { marginStart: Spacing.sm }]}>
             <Controller
               control={control}
               name="lastName"

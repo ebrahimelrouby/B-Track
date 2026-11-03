@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Imports from yuhonas/free-exercise-db (MIT License).
+ * Imports from yuhonas/free-exercise-db (Unlicense — public domain;
+ * verified against the repo's actual LICENSE.md, not just its README badge).
  * Dataset: https://raw.githubusercontent.com/yuhonas/free-exercise-db/main/dist/exercises.json
  */
 @Slf4j
@@ -113,7 +114,7 @@ public class FreeExerciseDbProvider implements ExerciseImportProvider {
                 .instructions(instructionText)
                 .imageUrl(imageUrl)
                 .gifUrl(gifUrl)
-                .licenseType("MIT")
+                .licenseType("Unlicense (Public Domain)")
                 .attribution("yuhonas/free-exercise-db")
                 .sourceProvider(getId())
                 .externalId(id)
@@ -154,7 +155,7 @@ public class FreeExerciseDbProvider implements ExerciseImportProvider {
     private Exercise.EquipmentType mapEquipment(String eq) {
         if (eq == null) return Exercise.EquipmentType.OTHER;
         return switch (eq.toLowerCase().trim()) {
-            case "barbell" -> Exercise.EquipmentType.BARBELL;
+            case "barbell", "e-z curl bar" -> Exercise.EquipmentType.BARBELL;
             case "dumbbell" -> Exercise.EquipmentType.DUMBBELL;
             case "machine" -> Exercise.EquipmentType.MACHINE;
             case "cable" -> Exercise.EquipmentType.CABLE;

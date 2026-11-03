@@ -88,7 +88,7 @@ function getStyles(c: ColorPalette) {
       backgroundColor: c.surfaceElevated,
       alignItems: 'center',
       justifyContent: 'center',
-      marginRight: Spacing.base,
+      marginEnd: Spacing.base,
     },
     iconWrapSelected: { backgroundColor: c.primaryDim },
     textGroup: { flex: 1 },
@@ -100,6 +100,6 @@ function getStyles(c: ColorPalette) {
     },
     labelSelected: { color: c.primary },
     description: { fontSize: Typography.sm, color: c.textSecondary },
-    checkWrap: { marginLeft: Spacing.sm },
+    checkWrap: { marginStart: Spacing.sm },
   });
 }

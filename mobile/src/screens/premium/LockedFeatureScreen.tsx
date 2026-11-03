@@ -40,7 +40,7 @@ export default function LockedFeatureScreen() {
         <View style={styles.features}>
           {features.map((f) => (
             <View key={f} style={styles.featureRow}>
-              <Icon name="check-circle" size={18} color={colors.primary} style={{ marginRight: Spacing.sm }} />
+              <Icon name="check-circle" size={18} color={colors.primary} style={{ marginEnd: Spacing.sm }} />
               <Text style={styles.featureText}>{f}</Text>
             </View>
           ))}

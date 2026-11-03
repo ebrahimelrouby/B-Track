@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import PageHeader from "@/components/layout/PageHeader";
 import StatusBadge from "@/components/exercise/StatusBadge";
 import QualityScore from "@/components/exercise/QualityScore";
+import MuscleIcon from "@/components/exercise/MuscleIcon";
 import { listExercises, changeExerciseStatus } from "@/api/exercises";
 import type { ExerciseStatus } from "@/types";
 import { useAuthStore } from "@/auth/authStore";
@@ -127,6 +128,7 @@ export default function ExerciseList() {
                     className="rounded"
                   />
                 </th>
+                <th className="p-3 text-left font-medium text-muted-foreground"></th>
                 <th className="p-3 text-left font-medium text-muted-foreground">Name</th>
                 <th className="p-3 text-left font-medium text-muted-foreground">Muscle</th>
                 <th className="p-3 text-left font-medium text-muted-foreground">Equipment</th>
@@ -140,7 +142,7 @@ export default function ExerciseList() {
               {isLoading ? (
                 Array.from({ length: 10 }).map((_, i) => (
                   <tr key={i} className="border-b">
-                    {Array.from({ length: 8 }).map((_, j) => (
+                    {Array.from({ length: 9 }).map((_, j) => (
                       <td key={j} className="p-3">
                         <div className="h-4 bg-muted rounded animate-pulse" />
                       </td>
@@ -149,7 +151,7 @@ export default function ExerciseList() {
                 ))
               ) : exercises.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="p-12 text-center text-muted-foreground">
+                  <td colSpan={9} className="p-12 text-center text-muted-foreground">
                     No exercises found
                   </td>
                 </tr>
@@ -163,6 +165,9 @@ export default function ExerciseList() {
                         onChange={() => toggleSelect(ex.id)}
                         className="rounded"
                       />
+                    </td>
+                    <td className="p-3">
+                      <MuscleIcon muscleGroup={ex.muscleGroup} size={22} />
                     </td>
                     <td className="p-3">
                       <div className="font-medium">{ex.name}</div>

@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, TextInput,
-  KeyboardAvoidingView, Platform,
+  KeyboardAvoidingView, Platform, Share,
+  I18nManager,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useQuery } from '@tanstack/react-query';
@@ -65,7 +66,7 @@ function MiniChart({ data, colors }: { data: WeightEntry[]; colors: ColorPalette
           <Text style={[chartStyles.label, { color: colors.textPrimary }]}>{t('progress.bodyWeight')}</Text>
           <Text style={[chartStyles.sublabel, { color: colors.textTertiary }]}>{t('progress.entries', { n: data.length })}</Text>
         </View>
-        <View style={{ alignItems: 'flex-end', gap: 4 }}>
+        <View style={{ alignItems: I18nManager.isRTL ? 'flex-start' : 'flex-end', gap: 4 }}>
           <Text style={[chartStyles.current, { color: colors.primary }]}>{latest} kg</Text>
           <View style={[chartStyles.badge, {
             backgroundColor: (isDown ? colors.success : colors.warning) + '18',
@@ -159,6 +160,31 @@ export default function ProgressScreen() {
     setInputKg('');
   };
 
+  const handleShare = async () => {
+    const weightChange = weightLog.length >= 2
+      ? weightLog[weightLog.length - 1].kg - weightLog[0].kg
+      : null;
+
+    const lines = [
+      t('progress.shareTitle'),
+      t('progress.shareSessions', { n: totalSessions }),
+      totalVolumeKg > 0 ? t('progress.shareVolume', { t: (totalVolumeKg / 1000).toFixed(1) }) : null,
+      avgDuration > 0 ? t('progress.shareAvgDuration', { n: avgDuration }) : null,
+      weightChange !== null
+        ? t('progress.shareWeightChange', {
+            n: Math.abs(weightChange).toFixed(1),
+            dir: weightChange <= 0 ? t('progress.shareWeightDown') : t('progress.shareWeightUp'),
+          })
+        : null,
+    ].filter(Boolean).join('\n');
+
+    try {
+      await Share.share({ message: lines });
+    } catch {
+      // user cancelled or share sheet failed to open — nothing to recover
+    }
+  };
+
   const STAT_CARDS = [
     { icon: 'dumbbell',      label: t('progress.statTotalSessions'), value: String(totalSessions),       color: colors.primary  },
     { icon: 'weight',        label: t('progress.statTotalVolume'),   value: totalVolumeKg > 0 ? `${(totalVolumeKg / 1000).toFixed(1)}t` : '—', color: colors.warning },
@@ -181,7 +207,11 @@ export default function ProgressScreen() {
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center', gap: Spacing.sm }}>
             <PremiumTag />
-            <TouchableOpacity style={[styles.headerIconBtn, { backgroundColor: colors.surfaceElevated }]}>
+            <TouchableOpacity
+              style={[styles.headerIconBtn, { backgroundColor: colors.surfaceElevated }]}
+              onPress={handleShare}
+              activeOpacity={0.75}
+            >
               <Icon name="share-variant-outline" size={19} color={colors.textSecondary} />
             </TouchableOpacity>
           </View>
@@ -201,7 +231,7 @@ export default function ProgressScreen() {
             <Text style={styles.aiBannerSub}>{t('progress.aiBannerSub')}</Text>
           </View>
           <View style={styles.aiBannerArrow}>
-            <Icon name="arrow-right" size={16} color="#000" />
+            <Icon name={I18nManager.isRTL ? 'arrow-left' : 'arrow-right'} size={16} color="#000" />
           </View>
         </TouchableOpacity>
       </View>

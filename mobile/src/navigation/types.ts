@@ -1,7 +1,7 @@
 import { CompositeNavigationProp, NavigatorScreenParams } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
-import { Exercise } from '@/types';
+import { Exercise, MuscleGroup } from '@/types';
 
 // Auth Stack
 export type AuthStackParamList = {
@@ -32,12 +32,14 @@ export type WorkoutStackParamList = {
   CreateWorkoutPlan: undefined;
   WorkoutPlanDetail: { planId: string };
   WorkoutDay: { dayId: string; dayName: string };
-  ExerciseList: { dayId?: string; mode: 'select' | 'browse' };
+  ExerciseList: { dayId?: string; mode: 'select' | 'browse'; muscleGroup?: MuscleGroup };
   ExerciseDetail: { exercise: Exercise };
   ActiveWorkout: { planId?: string; dayId?: string; workoutName: string };
-  WorkoutSummary: { sessionId: string; name: string; durationSeconds: number; totalVolumeKg: number; totalSets: number; exerciseCount: number };
+  WorkoutSummary: { sessionId: string; name: string; durationSeconds: number; totalVolumeKg: number; totalSets: number; exerciseCount: number; avgHeartRate?: number; maxHeartRate?: number; activeCalories?: number };
   WorkoutHistory: undefined;
+  WorkoutVitals: undefined;
   SessionDetail: { sessionId: string };
+  TemplateDetail: { templateId: string };
 };
 
 // AI Stack

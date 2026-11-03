@@ -233,7 +233,7 @@ function getStyles(c: ColorPalette) {
       borderColor: c.surfaceBorder, padding: Spacing.md, color: c.textPrimary,
       fontSize: Typography.base, minHeight: 100,
     },
-    charCount: { fontSize: Typography.xs, color: c.textTertiary, textAlign: 'right' },
+    charCount: { fontSize: Typography.xs, color: c.textTertiary, textAlign: I18nManager.isRTL ? 'left' : 'right' },
 
     photoArea: {
       height: 160, backgroundColor: c.surfaceElevated, borderRadius: Radius.lg,

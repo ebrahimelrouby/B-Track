@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import StatusBadge from "@/components/exercise/StatusBadge";
 import QualityScore from "@/components/exercise/QualityScore";
+import MuscleIcon from "@/components/exercise/MuscleIcon";
 import { getExercise, changeExerciseStatus } from "@/api/exercises";
 import type { ExerciseStatus } from "@/types";
 
@@ -42,6 +43,7 @@ export default function ExerciseDetail() {
         <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
           <ArrowLeft className="h-4 w-4" />
         </Button>
+        <MuscleIcon muscleGroup={exercise.muscleGroup} size={32} />
         <div className="flex-1">
           <div className="flex items-center gap-3">
             <h1 className="text-2xl font-bold">{exercise.name}</h1>

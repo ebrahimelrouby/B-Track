@@ -15,6 +15,7 @@ interface Notification {
   title: string;
   body: string;
   time: string;
+  isToday: boolean;
   read: boolean;
 }
 
@@ -27,52 +28,52 @@ const ICON_MAP: Record<NotifType, { name: string; color: string; bg: string }> =
   system:    { name: 'information-outline', color: '#9CA3AF', bg: '#1F2937' },
 };
 
-const INITIAL_NOTIFICATIONS: Notification[] = [
-  {
-    id: '1', type: 'reminder', title: 'Time to hydrate!',
-    body: "You've only logged 1.2L today. Drink a glass of water to stay on track.",
-    time: '2 min ago', read: false,
-  },
-  {
-    id: '2', type: 'workout', title: 'Workout streak: 3 days 🔥',
-    body: 'Keep it up! You\'ve worked out 3 days in a row. One more day to hit your weekly goal.',
-    time: '1 hr ago', read: false,
-  },
-  {
-    id: '3', type: 'nutrition', title: 'Calorie goal almost reached',
-    body: 'You have 320 kcal remaining for today. Consider a protein-rich snack.',
-    time: '3 hrs ago', read: false,
-  },
-  {
-    id: '4', type: 'ai', title: 'AI Body Scan ready',
-    body: 'Your body fat estimate has been processed. Tap to view your results.',
-    time: 'Yesterday', read: true,
-  },
-  {
-    id: '5', type: 'goal', title: 'Weekly steps goal hit! 🎉',
-    body: 'You completed 70,000 steps this week. Amazing consistency!',
-    time: 'Yesterday', read: true,
-  },
-  {
-    id: '6', type: 'workout', title: 'Rest day reminder',
-    body: 'Your plan suggests rest today. Recovery is part of the process.',
-    time: '2 days ago', read: true,
-  },
-  {
-    id: '7', type: 'system', title: 'B-Track updated to v1.2',
-    body: 'New: AI Calorie Scan improvements, sleep tracking enhancements, and bug fixes.',
-    time: '3 days ago', read: true,
-  },
-];
+// Demo content shown until a real notifications API exists — localized via
+// the `t` passed in rather than a module-level constant, so it respects the
+// active app language instead of always rendering in English.
+function buildInitialNotifications(t: (key: string, opts?: any) => string): Notification[] {
+  return [
+    {
+      id: '1', type: 'reminder', title: t('notifications.mock1Title'),
+      body: t('notifications.mock1Body'),
+      time: t('notifications.minAgo', { n: 2 }), isToday: true, read: false,
+    },
+    {
+      id: '2', type: 'workout', title: t('notifications.mock2Title'),
+      body: t('notifications.mock2Body'),
+      time: t('notifications.hrAgo', { n: 1 }), isToday: true, read: false,
+    },
+    {
+      id: '3', type: 'nutrition', title: t('notifications.mock3Title'),
+      body: t('notifications.mock3Body'),
+      time: t('notifications.hrAgo', { n: 3 }), isToday: true, read: false,
+    },
+    {
+      id: '4', type: 'ai', title: t('notifications.mock4Title'),
+      body: t('notifications.mock4Body'),
+      time: t('notifications.yesterday'), isToday: false, read: true,
+    },
+    {
+      id: '5', type: 'goal', title: t('notifications.mock5Title'),
+      body: t('notifications.mock5Body'),
+      time: t('notifications.yesterday'), isToday: false, read: true,
+    },
+    {
+      id: '6', type: 'workout', title: t('notifications.mock6Title'),
+      body: t('notifications.mock6Body'),
+      time: t('notifications.daysAgo', { n: 2 }), isToday: false, read: true,
+    },
+    {
+      id: '7', type: 'system', title: t('notifications.mock7Title'),
+      body: t('notifications.mock7Body'),
+      time: t('notifications.daysAgo', { n: 3 }), isToday: false, read: true,
+    },
+  ];
+}
 
 function groupByDay(notifications: Notification[]) {
-  const today: Notification[] = [];
-  const earlier: Notification[] = [];
-  notifications.forEach((n) => {
-    const isToday = n.time.includes('min') || n.time.includes('hr') || n.time === 'Today';
-    if (isToday) today.push(n);
-    else earlier.push(n);
-  });
+  const today = notifications.filter((n) => n.isToday);
+  const earlier = notifications.filter((n) => !n.isToday);
   const sections: Array<{ title: 'Today' | 'Earlier'; data: Notification[] }> = [];
   if (today.length) sections.push({ title: 'Today', data: today });
   if (earlier.length) sections.push({ title: 'Earlier', data: earlier });
@@ -86,7 +87,7 @@ export default function NotificationsScreen() {
   const styles = React.useMemo(() => getStyles(colors), [colors]);
 
   const { t } = useTranslation();
-  const [notifications, setNotifications] = useState(INITIAL_NOTIFICATIONS);
+  const [notifications, setNotifications] = useState(() => buildInitialNotifications(t));
   const unreadCount = notifications.filter((n) => !n.read).length;
 
   const markAllRead = () =>
@@ -125,8 +126,8 @@ export default function NotificationsScreen() {
       {notifications.length === 0 ? (
         <View style={styles.empty}>
           <Icon name="bell-sleep-outline" size={48} color={colors.textTertiary} />
-          <Text style={styles.emptyTitle}>No notifications</Text>
-          <Text style={styles.emptySub}>You're all caught up!</Text>
+          <Text style={styles.emptyTitle}>{t('notifications.emptyTitle')}</Text>
+          <Text style={styles.emptySub}>{t('notifications.emptySub')}</Text>
         </View>
       ) : (
         <SectionList
@@ -204,7 +205,7 @@ function getStyles(c: ColorPalette) {
     unreadText: {
       fontSize: 11, fontWeight: Typography.bold, color: c.textInverse,
     },
-    markAll: { fontSize: Typography.xs, fontWeight: Typography.semibold, width: 72, textAlign: 'right' },
+    markAll: { fontSize: Typography.xs, fontWeight: Typography.semibold, width: 72, textAlign: I18nManager.isRTL ? 'left' : 'right' },
 
     sectionLabel: {
       fontSize: Typography.xs,
@@ -227,14 +228,14 @@ function getStyles(c: ColorPalette) {
     cardUnread: { backgroundColor: c.surfaceElevated + '60' },
     unreadDot: {
       position: 'absolute',
-      left: 6,
+      start: 6,
       top: '50%',
       width: 6, height: 6, borderRadius: 3,
     },
     iconWrap: {
       width: 44, height: 44, borderRadius: Radius.md,
       alignItems: 'center', justifyContent: 'center',
-      marginRight: Spacing.md,
+      marginEnd: Spacing.md,
       flexShrink: 0,
     },
     content: { flex: 1, gap: 3 },
@@ -251,7 +252,7 @@ function getStyles(c: ColorPalette) {
     separator: {
       height: 1,
       backgroundColor: c.surfaceBorder,
-      marginLeft: Spacing.base + 44 + Spacing.md,
+      marginStart: Spacing.base + 44 + Spacing.md,
     },
 
     empty: {

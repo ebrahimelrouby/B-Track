@@ -60,6 +60,15 @@ public class WorkoutSession extends BaseEntity {
     @Column(name = "total_volume_kg", precision = 10, scale = 2)
     private BigDecimal totalVolumeKg;
 
+    @Column(name = "avg_heart_rate")
+    private Integer avgHeartRate;
+
+    @Column(name = "max_heart_rate")
+    private Integer maxHeartRate;
+
+    @Column(name = "active_calories", precision = 7, scale = 1)
+    private BigDecimal activeCalories;
+
     @Column(columnDefinition = "TEXT")
     private String notes;
 

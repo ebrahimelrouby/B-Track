@@ -116,7 +116,7 @@ export default function OnboardingScreen() {
         <Text style={styles.stepCount}>{currentStep + 1} / {STEPS.length}</Text>
         <ProgressBar
           progress={(currentStep + 1) / STEPS.length}
-          style={{ flex: 1, marginLeft: Spacing.md }}
+          style={{ flex: 1, marginStart: Spacing.md }}
         />
       </View>
 

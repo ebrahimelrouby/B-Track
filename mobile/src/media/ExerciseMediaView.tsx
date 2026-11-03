@@ -7,7 +7,9 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import { MuscleGroup } from '@/types';
 import { useColors, Spacing, Typography, Radius } from '@/theme';
-import ExerciseAnimation from '@/components/workout/ExerciseAnimation';
+import { exerciseIcon } from '@/utils/exerciseIcon';
+import { exercisePictogram } from '@/utils/exercisePictogram';
+import { muscleAnatomyIcon } from '@/utils/muscleAnatomyIcon';
 import { resolveExerciseMedia } from './providers/registry';
 import { ExerciseMedia } from './types';
 
@@ -46,6 +48,16 @@ export default function ExerciseMediaView({
     [exerciseId, exerciseName, muscleGroup, secondaryMuscles],
   );
 
+  // Placeholder icon shown when there's no real gif/image — the hand-animated
+  // stick figure this used to fall back to looked rough across most poses,
+  // so until a v2 real-demo pipeline exists, a plain large icon (specific
+  // pictogram when one matches, muscle-group icon otherwise) is used instead.
+  const pictogram = useMemo(
+    () => exercisePictogram(exerciseName) ?? muscleAnatomyIcon(muscleGroup),
+    [exerciseName, muscleGroup],
+  );
+  const fallbackIconName = useMemo(() => exerciseIcon(exerciseName, muscleGroup), [exerciseName, muscleGroup]);
+
   const [active, setActive]     = useState<ActiveMedia>(() => pickInitial(media));
   const [loading, setLoading]   = useState(active !== 'animation');
 
@@ -67,9 +79,17 @@ export default function ExerciseMediaView({
   return (
     <View style={styles.root}>
 
-      {/* Built-in animated stick figure — shown when no remote media is available */}
+      {/* Large icon placeholder — shown when no remote media is available */}
       {active === 'animation' && (
-        <ExerciseAnimation muscleGroup={muscleGroup} accentColor={accentColor} />
+        <View style={[styles.placeholderWrap, { backgroundColor: accentColor + '10' }]}>
+          <View style={[styles.placeholderRing, { backgroundColor: accentColor + '1C', borderColor: accentColor + '40' }]}>
+            {pictogram ? (
+              <Image source={pictogram} style={{ width: 60, height: 60, tintColor: accentColor }} />
+            ) : (
+              <Icon name={fallbackIconName} size={52} color={accentColor} />
+            )}
+          </View>
+        </View>
       )}
 
       {/* Remote image / GIF — opacity:0 while loading so onLoad fires on iOS */}
@@ -113,6 +133,12 @@ export default function ExerciseMediaView({
 // ── Styles ────────────────────────────────────────────────────────────────────
 const styles = StyleSheet.create({
   root: { flex: 1 },
+
+  placeholderWrap: { flex: 1, alignItems: 'center', justifyContent: 'center' },
+  placeholderRing: {
+    width: 108, height: 108, borderRadius: 54,
+    borderWidth: 1, alignItems: 'center', justifyContent: 'center',
+  },
 
   media: {
     ...StyleSheet.absoluteFillObject,

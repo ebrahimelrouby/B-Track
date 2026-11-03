@@ -2,6 +2,7 @@ import React, { useMemo, useCallback } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity,
   RefreshControl, Dimensions,
+  I18nManager,
 } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
@@ -199,7 +200,7 @@ function RecoveryCard({
           </View>
         )}
 
-        <Icon name="chevron-right" size={16} color={colors.textTertiary} />
+        <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={colors.textTertiary} />
       </View>
 
       {/* Component pills */}
@@ -227,7 +228,7 @@ const rcStyles = StyleSheet.create({
   card:         { borderRadius: Radius.lg, borderWidth: 1, padding: Spacing.base, gap: Spacing.md },
   topRow:       { flexDirection: 'row', alignItems: 'center', gap: Spacing.sm },
   sectionLabel: { fontSize: Typography.xs },
-  levelBadge:   { flexDirection: 'row', alignItems: 'center', gap: 4, alignSelf: 'flex-start', paddingHorizontal: 7, paddingVertical: 3, borderRadius: Radius.full },
+  levelBadge:   { flexDirection: 'row', alignItems: 'center', gap: 4, alignSelf: I18nManager.isRTL ? 'flex-end' : 'flex-start', paddingHorizontal: 7, paddingVertical: 3, borderRadius: Radius.full },
   levelText:    { fontSize: 11, fontWeight: Typography.bold, flexShrink: 1 },
   confidence:   { fontSize: Typography.xs },
   spark:        { flexDirection: 'row', alignItems: 'flex-end', gap: 2, height: 36, width: 56 },
@@ -285,7 +286,7 @@ function SleepCard({
             <Text style={[scStyles.logBtnText, { color: SLEEP_COLOR }]}>{t('healthHub.connectBtn')}</Text>
           </TouchableOpacity>
         )}
-        <Icon name="chevron-right" size={16} color={colors.textTertiary} />
+        <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={colors.textTertiary} />
       </View>
 
       {hasData ? (
@@ -386,7 +387,7 @@ function StepsCard({
           </View>
         )}
         <View style={{ flex: 1 }} />
-        <Icon name="chevron-right" size={16} color={colors.textTertiary} />
+        <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={colors.textTertiary} />
       </View>
 
       <View style={stStyles.mainRow}>
@@ -425,7 +426,7 @@ function StepsCard({
         <TouchableOpacity style={stStyles.statItem} onPress={onCaloriesPress} hitSlop={{ top: 6, bottom: 6, left: 4, right: 4 }}>
           <Icon name="fire" size={12} color="#F97316" />
           <Text style={[stStyles.statVal, { color: '#F97316', fontWeight: Typography.semibold }]}>{steps.caloriesBurned} kcal</Text>
-          <Icon name="chevron-right" size={10} color="#F97316" />
+          <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={10} color="#F97316" />
         </TouchableOpacity>
         <View style={stStyles.statItem}>
           <Icon name="timer-outline" size={12} color={colors.textTertiary} />
@@ -457,7 +458,7 @@ const stStyles = StyleSheet.create({
   statsRow:   { flexDirection: 'row', alignItems: 'center', gap: Spacing.base },
   statItem:   { flexDirection: 'row', alignItems: 'center', gap: 3 },
   statVal:    { fontSize: Typography.xs },
-  remaining:  { fontSize: Typography.xs, marginLeft: 'auto' },
+  remaining:  { fontSize: Typography.xs, marginStart: 'auto' },
 });
 
 // ─── Hydration quick card ─────────────────────────────────────────────────────
@@ -497,7 +498,7 @@ function HydrationCard({
           </View>
         )}
         <View style={{ flex: 1 }} />
-        <Icon name="chevron-right" size={16} color={colors.textTertiary} />
+        <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color={colors.textTertiary} />
       </View>
 
       <View style={hcStyles.bodyRow}>
@@ -854,7 +855,7 @@ export default function HealthHubScreen() {
               {t('healthHub.unlockAiDesc')}
             </Text>
           </View>
-          <Icon name="chevron-right" size={16} color="#F59E0B" />
+          <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={16} color="#F59E0B" />
         </TouchableOpacity>
       )}
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import {
   View, Text, ScrollView, TouchableOpacity, TextInput,
-  RefreshControl, I18nManager } from 'react-native';
+  RefreshControl, I18nManager, Switch, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -13,6 +13,11 @@ import { useTranslation } from 'react-i18next';
 import { useColors, ColorPalette, Spacing, Typography, Radius, TAB_BAR_PADDING } from '@/theme';
 import { nutritionApi } from '@/api/nutrition.api';
 import { userApi } from '@/api/user.api';
+import { useAuthStore } from '@/store/auth.store';
+import {
+  loadWaterReminderSettings, enableWaterReminder, disableWaterReminder,
+  requestWaterReminderPermission,
+} from '@/services/waterReminder';
 
 const WATER_COLOR  = '#06B6D4';
 const WATER_FULL   = '#22C55E';
@@ -75,17 +80,57 @@ const PRESETS_BASE = [
 
 // ─── Main Screen ──────────────────────────────────────────────────────────────
 
+const REMINDER_INTERVALS = [1, 2, 3, 4];
+
 export default function HydrationScreen() {
   const navigation = useNavigation();
   const insets     = useSafeAreaInsets();
   const colors     = useColors();
   const qc         = useQueryClient();
+  const { user }   = useAuthStore();
+  const uid        = user?.userId ?? 'guest';
   const { data: meData } = useQuery({ queryKey: ['me'], queryFn: userApi.getMe });
   const targetMl = meData?.profile?.targetWaterMl ?? 2500;
 
   const { t } = useTranslation();
   const PRESETS = PRESETS_BASE.map(p => ({ ...p, label: t(`hydration.${p.key}` as any) }));
   const [customMl, setCustomMl] = useState('');
+
+  const [reminder, setReminder] = useState(() => loadWaterReminderSettings(uid));
+  const [reminderBusy, setReminderBusy] = useState(false);
+
+  const toggleReminder = async (value: boolean) => {
+    setReminderBusy(true);
+    try {
+      if (value) {
+        const granted = await requestWaterReminderPermission();
+        if (!granted) {
+          Alert.alert(t('hydration.reminderPermissionTitle'), t('hydration.reminderPermissionMsg'));
+          return;
+        }
+        setReminder(await enableWaterReminder(uid, reminder.intervalHours));
+      } else {
+        await disableWaterReminder(uid);
+        setReminder({ ...reminder, enabled: false, notificationId: undefined });
+      }
+    } finally {
+      setReminderBusy(false);
+    }
+  };
+
+  const changeReminderInterval = async (hours: number) => {
+    if (hours === reminder.intervalHours) return;
+    if (!reminder.enabled) {
+      setReminder({ ...reminder, intervalHours: hours });
+      return;
+    }
+    setReminderBusy(true);
+    try {
+      setReminder(await enableWaterReminder(uid, hours));
+    } finally {
+      setReminderBusy(false);
+    }
+  };
 
   const { data: waterMl = 0, isLoading, isRefetching, refetch } = useQuery<number>({
     queryKey: ['water-today'],
@@ -183,6 +228,55 @@ export default function HydrationScreen() {
               <Text style={{ fontSize: 10, color: colors.textTertiary, textAlign: 'center' }}>{s.label}</Text>
             </View>
           ))}
+        </View>
+      </View>
+
+      {/* Reminders */}
+      <View style={{ backgroundColor: colors.surface, borderRadius: Radius.xl, borderWidth: 1, borderColor: colors.surfaceBorder, padding: Spacing.base, gap: Spacing.sm }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: Spacing.sm }}>
+          <View style={{ width: 32, height: 32, borderRadius: 16, backgroundColor: WATER_COLOR + '20', alignItems: 'center', justifyContent: 'center' }}>
+            <Icon name="bell-ring-outline" size={15} color={WATER_COLOR} />
+          </View>
+          <View style={{ flex: 1 }}>
+            <Text style={{ fontSize: Typography.sm, fontWeight: Typography.bold, color: colors.textPrimary }}>
+              {t('hydration.remindersTitle')}
+            </Text>
+            <Text style={{ fontSize: Typography.xs, color: colors.textTertiary, marginTop: 1 }}>
+              {reminder.enabled
+                ? t('hydration.remindersOnSub', { n: reminder.intervalHours })
+                : t('hydration.remindersOffSub')}
+            </Text>
+          </View>
+          <Switch
+            value={reminder.enabled}
+            onValueChange={toggleReminder}
+            disabled={reminderBusy}
+            trackColor={{ false: colors.surfaceBorder, true: WATER_COLOR + '80' }}
+            thumbColor={reminder.enabled ? WATER_COLOR : colors.textTertiary}
+          />
+        </View>
+
+        <View style={{ flexDirection: 'row', gap: Spacing.sm, opacity: reminder.enabled ? 1 : 0.4 }}>
+          {REMINDER_INTERVALS.map((h) => {
+            const selected = h === reminder.intervalHours;
+            return (
+              <TouchableOpacity
+                key={h}
+                style={{
+                  flex: 1, alignItems: 'center', paddingVertical: Spacing.sm, borderRadius: Radius.md,
+                  borderWidth: 1,
+                  backgroundColor: selected ? WATER_COLOR + '18' : colors.surfaceElevated,
+                  borderColor: selected ? WATER_COLOR + '60' : colors.surfaceBorder,
+                }}
+                onPress={() => changeReminderInterval(h)}
+                disabled={!reminder.enabled || reminderBusy}
+              >
+                <Text style={{ fontSize: Typography.sm, fontWeight: Typography.bold, color: selected ? WATER_COLOR : colors.textSecondary }}>
+                  {t('hydration.reminderEvery', { n: h })}
+                </Text>
+              </TouchableOpacity>
+            );
+          })}
         </View>
       </View>
 

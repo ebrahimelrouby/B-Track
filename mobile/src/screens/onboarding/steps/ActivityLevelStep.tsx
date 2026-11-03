@@ -68,7 +68,7 @@ function getStyles(c: ColorPalette) {
       backgroundColor: c.surfaceElevated,
       alignItems: 'center',
       justifyContent: 'center',
-      marginRight: Spacing.md,
+      marginEnd: Spacing.md,
     },
     dotSelected: { backgroundColor: c.primary },
     dotText: { fontSize: Typography.sm, fontWeight: Typography.bold, color: c.textSecondary },

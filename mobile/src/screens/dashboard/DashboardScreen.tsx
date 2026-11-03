@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
   View, Text, StyleSheet, ScrollView, TouchableOpacity, Dimensions, Image, RefreshControl, Animated,
+  I18nManager,
 } from 'react-native';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 import { launchImageLibrary } from 'react-native-image-picker';
@@ -32,7 +33,8 @@ import { refreshHomeScreenWidgets } from '@/native/widgets';
 
 // The scan artwork is a fixed image for both tiles, not tinted per theme.
 const FOOD_SCAN_ICON = require('@/assets/images/food-scan-icon.png');
-const BODY_SCAN_ICON = require('@/assets/images/body-scan-icon.png');
+const BODY_SCAN_ICON_MALE = require('@/assets/images/body-scan-icon.png');
+const BODY_SCAN_ICON_FEMALE = require('@/assets/images/body-scan-icon-female.png');
 
 const W = Dimensions.get('window').width;
 const today = () => new Date().toISOString().split('T')[0];
@@ -129,7 +131,7 @@ function MacroBar({ label, value, target, color, colors }: {
             {Math.round(value)}
           </Text>
           <Text style={{ fontSize: Typography.xs, color: colors.textTertiary }}>/{target}g</Text>
-          <Text style={{ fontSize: 10, color: pct >= 1 ? color : colors.textTertiary, fontWeight: Typography.semibold, marginLeft: 4 }}>
+          <Text style={{ fontSize: 10, color: pct >= 1 ? color : colors.textTertiary, fontWeight: Typography.semibold, marginStart: 4 }}>
             {pctText}%
           </Text>
         </View>
@@ -343,6 +345,7 @@ export default function DashboardScreen() {
 
   const { data: profileData, refetch: refetchProfile } = useQuery({ queryKey: ['me'], queryFn: userApi.getMe });
   const profile = profileData?.profile;
+  const bodyScanIcon = profile?.gender === 'FEMALE' ? BODY_SCAN_ICON_FEMALE : BODY_SCAN_ICON_MALE;
 
   const { data: plans, refetch: refetchPlans } = useQuery({ queryKey: ['workout-plans'], queryFn: workoutApi.getPlans });
 
@@ -361,16 +364,29 @@ export default function DashboardScreen() {
     queryFn: () => workoutApi.getHistory(0, 50),
   });
 
+  // Pulled at size 10 (not 1) so the AI section can also show a real
+  // "scans this week" count, not just the single most recent result.
   const { data: lastNutritionPage, refetch: refetchLastNutrition } = useQuery({
     queryKey: ['ai-nutrition-last'],
-    queryFn: () => aiApi.getNutritionHistory(0, 1),
+    queryFn: () => aiApi.getNutritionHistory(0, 10),
   });
   const { data: lastBodyFatPage, refetch: refetchLastBodyFat } = useQuery({
     queryKey: ['ai-bodyfat-last'],
-    queryFn: () => aiApi.getBodyFatHistory(0, 1),
+    queryFn: () => aiApi.getBodyFatHistory(0, 10),
   });
   const lastNutrition = lastNutritionPage?.content?.[0];
   const lastBodyFat = lastBodyFatPage?.content?.[0];
+
+  const aiWeekScanCount = useMemo(() => {
+    const weekAgo = subDays(new Date(), 7);
+    const inWeek = (createdAt?: string) => !!createdAt && new Date(createdAt) >= weekAgo;
+    const nutritionEntries: { createdAt?: string }[] = lastNutritionPage?.content ?? [];
+    const bodyFatEntries: { createdAt?: string }[] = lastBodyFatPage?.content ?? [];
+    const nutritionCount = nutritionEntries.filter((e) => inWeek(e.createdAt)).length;
+    const bodyFatCount = bodyFatEntries.filter((e) => inWeek(e.createdAt)).length;
+    return nutritionCount + bodyFatCount;
+  }, [lastNutritionPage, lastBodyFatPage]);
+  const aiTotalScanCount = (lastNutritionPage?.totalElements ?? 0) + (lastBodyFatPage?.totalElements ?? 0);
 
   const relTime = useCallback((iso?: string) => {
     if (!iso) return '';
@@ -431,11 +447,12 @@ export default function DashboardScreen() {
     return { calories, counts };
   }, [diary]);
 
-  // ── Calorie ring color (green below 85%, warning 85–100%, error over) ─────────
+  // ── Calorie ring color (orange below 85% — matches the fire/calories accent
+  // used on Steps/Calories/HealthHub — warning 85–100%, error over) ──────────
   const calorieProgress  = todayTotals.cal / targets.calories;
   const ringColor        = calorieProgress > 1 ? colors.error
                          : calorieProgress > 0.85 ? colors.warning
-                         : colors.success;
+                         : '#F97316';
   const calorieRemaining = targets.calories - Math.round(todayTotals.cal);
   const isOver           = calorieRemaining < 0;
 
@@ -594,7 +611,7 @@ export default function DashboardScreen() {
             <Text style={styles.activeBannerTitle}>{t('dashboard.workoutInProgress')}</Text>
             <Text style={styles.activeBannerName}>{activeWorkout.name}</Text>
           </View>
-          <Icon name="chevron-right" size={20} color={colors.primary} />
+          <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={20} color={colors.primary} />
         </TouchableOpacity>
       )}
 
@@ -795,6 +812,37 @@ export default function DashboardScreen() {
           </View>
         </View>
 
+        {/* ── Summary stats ───────────────────────────────────────── */}
+        <View style={[styles.aiStatsRow, { backgroundColor: colors.surfaceElevated, borderColor: colors.surfaceBorder }]}>
+          <View style={styles.aiStatItem}>
+            <Icon name="calendar-week" size={13} color={colors.primary} />
+            <Text style={styles.aiStatValue}>{aiWeekScanCount}</Text>
+            <Text style={styles.aiStatLabel}>{t('dashboard.aiScansThisWeek')}</Text>
+          </View>
+          <View style={[styles.aiStatDivider, { backgroundColor: colors.surfaceBorder }]} />
+          <View style={styles.aiStatItem}>
+            <Icon name="chart-box-outline" size={13} color={colors.primary} />
+            <Text style={styles.aiStatValue}>{aiTotalScanCount}</Text>
+            <Text style={styles.aiStatLabel}>{t('dashboard.aiScansTotal')}</Text>
+          </View>
+          <View style={[styles.aiStatDivider, { backgroundColor: colors.surfaceBorder }]} />
+          <View style={styles.aiStatItem}>
+            <Icon name="food-apple-outline" size={13} color={lastNutrition ? '#FB923C' : colors.textTertiary} />
+            <Text style={[styles.aiStatValue, !lastNutrition && { color: colors.textTertiary }]} numberOfLines={1}>
+              {lastNutrition ? `${Math.round(lastNutrition.confirmedCalories ?? lastNutrition.estimatedCalories ?? 0)}` : '—'}
+            </Text>
+            <Text style={styles.aiStatLabel}>{t('dashboard.lastMealKcal')}</Text>
+          </View>
+          <View style={[styles.aiStatDivider, { backgroundColor: colors.surfaceBorder }]} />
+          <View style={styles.aiStatItem}>
+            <Icon name="human-male-board" size={13} color={lastBodyFat ? colors.primary : colors.textTertiary} />
+            <Text style={[styles.aiStatValue, !lastBodyFat && { color: colors.textTertiary }]} numberOfLines={1}>
+              {lastBodyFat ? `${lastBodyFat.minBodyFatPct}–${lastBodyFat.maxBodyFatPct}%` : '—'}
+            </Text>
+            <Text style={styles.aiStatLabel}>{t('dashboard.lastBodyFatPct')}</Text>
+          </View>
+        </View>
+
         <View style={styles.aiGridRow}>
           {/* ── Food Scan tile ─────────────────────────────────────── */}
           <ScanCardPress
@@ -811,21 +859,11 @@ export default function DashboardScreen() {
             </View>
             <View style={styles.aiGridBody}>
               <Text style={styles.aiGridTitle} numberOfLines={1}>{t('dashboard.calorieScan')}</Text>
-              <View style={styles.aiGridStats}>
-                <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '18', borderColor: colors.primary + '35' }]}>
-                  <Icon name="lightning-bolt" size={7} color={colors.primary} />
-                  <Text style={[styles.aiGridStatText, { color: colors.primary }]} numberOfLines={1}>{t('dashboard.lessThan5sec')}</Text>
-                </View>
-                <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '0C', borderColor: colors.primary + '20' }]}>
-                  <Icon name="food-apple" size={7} color={colors.primary + '88'} />
-                  <Text style={[styles.aiGridStatText, { color: colors.primary + '88' }]} numberOfLines={1}>{t('dashboard.calMacros')}</Text>
-                </View>
-              </View>
             </View>
             <View style={[styles.aiGridCta, { borderTopColor: colors.primary + '20', backgroundColor: colors.primary + '0C' }]}>
               <Text style={[styles.aiGridCtaText, { color: colors.primary }]}>{t('dashboard.scanMeal')}</Text>
               <View style={[styles.aiGridCtaArrow, { backgroundColor: colors.primary + '25' }]}>
-                <Icon name="arrow-right" size={11} color={colors.primary} />
+                <Icon name={I18nManager.isRTL ? 'arrow-left' : 'arrow-right'} size={11} color={colors.primary} />
               </View>
             </View>
           </ScanCardPress>
@@ -837,7 +875,7 @@ export default function DashboardScreen() {
           >
             <View style={[styles.aiGridHero, { backgroundColor: colors.primaryDim, overflow: 'hidden' }]}>
               <ScanFrame accent="#00E5FF" />
-              <Image source={BODY_SCAN_ICON} style={styles.aiGridHeroIcon} resizeMode="contain" />
+              <Image source={bodyScanIcon} style={styles.aiGridHeroIcon} resizeMode="contain" />
               <View style={[styles.aiGridTopBadge, { backgroundColor: colors.primaryDim, borderColor: colors.primary + '50' }]}>
                 <Icon name="human-male-board" size={8} color={colors.primary} />
                 <Text style={[styles.aiGridTopBadgeText, { color: colors.primary }]}>{t('dashboard.scan')}</Text>
@@ -845,21 +883,11 @@ export default function DashboardScreen() {
             </View>
             <View style={styles.aiGridBody}>
               <Text style={styles.aiGridTitle} numberOfLines={1}>{t('dashboard.bodyFatScan')}</Text>
-              <View style={styles.aiGridStats}>
-                <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '18', borderColor: colors.primary + '35' }]}>
-                  <Icon name="shield-check-outline" size={7} color={colors.primary} />
-                  <Text style={[styles.aiGridStatText, { color: colors.primary }]} numberOfLines={1}>{t('dashboard.private')}</Text>
-                </View>
-                <View style={[styles.aiGridStat, { backgroundColor: colors.primary + '0C', borderColor: colors.primary + '20' }]}>
-                  <Icon name="chart-donut" size={7} color={colors.primary + '88'} />
-                  <Text style={[styles.aiGridStatText, { color: colors.primary + '88' }]} numberOfLines={1}>{t('dashboard.visual3D')}</Text>
-                </View>
-              </View>
             </View>
             <View style={[styles.aiGridCta, { borderTopColor: colors.primary + '20', backgroundColor: colors.primaryDim }]}>
               <Text style={[styles.aiGridCtaText, { color: colors.primary }]}>{t('dashboard.scanBody')}</Text>
               <View style={[styles.aiGridCtaArrow, { backgroundColor: colors.primary + '25' }]}>
-                <Icon name="arrow-right" size={11} color={colors.primary} />
+                <Icon name={I18nManager.isRTL ? 'arrow-left' : 'arrow-right'} size={11} color={colors.primary} />
               </View>
             </View>
           </ScanCardPress>
@@ -895,7 +923,7 @@ export default function DashboardScreen() {
                   })
                 : t('dashboard.noFoodScanYet')}
             </Text>
-            <Icon name="chevron-right" size={12} color={lastNutrition ? '#FB923C' : colors.textTertiary} />
+            <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={12} color={lastNutrition ? '#FB923C' : colors.textTertiary} />
           </TouchableOpacity>
           <TouchableOpacity
             style={[
@@ -926,7 +954,7 @@ export default function DashboardScreen() {
                   })
                 : t('dashboard.noBodyScanYet')}
             </Text>
-            <Icon name="chevron-right" size={12} color={lastBodyFat ? colors.primary : colors.textTertiary} />
+            <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={12} color={lastBodyFat ? colors.primary : colors.textTertiary} />
           </TouchableOpacity>
         </View>
       </View>
@@ -943,7 +971,7 @@ export default function DashboardScreen() {
           </View>
           <TouchableOpacity onPress={() => navigation.navigate('Nutrition')} style={styles.seeAllBtn}>
             <Text style={styles.seeAllText}>{t('dashboard.logFood')}</Text>
-            <Icon name="chevron-right" size={14} color={colors.primary} />
+            <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={14} color={colors.primary} />
           </TouchableOpacity>
         </View>
 
@@ -1081,7 +1109,7 @@ export default function DashboardScreen() {
         <Text style={styles.sectionTitle}>{t('dashboard.todaysWorkout')}</Text>
         <TouchableOpacity onPress={() => navigation.navigate('Workout')} style={styles.seeAllBtn}>
           <Text style={styles.seeAllText}>{t('dashboard.allPlans')}</Text>
-          <Icon name="chevron-right" size={14} color={colors.primary} />
+          <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={14} color={colors.primary} />
         </TouchableOpacity>
       </View>
 
@@ -1355,7 +1383,7 @@ function getStyles(c: ColorPalette) {
 
     // ── Compact Nutrition card ───────────────────────────────────────────
     calPctChip: {
-      paddingHorizontal: 7, paddingVertical: 2, borderRadius: Radius.sm, borderWidth: 1, marginLeft: 2,
+      paddingHorizontal: 7, paddingVertical: 2, borderRadius: Radius.sm, borderWidth: 1, marginStart: 2,
     },
     calPctChipText: { fontSize: 9, fontWeight: Typography.bold },
 
@@ -1417,6 +1445,16 @@ function getStyles(c: ColorPalette) {
     aiSectionDot: { width: 6, height: 6, borderRadius: 3 },
     aiSectionBadgeText: { fontSize: 9, fontWeight: Typography.bold, letterSpacing: 0.6 },
 
+    // AI summary stats row
+    aiStatsRow: {
+      flexDirection: 'row', borderRadius: Radius.md, borderWidth: 1,
+      paddingVertical: Spacing.sm,
+    },
+    aiStatItem: { flex: 1, alignItems: 'center', gap: 2 },
+    aiStatDivider: { width: 1 },
+    aiStatValue: { fontSize: Typography.sm, fontWeight: Typography.bold, color: c.textPrimary },
+    aiStatLabel: { fontSize: 8, color: c.textTertiary, fontWeight: Typography.medium },
+
     // AI Scan 2-column grid
     aiGridRow: { flexDirection: 'row', gap: Spacing.sm },
     aiGridCard: {
@@ -1445,16 +1483,6 @@ function getStyles(c: ColorPalette) {
       fontSize: Typography.sm, fontWeight: Typography.bold,
       color: c.textPrimary,
     },
-    // nowrap — these two chips must always sit on one line per tile; sized
-    // down (padding/font/icon) specifically so they fit without wrapping.
-    aiGridStats: { flexDirection: 'row', gap: 4, flexWrap: 'nowrap' },
-    aiGridStat: {
-      flexDirection: 'row', alignItems: 'center', gap: 3,
-      paddingHorizontal: 5, paddingVertical: 3,
-      borderRadius: Radius.sm, borderWidth: 1,
-      flexShrink: 1,
-    },
-    aiGridStatText: { fontSize: 8, fontWeight: Typography.bold, flexShrink: 1 },
     aiGridCta: {
       flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between',
       paddingHorizontal: Spacing.md, paddingVertical: Spacing.sm, borderTopWidth: 1,

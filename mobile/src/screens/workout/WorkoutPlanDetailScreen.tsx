@@ -1,6 +1,7 @@
 import React, { useCallback, useMemo, useState } from 'react';
 import {
   View, Text, StyleSheet, TouchableOpacity, TextInput, Alert, Modal,
+  I18nManager,
 } from 'react-native';
 import { useNavigation, useRoute, RouteProp, useFocusEffect } from '@react-navigation/native';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
@@ -272,7 +273,7 @@ export default function WorkoutPlanDetailScreen() {
               <Icon name="pencil-outline" size={18} color={colors.primary} />
             </View>
             <Text style={styles.sheetRowText}>{t('workoutPlanDetail.renameDay')}</Text>
-            <Icon name="chevron-right" size={18} color={colors.textTertiary} />
+            <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={colors.textTertiary} />
           </TouchableOpacity>
 
           <TouchableOpacity style={styles.sheetRow} onPress={() => menuDay && confirmDelete(menuDay)}>
@@ -280,7 +281,7 @@ export default function WorkoutPlanDetailScreen() {
               <Icon name="trash-can-outline" size={18} color="#EF4444" />
             </View>
             <Text style={[styles.sheetRowText, { color: '#EF4444' }]}>{t('workoutPlanDetail.deleteDay')}</Text>
-            <Icon name="chevron-right" size={18} color={colors.textTertiary} />
+            <Icon name={I18nManager.isRTL ? 'chevron-left' : 'chevron-right'} size={18} color={colors.textTertiary} />
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -397,7 +398,7 @@ function getStyles(c: ColorPalette) {
       borderRadius: Radius.xl,
       borderWidth: 1, borderColor: c.surfaceBorder,
       overflow: 'hidden',
-      paddingRight: Spacing.base, paddingVertical: Spacing.md,
+      paddingEnd: Spacing.base, paddingVertical: Spacing.md,
     },
     dayBar: { width: 4, alignSelf: 'stretch', flexShrink: 0 },
     dayNum: {

@@ -2,6 +2,8 @@ package com.btrack.modules.nutrition.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -76,6 +78,32 @@ public class FoodItem {
     @Builder.Default
     private boolean active = true;
 
+    // ── Phase 1 food-database additions ─────────────────────────────────────
+    // Plain UUID FKs (not @ManyToOne), matching this entity's existing
+    // `createdBy` convention — these aren't navigated as relations today.
+
+    @Column(name = "category_id")
+    private UUID categoryId;
+
+    @Column(name = "brand_id")
+    private UUID brandId;
+
+    @Column(name = "data_source", nullable = false, length = 50)
+    @Builder.Default
+    private String dataSource = "MANUAL";
+
+    @Column(name = "external_source_id", length = 300)
+    private String externalSourceId;
+
+    @Enumerated(EnumType.STRING)
+    @JdbcTypeCode(SqlTypes.NAMED_ENUM)
+    @Column(name = "verification_status", nullable = false, columnDefinition = "food_verification_status")
+    @Builder.Default
+    private VerificationStatus verificationStatus = VerificationStatus.UNVERIFIED;
+
+    @Column(length = 100)
+    private String country;
+
     @CreatedDate
     @Column(name = "created_at", updatable = false)
     private Instant createdAt;
@@ -83,4 +111,8 @@ public class FoodItem {
     @LastModifiedDate
     @Column(name = "updated_at")
     private Instant updatedAt;
+
+    public enum VerificationStatus {
+        UNVERIFIED, VERIFIED, REVIEW_REQUIRED, REJECTED
+    }
 }
